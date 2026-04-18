@@ -1,11 +1,122 @@
 // For listing all subjects
 
-import React from 'react'
+import { Breadcrumb } from "@/components/refine-ui/layout/breadcrumb";
+import { ListView } from "@/components/refine-ui/views/list-view";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
+import React, { useMemo, useState } from "react";
+import { Select, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { SelectContent } from "@radix-ui/react-select";
+import { DEPARTMENT_OPTIONS } from "@/constants";
+import { CreateButton } from "@/components/refine-ui/buttons/create";
+import { DataTable } from "@/components/refine-ui/data-table/data-table";
+import { useTable } from "@refinedev/react-table";
+import { Subject } from "@/types";
+import { Badge } from "@/components/ui/badge";
 
 const SubjectsList = () => {
-  return (
-    <div>list of subjects</div>
-  )
-}
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedDepartment, setSelectedDepartment] = useState("all");
+ 
+  const departmentFilters = selectedDepartment === "all" ?[]: [{
+    field: 'department', operator: 'eq' as const, value: selectedDepartment
+  }];
 
-export default SubjectsList
+  const searchFilters = searchQuery?[{field: 'name', operator: 'contains' as const, value: searchQuery}] : [];
+
+  const subjectTable = useTable<Subject>({
+    columns: useMemo<ColumnDef<Subject>[]>(()=> [
+      // First column
+      { 
+        id: 'code',
+        accessorKey: 'code', 
+        size: 100,
+        header: () => <p className="column-title ml-2 ">Code</p>,
+        cell: ({getValue}) => <Badge>{getValue<string>()}</Badge>
+      },
+      // Second Column 
+      {
+        id: 'name',
+        accessorKey: 'name',
+        size: 200,
+        header: ()=> <p className="column-title">Name</p>,
+        cell: (getValue)=> <span className="text-foreground">{getValue<string>()}</span>,
+        filterFn: 'includesString'
+      },
+      // Third column
+            {
+        id: 'department',
+        accessorKey: 'ndepartment',
+        size: 150,
+        header: ()=> <p className="column-title">Department</p>,
+        cell: (getValue)=> <Badge variant="secondary">{getValue<string>()}</Badge>,
+      },
+      // Fourth Column
+      {
+        id: 'description',
+        accessorKey: 'description',
+        size: 300,
+        header: ()=> <p className="column-title">Description</p>,
+        cell: (getValue)=> <span className="truncate line-clamp-2">{getValue<string>()}</span>,
+      }
+    ],[]),
+    refineCoreProps: {
+      resource: 'subjects',
+      pagination: { pageSize: 10, mode: 'server'},
+      filters: {
+        permanent: [...departmentFilters, ...searchFilters]
+      },
+      sorters: {},
+    }
+  });
+  return (
+    <ListView>
+      <Breadcrumb />
+
+      <h1 className="page-title">List Subjects</h1>
+
+      <div className="intro-row">
+        <p>Quick access to essential metrics and management tools</p>
+
+        <div className="actions-rows">
+          <div className="search-field">
+            <Search className="search-icon" />
+            <Input
+              type="text"
+              placeholder="Search by name"
+              className="pl-10 w-full"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+
+          <div className="flex gap-2 w-full sm:w-auto">
+            {/* For selecting the department that we want to get subject for  */}
+            <Select
+              value={selectedDepartment}
+              onValueChange={setSelectedDepartment}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Filter by department"/>
+              </SelectTrigger>
+
+              <SelectContent>
+                <SelectItem value="all">All departments</SelectItem>
+                {DEPARTMENT_OPTIONS.map((department)=>(
+                  <SelectItem key={department.value} value={department.value}>{department.label}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <CreateButton/>
+          </div>
+        </div>
+      </div>
+
+      {/* Rendering Data */}
+      <DataTable table={subjectTable}/>
+    </ListView>
+  );
+};
+
+export default SubjectsList;

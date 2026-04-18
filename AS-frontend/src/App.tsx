@@ -47,10 +47,11 @@ function App() {
                 }
               ]}
             >
-              <Routes> // Wrapping up all routes inside it
+              {/* Wrapping up all routes inside it */}
+              <Routes>  
                 <Route element={
                   <Layout>
-                    <Outlet/> // Includes the sidebar component
+                    <Outlet/>
                   </Layout>
                 }>
                 <Route path="/" element={<Dashboard/>} />
