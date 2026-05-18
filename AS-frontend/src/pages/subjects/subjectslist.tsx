@@ -14,15 +14,16 @@ import { useTable } from "@refinedev/react-table";
 import { Subject } from "@/types";
 import { Badge } from "@/components/ui/badge";
 
+
 const SubjectsList = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedDepartment, setSelectedDepartment] = useState("all");
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedDepartment, setSelectedDepartment] = useState('all');
  
-  const departmentFilters = selectedDepartment === "all" ?[]: [{
+  const departmentFilters = selectedDepartment === "all" ? []: [{
     field: 'department', operator: 'eq' as const, value: selectedDepartment
   }];
 
-  const searchFilters = searchQuery?[{field: 'name', operator: 'contains' as const, value: searchQuery}] : [];
+  const searchFilters = searchQuery? [{field: 'name', operator: 'contains' as const, value: searchQuery}] : [];
 
   const subjectTable = useTable<Subject>({
     columns: useMemo<ColumnDef<Subject>[]>(()=> [
@@ -40,16 +41,16 @@ const SubjectsList = () => {
         accessorKey: 'name',
         size: 200,
         header: ()=> <p className="column-title">Name</p>,
-        cell: (getValue)=> <span className="text-foreground">{getValue<string>()}</span>,
+        cell: ({getValue})=> <span className="text-foreground">{getValue<string>()}</span>,
         filterFn: 'includesString'
       },
       // Third column
             {
         id: 'department',
-        accessorKey: 'ndepartment',
+        accessorKey: 'department',
         size: 150,
         header: ()=> <p className="column-title">Department</p>,
-        cell: (getValue)=> <Badge variant="secondary">{getValue<string>()}</Badge>,
+        cell: ({getValue})=> <Badge variant="secondary">{getValue<string>()}</Badge>,
       },
       // Fourth Column
       {
@@ -57,7 +58,7 @@ const SubjectsList = () => {
         accessorKey: 'description',
         size: 300,
         header: ()=> <p className="column-title">Description</p>,
-        cell: (getValue)=> <span className="truncate line-clamp-2">{getValue<string>()}</span>,
+        cell: ({getValue})=> <span className="truncate line-clamp-2">{getValue<string>()}</span>,
       }
     ],[]),
     refineCoreProps: {
@@ -66,7 +67,9 @@ const SubjectsList = () => {
       filters: {
         permanent: [...departmentFilters, ...searchFilters]
       },
-      sorters: {},
+      sorters: {
+        initial: [{field: 'id', order: 'desc', }]
+      },
     }
   });
   return (
@@ -98,7 +101,7 @@ const SubjectsList = () => {
             >
               <SelectTrigger>
                 <SelectValue placeholder="Filter by department"/>
-              </SelectTrigger>
+              </SelectTrigger>  
 
               <SelectContent>
                 <SelectItem value="all">All departments</SelectItem>
