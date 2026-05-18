@@ -1,4 +1,4 @@
-import { Refine, WelcomePage } from "@refinedev/core";
+import { Refine } from "@refinedev/core";
 import { DevtoolsPanel, DevtoolsProvider } from "@refinedev/devtools";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 
@@ -11,12 +11,14 @@ import "./App.css";
 import { Toaster } from "./components/refine-ui/notification/toaster";
 import { useNotificationProvider } from "./components/refine-ui/notification/use-notification-provider";
 import { ThemeProvider } from "./components/refine-ui/theme/theme-provider";
+// import dataProvider from "@refinedev/simple-rest";
 import { dataProvider } from "./providers/data";
 import Dashboard from "./pages/dashboard";
 import {BookOpen, Home} from "lucide-react"
 import { Layout } from "./components/refine-ui/layout/layout";
 import SubjectsList from "./pages/subjects/subjectslist";
 import SubjectsCreate from "./pages/subjects/create";
+// import { API_URL } from "@/providers/constants";
 
 function App() {
   return (
@@ -47,10 +49,11 @@ function App() {
                 }
               ]}
             >
-              <Routes> // Wrapping up all routes inside it
+              {/* Wrapping up all routes inside it */}
+              <Routes>  
                 <Route element={
                   <Layout>
-                    <Outlet/> // Includes the sidebar component
+                    <Outlet/>
                   </Layout>
                 }>
                 <Route path="/" element={<Dashboard/>} />
