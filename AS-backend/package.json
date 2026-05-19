@@ -9,16 +9,24 @@
     "build": "tsc",
     "start": "node dist/server.js"
   },
-  "keywords": ["Online Music Classroom Management System", "OMCMS", "Anahanad Studio backend"],
+  "keywords": [
+    "Online Music Classroom Management System",
+    "OMCMS",
+    "Anahanad Studio backend"
+  ],
   "author": "Sabyasachi Sahani",
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "@neondatabase/serverless": "^1.1.0",
+    "dotenv": "^17.4.2",
+    "drizzle-orm": "^0.45.2",
     "express": "^5.2.1"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
     "@types/node": "^25.9.0",
+    "drizzle-kit": "^0.31.10",
     "tsx": "^4.22.3",
     "typescript": "^6.0.3"
   }
