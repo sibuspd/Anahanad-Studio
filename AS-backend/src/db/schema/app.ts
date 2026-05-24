@@ -11,7 +11,7 @@ export const departments= pgTable('departments', {
     id: integer('id').primaryKey().generatedAlwaysAsIdentity(), // Primary Key
     code: varchar('code', {length: 50}).notNull().unique(),
     name: varchar('name', {length: 80}).notNull(),
-    description: varchar('description', {length: 225}).notNull(),
+    description: varchar('description', {length: 500}).notNull(),
     ...timestamps // Destructuring the timestamps object created above
 });
 
@@ -20,7 +20,7 @@ export const subjects= pgTable('subjects', {
     departmentId: integer('department_id').notNull().references( () => departments.id, { onDelete: 'restrict' }),
     code: varchar('code', {length: 50}).notNull().unique(),
     name: varchar('name', {length: 255}).notNull(),
-    description: varchar('description', {length: 225}),
+    description: varchar('description', {length: 500}),
     ...timestamps 
 });
 
@@ -37,5 +37,5 @@ export const subjectRelations = relations(subjects, ( {one, many} ) => ({
 export type Department = typeof departments.$inferSelect;
 export type newDepartment = typeof departments.$inferInsert;
 
-export type Subject = typeof departments.$inferSelect;
-export type NewSubject = typeof departments.$inferInsert;
+export type Subject = typeof subjects.$inferSelect;
+export type NewSubject = typeof subjects.$inferInsert;
