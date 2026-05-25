@@ -1,9 +1,13 @@
 import express from 'express';
 import subjectsRouter from './routes/subject'; // Router imported for Subjects display
 import cors from 'cors';
+import { error } from 'node:console';
 
 const app = express();
 const PORT = 8000;
+
+// Validationg Frontend URL environment variable for security
+if (!process.env.FRONTEND_URL) throw new Error('Frontend URL is not set in .env file');
 
 // CORS handshake 
 app.use(cors( {
