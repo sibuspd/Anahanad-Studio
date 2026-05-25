@@ -13,8 +13,8 @@ router.get("/", async (req, res) => {
         const { search, department, page = 1, limit = 10 } = req.query // Destructuring the query parameters
 
         // The below variables are used for pagination
-        const currentPage = Math.max(1, +page);    // Converting to number
-        const limitPerPage = Math.max(1, +limit); // Converting to number 
+        const currentPage = Math.max(1, parseInt(String(page), 10) || 1);    // Logic is to make sure page is at least 1
+        const limitPerPage = Math.min(Math.max(1, parseInt(String(limit), 10) || 10  ), 100); // Logic is to make sure limit is between 1 and 100 
 
         // Setting how many records to skip to get to next page
         const offset = (currentPage - 1) * limitPerPage;
