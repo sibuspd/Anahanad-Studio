@@ -38,6 +38,8 @@ router.get("/", async (req, res) => {
             filterConditions.push(
                 ilike(departments.name, `%${department}%` )
             );
+            const deptPattern = `%${String(department).replace(/[%_]/g, `\\$&`)}%`; // RegEx to escape special characters
+            filterConditions.push(ilike(departments.name, deptPattern)); // Adding filter condition for case-insensitive search
         }
 
         // Combine all filters using AND if any exists
