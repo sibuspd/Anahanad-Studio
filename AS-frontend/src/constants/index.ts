@@ -1,4 +1,4 @@
-import { GraduationCap, School, ShieldCheck, Users, BadgeDollarSign, icons } from "lucide-react";
+import { GraduationCap, School, ShieldCheck, Users, BadgeDollarSign, Crown } from "lucide-react";
 
 export const USER_ROLES = {
     SUPER_ADMIN: "super_admin",
@@ -8,7 +8,7 @@ export const USER_ROLES = {
     STUDENT: "student",
     PARENT: "parent",
     ACCOUNTANT: "accountant",
-};
+} as const;
 
 export const ROLE_OPTIONS = [ // To set the roles in the dropdown
     {
@@ -25,6 +25,11 @@ export const ROLE_OPTIONS = [ // To set the roles in the dropdown
         value: USER_ROLES.ADMIN,
         label: "Admin",
         icon: ShieldCheck,
+    },
+    {
+        value: USER_ROLES.SUPER_ADMIN,
+        label: "Super Admin",
+        icon: Crown,
     },
     {
         value: USER_ROLES.PARENT,
@@ -122,8 +127,8 @@ export const subjects = [
     },
     {
         id: 6,
-        name: "Ukelele",
-        code: "UKELELE",
+        name: "Ukulele",
+        code: "UKULELE",
     },
     {
         id: 7,
