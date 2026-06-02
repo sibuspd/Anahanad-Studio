@@ -43,6 +43,31 @@ import {createDataProvider, CreateDataProviderOptions} from "@refinedev/rest"
 const options: CreateDataProviderOptions = {
   getList: {
     getEndpoint: ({ resource } ) => resource,
+
+    // Below is the default implementation of a function that returns the params to be sent to the backend
+    buildQueryParams: async ( { resource, pagination, filters }) => {
+      const page = pagination?.currentPage ?? 1; // pagination decides which page to fetch
+      const pageSize = pagination?.pageSize ?? 10; // pageSize decides how many items to fetch per page
+
+      // defined params to be sent to the backend
+      const params: Record<string, string | number> = {
+        page, 
+        limit: pageSize
+      };
+
+      filters?.forEach( (filter) => {
+        const field = 'field' in filter? filter.field : '';
+        const value = String(filter.value); // Convert value to string
+        
+        // resource corresponds to the side nav bar selected
+        if(resource === 'subjects'){
+          if(field === 'department') params.department = value;
+          if(field === 'name'|| field === 'code') params.search = value;
+        }
+      });
+
+      return params;
+    },  
     
     mapResponse: async (response) => {
       const payload: ListResponse = await response.json();
