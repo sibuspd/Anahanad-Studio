@@ -14,10 +14,12 @@ import { ThemeProvider } from "./components/refine-ui/theme/theme-provider";
 // import dataProvider from "@refinedev/simple-rest";
 import { dataProvider } from "./providers/data";
 import Dashboard from "./pages/dashboard";
-import {BookOpen, Home} from "lucide-react"
+import {BookOpen, GraduationCap, Home} from "lucide-react"
 import { Layout } from "./components/refine-ui/layout/layout";
 import SubjectsList from "./pages/subjects/subjectslist";
 import SubjectsCreate from "./pages/subjects/create";
+import ClassesList from "./pages/classes/list";
+import ClassesCreate from "./pages/classes/create";
 // import { API_URL } from "@/providers/constants";
 
 function App() {
@@ -46,7 +48,13 @@ function App() {
                   list: '/subjects',
                   create: 'subjects/create', //Create sub routes
                   meta: {label: 'Subjects', icon: <BookOpen/>}
-                }
+                },
+                                {
+                  name: 'classes',
+                  list: '/classes',
+                  create: 'classes/create', //Create sub routes
+                  meta: {label: 'Classes', icon: <GraduationCap/>}
+                },
               ]}
             >
               {/* Wrapping up all routes inside it */}
@@ -60,6 +68,11 @@ function App() {
                 <Route path="subjects"> 
                   <Route index element={<SubjectsList/>}/>
                   <Route path="create" element={<SubjectsCreate/>}/>
+                </Route>
+
+                <Route path="classes"> 
+                  <Route index element={<ClassesList/>}/>
+                  <Route path="create" element={<ClassesCreate/>}/>
                 </Route>
                 </Route>
               </Routes>
