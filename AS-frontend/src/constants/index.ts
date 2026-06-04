@@ -1,13 +1,13 @@
 import { GraduationCap, School, ShieldCheck, Users, BadgeDollarSign, Crown } from "lucide-react";
 
 export const USER_ROLES = {
-    SUPER_ADMIN: "super_admin",
-    ADMIN: "admin",
-    HOD: "hod",
+    SUPER_ADMIN: "super_admin", // Sabyasachi Sahani who oversees the app 
+    ADMIN: "admin", // Anand Sirsat who will own the school
+    HOD: "hod", 
     TEACHER: "teacher",
     STUDENT: "student",
-    PARENT: "parent",
-    ACCOUNTANT: "accountant",
+    PARENT: "parent", 
+    ACCOUNTANT: "accountant", // the one responsible for fee management
 } as const;
 
 export const ROLE_OPTIONS = [ // To set the roles in the dropdown
