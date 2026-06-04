@@ -1,16 +1,18 @@
 // Defining a Zod schema to validate form inputs from user before adding a class in database; Relates to Create Classes
 import * as z from "zod"
 
+// Teacher under each Department
 export const facultySchema = z.object( {
     name: z.string().min(2, 'Name must be atleast 2 characters'),
     email: z.string().email(),
-    role: z.enum( ['super_admin', 'admin', 'hod', 'teacher', 'student', 'parent', 'accountant'] ),
+    role: z.enum( ['super_admin', 'admin', 'hod', 'teacher'] ),
     department: z.string(),
     image: z.string().optional(),
     imageCldPubId: z.string().optional(), // image will be published in Cloud 
     
 });
 
+// Subjects under each Department
 export const subjectSchema = z.object({
     name: z.string().min(3, "Subject name must be at least 3 characters"),
     code: z.string().min(3, "Subject code must be at least 3 characters"),
@@ -22,6 +24,7 @@ export const subjectSchema = z.object({
         .min(2, "Subject department must be at least 2 characters"),
 });
 
+// Schedules for each class
 export const scheduleSchema = z.object({
     day: z.string().min(1, "Day is required"),
     startTime: z.string().min(1, "Start time is required"),
@@ -29,8 +32,31 @@ export const scheduleSchema = z.object({
 });
 
 
+// Combination Courses under each Subject
+export const courseSchema = z.object( {
+    name: z.string(),
+    subjectId: z.coerce.number(),
+    level: z.enum( ['beginner', 'intermediate', 'advanced'] ),
+    durationMonths: z.coerce.number(),
+    fee: z.coerce.number(),
+});
 
-export const sessionSchema = z.object({
+// Batches under each Course with capacity limit
+export const batchSchema = z.object( {
+    courseId: z.coerce.number(),
+    teacherId: z.string(),
+    name: z.string(),
+        capacity: z.coerce
+        .number({
+            required_error: "Capacity is required",
+            invalid_type_error: "Capacity is required",
+        })
+        .min(1, "Capacity must be at least 1"),
+    schedule: z.array(scheduleSchema),
+} );
+
+// Schema for each class/session that has an attached attendance
+export const sessionSchema = z.object({ 
     name: z
         .string()
         .min(2, "Class name must be at least 2 characters")
@@ -45,13 +71,6 @@ export const sessionSchema = z.object({
         })
         .min(1, "Subject is required"),
     teacherId: z.string().min(1, "Teacher is required"),
-    capacity: z.coerce
-        .number({
-            required_error: "Capacity is required",
-            invalid_type_error: "Capacity is required",
-        })
-        .min(1, "Capacity must be at least 1"),
-    status: z.enum(["active", "inactive"]),
     bannerUrl: z
         .string({ required_error: "Class banner is required" })
         .min(1, "Class banner is required"),
@@ -60,8 +79,10 @@ export const sessionSchema = z.object({
         .min(1, "Banner reference is required"),
     inviteCode: z.string().optional(),
     schedules: z.array(scheduleSchema).optional(),
+    status: z.enum(["scheduled", "completed", "cancelled"]),
 });
 
+// Enrollment details of a student in a class
 export const enrollmentSchema = z.object({
     classId: z.coerce
         .number({
@@ -71,3 +92,10 @@ export const enrollmentSchema = z.object({
         .min(1, "Class ID is required"),
     studentId: z.string().min(1, "Student ID is required"),
 });
+
+// Attendance scheme for each session/class
+export const attendanceSchema = z.object({
+    sessionId: z.number(),
+    studentId: z.string(),
+    status: z.enum( [ 'present', 'absent'] ),
+})
