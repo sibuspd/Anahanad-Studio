@@ -22,13 +22,15 @@ export const subjectSchema = z.object({
         .min(2, "Subject department must be at least 2 characters"),
 });
 
-const scheduleSchema = z.object({
+export const scheduleSchema = z.object({
     day: z.string().min(1, "Day is required"),
     startTime: z.string().min(1, "Start time is required"),
     endTime: z.string().min(1, "End time is required"),
 });
 
-export const classSchema = z.object({
+
+
+export const sessionSchema = z.object({
     name: z
         .string()
         .min(2, "Class name must be at least 2 characters")
