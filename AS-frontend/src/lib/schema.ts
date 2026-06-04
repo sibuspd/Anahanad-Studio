@@ -3,8 +3,8 @@ import * as z from "zod"
 
 export const facultySchema = z.object( {
     name: z.string().min(2, 'Name must be atleast 2 characters'),
-    emails: z.string().email(),
-    role: z.enum( ['admin', 'teacher', 'student']),
+    email: z.string().email(),
+    role: z.enum( ['super_admin', 'admin', 'hod', 'teacher', 'student', 'parent', 'accountant'] ),
     department: z.string(),
     image: z.string().optional(),
     imageCldPubId: z.string().optional(), // image will be published in Cloud 
