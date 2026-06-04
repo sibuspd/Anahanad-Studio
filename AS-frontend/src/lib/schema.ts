@@ -71,7 +71,9 @@ export const sessionSchema = z.object({
             invalid_type_error: "Batch Id is required",
         })
         .min(1, "Batch Id is required"),
-    teacherId: z.string().min(1, "Teacher is required"),
+    teacherId: z.coerce.number({
+        required_error: "Teacher ID is required",
+    }).min(1),
     bannerUrl: z
         .string({ required_error: "Class banner is required" })
         .min(1, "Class banner is required"),
@@ -79,7 +81,9 @@ export const sessionSchema = z.object({
         .string({ required_error: "Banner reference is required" })
         .min(1, "Banner reference is required"),
     inviteCode: z.string().optional(),
-    schedules: z.array(scheduleSchema).optional(),
+    sessionDate: z.string(),
+    startTime: z.string(),
+    endTime: z.string(),
     status: z.enum(["scheduled", "completed", "cancelled"]),
 });
 
