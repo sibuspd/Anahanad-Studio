@@ -38,13 +38,14 @@ export const courseSchema = z.object( {
     subjectId: z.coerce.number(),
     level: z.enum( ['beginner', 'intermediate', 'advanced'] ),
     durationMonths: z.coerce.number(),
-    fee: z.coerce.number(),
+    feeAmount: z.coerce.number(),
+    description: z.string(),
 });
 
 // Batches under each Course with capacity limit
 export const batchSchema = z.object( {
     courseId: z.coerce.number(),
-    teacherId: z.string(),
+    teacherId: z.coerce.number(),
     name: z.string(),
         capacity: z.coerce
         .number({
@@ -64,12 +65,12 @@ export const sessionSchema = z.object({
     description: z
         .string({ required_error: "Description is required" })
         .min(5, "Description must be at least 5 characters"),
-    subjectId: z.coerce
+    batchId: z.coerce
         .number({
-            required_error: "Subject is required",
-            invalid_type_error: "Subject is required",
+            required_error: "Batch Id is required",
+            invalid_type_error: "Batch Id is required",
         })
-        .min(1, "Subject is required"),
+        .min(1, "Batch Id is required"),
     teacherId: z.string().min(1, "Teacher is required"),
     bannerUrl: z
         .string({ required_error: "Class banner is required" })
@@ -84,12 +85,12 @@ export const sessionSchema = z.object({
 
 // Enrollment details of a student in a class
 export const enrollmentSchema = z.object({
-    classId: z.coerce
+    batchId: z.coerce
         .number({
-            required_error: "Class ID is required",
-            invalid_type_error: "Class ID is required",
+            required_error: "Batch ID is required",
+            invalid_type_error: "Batch ID is required",
         })
-        .min(1, "Class ID is required"),
+        .min(1, "Batch ID is required"),
     studentId: z.string().min(1, "Student ID is required"),
 });
 
