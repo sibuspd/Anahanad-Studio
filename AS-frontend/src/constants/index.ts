@@ -103,6 +103,10 @@ export const teachers = [
         id: 3,
         name: "Prasanna Bhure",
     },
+    {
+        id: 4,
+        name: "Makarand Jadhav",
+    },
 ];
 
 export const subjects = [
