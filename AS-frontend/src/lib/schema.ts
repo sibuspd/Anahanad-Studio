@@ -33,7 +33,7 @@ export const scheduleSchema = z.object({
 });
 
 
-// Combination Courses under each Subject
+// Combination Courses under each Subject having fee structure attached
 export const courseSchema = z.object( {
     name: z.string(),
     subjectId: z.coerce.number(),
