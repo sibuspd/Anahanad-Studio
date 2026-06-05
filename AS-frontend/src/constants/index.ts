@@ -1,4 +1,4 @@
-import { GraduationCap, School, ShieldCheck, Users, BadgeDollarSign, Crown } from "lucide-react";
+import { GraduationCap, School, ShieldCheck, Users, BadgeDollarSign, Crown, UserCog } from "lucide-react";
 
 export const USER_ROLES = {
     SUPER_ADMIN: "super_admin", // Sabyasachi Sahani who oversees the app 
@@ -40,7 +40,12 @@ export const ROLE_OPTIONS = [ // To set the roles in the dropdown
         value: USER_ROLES.ACCOUNTANT,
         label: "Accountant",
         icon: BadgeDollarSign,
-    }
+    },
+    {
+        value: USER_ROLES.HOD,
+        label: "Head of Department",
+        icon: UserCog,
+    },
 ];
 
 export const DEPARTMENTS = [
