@@ -1,3 +1,4 @@
+// VALIDATION LAYER
 // Defining a Zod schema to validate form inputs from user before adding a class in database; Relates to Create Classes
 import * as z from "zod"
 

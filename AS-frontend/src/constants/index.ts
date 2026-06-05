@@ -1,3 +1,4 @@
+// FRONTEND DATA + DROPDOWN LAYER
 import { GraduationCap, School, ShieldCheck, Users, BadgeDollarSign, Crown, UserCog } from "lucide-react";
 
 export const USER_ROLES = {
