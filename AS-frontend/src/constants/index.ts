@@ -92,15 +92,15 @@ export const REFRESH_TOKEN_URL = `${BASE_URL}/refresh-token`;
 
 export const teachers = [
     {
-        id: "1",
+        id: 1,
         name: "Anand Sirsat",
     },
     {
-        id: "2",
+        id: 2,
         name: "Sabyasachi Sahani",
     },
     {
-        id: "3",
+        id: 3,
         name: "Prasanna Bhure",
     },
 ];
