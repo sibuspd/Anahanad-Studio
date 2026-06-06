@@ -14,7 +14,7 @@ import  {sessionSchema}  from '@/lib/schema.ts'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel,  FormMessage} from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Label } from '@/components/ui/label'
-import { Select, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 const Create = () => {
 
   const back = useBack();
@@ -173,8 +173,8 @@ const Create = () => {
                 )}/>
               </div>
 
-              {/* SUBJECT TYPE */}
               <div className="grid sm:grid-cols-2 gap-4">
+              {/* SUBJECT TYPE */}
                 <FormField control={control} name='subjectId' render={ ( {field} )=> (
                   <FormItem>
                     <FormLabel>Subject Name <span className='text-orange-600'>*</span></FormLabel>
@@ -184,6 +184,38 @@ const Create = () => {
                             <SelectValue placeholder='Select a subject'/>
                           </SelectTrigger>
                         </FormControl>
+                        <SelectContent>
+                          {subjects.map( (subject)=> (
+                            <SelectItem value={subject.id.toString()} key={subject.id}>
+                              {subject.name} ({subject.code})
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    <FormDescription>
+                      The subject under which the session exists
+                    </FormDescription>
+                    <FormMessage/>
+                  </FormItem>
+                )}/>
+
+                {/* TEACHER TO BE ASSIGNED */}
+                <FormField control={control} name='teacherId' render={ ( {field} )=> (
+                  <FormItem>
+                    <FormLabel>Teacher to be assigned <span className='text-orange-600'>*</span></FormLabel>
+                      <Select onValueChange={ (value)=> field.onChange(Number(value))} value={field?.value?.toString()}>
+                        <FormControl>
+                          <SelectTrigger className='w-full'>
+                            <SelectValue placeholder='Select a teacher'/>
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {teachers.map( (teacher)=> (
+                            <SelectItem value={teacher.id.toString()} key={teacher.id}>
+                              {teacher.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
                       </Select>
                     <FormDescription>
                       The subject under which the session exists
