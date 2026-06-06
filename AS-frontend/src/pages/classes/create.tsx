@@ -77,7 +77,7 @@ const Create = () => {
 ];
 
   // Creating Mock Options for Select Teachers Dropdown
-  export const teachers = [
+   const teachers = [
     {
         id: 1,
         name: "Anand Sirsat",
