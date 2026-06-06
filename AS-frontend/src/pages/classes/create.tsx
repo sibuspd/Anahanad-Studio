@@ -15,6 +15,8 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel,  Fo
 import { Input } from "@/components/ui/input"
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Textarea } from '@/components/ui/textarea'
+import { Loader2 } from 'lucide-react'
 const Create = () => {
 
   const back = useBack();
@@ -218,19 +220,105 @@ const Create = () => {
                         </SelectContent>
                       </Select>
                     <FormDescription>
-                      The subject under which the session exists
+                      Allot teacher according to relevant discipline/expertise
                     </FormDescription>
                     <FormMessage/>
                   </FormItem>
                 )}/>
               </div>
 
-              <Button type='submit'>Submit</Button>
+               <div className="grid sm:grid-cols-2 gap-4">
+                                    <FormField
+                                        control={control}
+                                        name="capacity"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Batch Capacity</FormLabel>
+                                                <FormControl>
+                                                    <Input
+                                                        type="number"
+                                                        placeholder="30"
+                                                        onChange={(e) => {
+                                                            const value = e.target.value;
+                                                            field.onChange(value ? Number(value) : undefined);
+                                                        }}
+                                                        value={(field.value as number | undefined) ?? ""}
+                                                        name={field.name}
+                                                        ref={field.ref}
+                                                        onBlur={field.onBlur}
+                                                    />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+
+                                    <FormField
+                                        control={control}
+                                        name="status"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>
+                                                    Status <span className="text-orange-600">*</span>
+                                                </FormLabel>
+                                                <Select
+                                                    onValueChange={field.onChange}
+                                                    value={field.value}
+                                                >
+                                                    <FormControl>
+                                                        <SelectTrigger className="w-full">
+                                                            <SelectValue placeholder="Select status" />
+                                                        </SelectTrigger>
+                                                    </FormControl>
+                                                    <SelectContent>
+                                                        <SelectItem value="scheduled">Scheduled</SelectItem>
+                                                        <SelectItem value="completed">Completed</SelectItem>
+                                                        <SelectItem value="Cancelled">Cancelled</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                </div>
+
+                <FormField
+                                    control={control}
+                                    name="description"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Description</FormLabel>
+                                            <FormControl>
+                                                <Textarea
+                                                    placeholder="Brief description about the class"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                <Separator />
+
+
+
+              <Button type='submit' size='lg' className='w-full'>
+                {isSubmitting ? (
+                                        <div className="flex gap-1">
+                                            <span>Creating Class...</span>
+                                            <Loader2 className="inline-block ml-2 animate-spin" />
+                                        </div>
+                                    ) : (
+                                        "Create Class"
+                                    )}
+              </Button>
               </form>
             </Form>
           </CardContent>
         </Card>
       </div>
+
     </CreateView>
   )
 }
