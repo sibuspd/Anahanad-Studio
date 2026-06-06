@@ -42,6 +42,40 @@ const Create = () => {
     }
   }
 
+  // Creating Mock Options for Select Subject Dropdown
+   const subjects = [
+    {
+        id: 1,
+        name: "Piano",
+        code: "PIANO",
+    },
+    {
+        id: 2,
+        name: "Electronic Keyboard",
+        code: "EKEY",
+    },
+    {
+        id: 3,
+        name: "Guitar",
+        code: "GUITAR",
+    },
+    {
+        id: 4,
+        name: "Tabla",
+        code: "TABLA",
+    },
+    {
+        id: 5,
+        name: "Drums",
+        code: "DRUMS",
+    },
+    {
+        id: 6,
+        name: "Western Vocals",
+        code: "WVOC",
+    },
+];
+
   return (
     <CreateView className='class-view'>
       <Breadcrumb/>
