@@ -76,6 +76,27 @@ const Create = () => {
     },
 ];
 
+  // Creating Mock Options for Select Teachers Dropdown
+  export const teachers = [
+    {
+        id: 1,
+        name: "Anand Sirsat",
+    },
+    {
+        id: 2,
+        name: "Sabyasachi Sahani",
+    },
+    {
+        id: 3,
+        name: "Prasanna Bhure",
+    },
+    {
+        id: 4,
+        name: "Makarand Jadhav",
+    },
+];
+
+
   return (
     <CreateView className='class-view'>
       <Breadcrumb/>
