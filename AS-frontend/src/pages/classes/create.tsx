@@ -61,38 +61,38 @@ const Create = () => {
   };
 
   // Creating Mock Options for Select Subject Dropdown
-  const subjects = [
-    {
-      id: 1,
-      name: "Piano",
-      code: "PIANO",
-    },
-    {
-      id: 2,
-      name: "Electronic Keyboard",
-      code: "EKEY",
-    },
-    {
-      id: 3,
-      name: "Guitar",
-      code: "GUITAR",
-    },
-    {
-      id: 4,
-      name: "Tabla",
-      code: "TABLA",
-    },
-    {
-      id: 5,
-      name: "Drums",
-      code: "DRUMS",
-    },
-    {
-      id: 6,
-      name: "Western Vocals",
-      code: "WVOC",
-    },
-  ];
+  // const subjects = [
+  //   {
+  //     id: 1,
+  //     name: "Piano",
+  //     code: "PIANO",
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Electronic Keyboard",
+  //     code: "EKEY",
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Guitar",
+  //     code: "GUITAR",
+  //   },
+  //   {
+  //     id: 4,
+  //     name: "Tabla",
+  //     code: "TABLA",
+  //   },
+  //   {
+  //     id: 5,
+  //     name: "Drums",
+  //     code: "DRUMS",
+  //   },
+  //   {
+  //     id: 6,
+  //     name: "Western Vocals",
+  //     code: "WVOC",
+  //   },
+  // ];
 
   // Creating Mock Options for Select Teachers Dropdown
   const teachers = [
@@ -160,7 +160,7 @@ const Create = () => {
       <h1 className="page-title">Create a new class</h1>
       <div className="intro-row">
         <p>Provide the required information to register a new music class</p>
-        <Button onClick={() => back}>Go Back</Button>{" "}
+        <Button onClick={() => back()}>Go Back</Button>{" "}
         {/* Callback function to just go back after registering a new class */}
       </div>
 
