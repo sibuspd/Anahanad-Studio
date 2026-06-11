@@ -23,6 +23,7 @@ import ClassesCreate from "./pages/classes/create";
 import CoursesList from "./pages/courses/list";
 import CoursesCreate from "./pages/courses/create";
 import BatchesCreate from "./pages/batches/create";
+import BatchesManage from "./pages/batches/manage";
 // import { API_URL } from "@/providers/constants";
 
 function App() {
@@ -66,7 +67,7 @@ function App() {
                 },
                 {
                   name: "batches",
-                  list: "/batches",
+                  list: "/batches/manage",
                   create: "batches/create",
                   meta: { label: "Batches", icon: <AlignVerticalDistributeStart/> },
                 },
@@ -101,6 +102,7 @@ function App() {
                   {/* BATCHES ROUTE */}
                   <Route path='batches'>
                     <Route path="create" element={<BatchesCreate/>} />
+                    <Route index path="manage" element={<BatchesManage/>} />
                   </Route>
                 </Route>
               </Routes>
