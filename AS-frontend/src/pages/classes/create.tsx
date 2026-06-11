@@ -221,9 +221,30 @@ const Create = () => {
                         <FormLabel>
                           Batch Name <span className="text-orange-600">*</span>
                         </FormLabel>
-                        <FormControl>
-                          <Input placeholder="Kids Weekend Batch" {...field} />
-                        </FormControl>
+                        <Select
+                          onValueChange={(value) =>
+                            field.onChange(Number(value))
+                          }
+                          value={field?.value?.toString()}
+                        >
+                          <FormControl>
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="Select Batch" />
+                            </SelectTrigger>
+                          </FormControl>
+
+                          <SelectContent>
+                            {batches.map((batch) => (
+                              <SelectItem
+                                key="batch.id"
+                                value={batch.id.toString()}
+                              >
+                                {batch.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+
                         <FormDescription>
                           The Batch this class is assigned to ** Each batch has
                           limited capacity **
