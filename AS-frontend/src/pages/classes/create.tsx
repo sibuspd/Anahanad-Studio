@@ -236,7 +236,7 @@ const Create = () => {
                           <SelectContent>
                             {batches.map((batch) => (
                               <SelectItem
-                                key="batch.id"
+                                key={batch.id}
                                 value={batch.id.toString()}
                               >
                                 {batch.name}
@@ -263,24 +263,31 @@ const Create = () => {
                         <FormLabel>
                           Course Name <span className="text-orange-600">*</span>
                         </FormLabel>
-          
-                        <Select onValueChange={ (value) => field.onChange(Number(value)) }
-                          value={field?.value?.toString()}>
+
+                        <Select
+                          onValueChange={(value) =>
+                            field.onChange(Number(value))
+                          }
+                          value={field?.value?.toString()}
+                        >
                           <FormControl>
                             <SelectTrigger className="w-full">
                               <SelectValue placeholder="Select Course" />
                             </SelectTrigger>
                           </FormControl>
-                          
+
                           <SelectContent>
-                            {courses.map( (course)=> (
-                              <SelectItem key={course.id} value={course.id.toString()}>
+                            {courses.map((course) => (
+                              <SelectItem
+                                key={course.id}
+                                value={course.id.toString()}
+                              >
                                 {course.name}
                               </SelectItem>
                             ))}
                           </SelectContent>
-                        </Select> 
-          
+                        </Select>
+
                         <FormDescription>
                           The course under which the session belongs
                         </FormDescription>
