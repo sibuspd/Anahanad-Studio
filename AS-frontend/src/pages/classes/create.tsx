@@ -134,6 +134,26 @@ const Create = () => {
     },
   ];
 
+  // Creating Mock Options for Select Course Dropdown
+  const courses = [
+    {
+      id: 1,
+      name: "Beginner Piano 101",
+    },
+    {
+      id: 2,
+      name: "Advanced Piano Performance",
+    },
+    {
+      id: 3,
+      name: "Tabla Foundation Course",
+    },
+    {
+      id: 4,
+      name: "Western Vocals Beginner Course",
+    },
+  ];
+
   return (
     <CreateView className="class-view">
       <Breadcrumb />
@@ -276,7 +296,7 @@ const Create = () => {
                     )}
                   />
 
-                   {/* STATUS OF THE SESSION */}
+                  {/* STATUS OF THE SESSION */}
                   <FormField
                     control={control}
                     name="status"
@@ -306,7 +326,7 @@ const Create = () => {
                   />
                 </div>
 
-                  {/* SUBJECT TYPE */}
+                {/* SUBJECT TYPE */}
                 {/* <div className="grid sm:grid-cols-2 gap-4">
                 <FormField control={control} name='subjectId' render={ ( {field} )=> (
                   <FormItem>
@@ -363,46 +383,49 @@ const Create = () => {
 
                 <div className="grid sm:grid-cols-3 gap-4">
                   {/* SESSION DATE */}
-                  <FormField 
-                  control={control}
-                  name='sessionDate'
-                  render={ ( { field })=> (
-                    <FormItem>
-                      <FormLabel>Session Date</FormLabel>
-                      <FormControl>
-                        <Input type="date" {...field}/>
-                      </FormControl>
-                      <FormMessage/>
-                    </FormItem>
-                  )}/>
+                  <FormField
+                    control={control}
+                    name="sessionDate"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Session Date</FormLabel>
+                        <FormControl>
+                          <Input type="date" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
                   {/* SESSION START TIME */}
-                  <FormField 
-                  control={control}
-                  name='startTime'
-                  render={ ( { field })=> (
-                    <FormItem>
-                      <FormLabel>Start Time</FormLabel>
-                      <FormControl>
-                        <Input type="time" {...field}/>
-                      </FormControl>
-                      <FormMessage/>
-                    </FormItem>
-                  )}/>
+                  <FormField
+                    control={control}
+                    name="startTime"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Start Time</FormLabel>
+                        <FormControl>
+                          <Input type="time" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
                   {/* SESSION END TIME */}
-                  <FormField 
-                  control={control}
-                  name='endTime'
-                  render={ ( { field })=> (
-                    <FormItem>
-                      <FormLabel>End Time</FormLabel>
-                      <FormControl>
-                        <Input type="time" {...field}/>
-                      </FormControl>
-                      <FormMessage/>
-                    </FormItem>
-                  )}/>
+                  <FormField
+                    control={control}
+                    name="endTime"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>End Time</FormLabel>
+                        <FormControl>
+                          <Input type="time" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </div>
 
                 <FormField
