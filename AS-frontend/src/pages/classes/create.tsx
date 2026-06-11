@@ -31,34 +31,6 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2 } from "lucide-react";
-const Create = () => {
-  const back = useBack();
-
-  const form = useForm({
-    resolver: zodResolver(sessionSchema),
-    refineCoreProps: {
-      resource: "classes",
-      action: "create",
-    },
-    defaultValues: {
-      status: "scheduled",
-    },
-  });
-
-  const {
-    handleSubmit,
-    formState: { isSubmitting, control },
-  } = form;
-
-  const onSubmit = (values: z.infer<typeof sessionSchema>) => {
-    // Do something with the form values
-    // this will be type-safe and validated
-    try {
-      console.log(values);
-    } catch (e) {
-      console.log("Error registering the new class", e);
-    }
-  };
 
   // Creating Mock Options for Select Subject Dropdown
   // const subjects = [
@@ -153,6 +125,36 @@ const Create = () => {
       name: "Western Vocals Beginner Course",
     },
   ];
+
+// Main Component  
+const Create = () => {
+  const back = useBack();
+
+  const form = useForm({
+    resolver: zodResolver(sessionSchema),
+    refineCoreProps: {
+      resource: "classes",
+      action: "create",
+    },
+    defaultValues: {
+      status: "scheduled",
+    },
+  });
+
+  const {
+    handleSubmit,
+    formState: { isSubmitting, control },
+  } = form;
+
+  const onSubmit = (values: z.infer<typeof sessionSchema>) => {
+    // Do something with the form values
+    // this will be type-safe and validated
+    try {
+      console.log(values);
+    } catch (e) {
+      console.log("Error registering the new class", e);
+    }
+  };
 
   return (
     <CreateView className="class-view">
