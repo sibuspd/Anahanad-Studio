@@ -14,7 +14,7 @@ import { ThemeProvider } from "./components/refine-ui/theme/theme-provider";
 // import dataProvider from "@refinedev/simple-rest";
 import { dataProvider } from "./providers/data";
 import Dashboard from "./pages/dashboard";
-import { BookOpen, GraduationCap, Home } from "lucide-react";
+import { AlignVerticalDistributeStart, BookOpen, GraduationCap, Home } from "lucide-react";
 import { Layout } from "./components/refine-ui/layout/layout";
 import SubjectsList from "./pages/subjects/subjectslist";
 import SubjectsCreate from "./pages/subjects/create";
@@ -22,6 +22,7 @@ import ClassesList from "./pages/classes/list";
 import ClassesCreate from "./pages/classes/create";
 import CoursesList from "./pages/courses/list";
 import CoursesCreate from "./pages/courses/create";
+import BatchesCreate from "./pages/batches/create";
 // import { API_URL } from "@/providers/constants";
 
 function App() {
@@ -63,6 +64,12 @@ function App() {
                   create: "courses/create",
                   meta: { label: "Courses", icon: <BookOpen /> },
                 },
+                {
+                  name: "batches",
+                  list: "/batches",
+                  create: "batches/create",
+                  meta: { label: "Batches", icon: <AlignVerticalDistributeStart/> },
+                },
               ]}
             >
               {/* Wrapping up all routes inside it */}
@@ -90,6 +97,10 @@ function App() {
                   <Route path="courses">
                     <Route index element={<CoursesList/>}/>
                     <Route path="create" element={<CoursesCreate/>}/>
+                  </Route>
+                  {/* BATCHES ROUTE */}
+                  <Route path='batches'>
+                    <Route path="create" element={<BatchesCreate/>} />
                   </Route>
                 </Route>
               </Routes>
