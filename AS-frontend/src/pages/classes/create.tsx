@@ -263,11 +263,26 @@ const Create = () => {
                         <FormLabel>
                           Course Name <span className="text-orange-600">*</span>
                         </FormLabel>
-                        <FormControl>
-                          <Input placeholder="Beginner Piano 101" {...field} />
-                        </FormControl>
+          
+                        <Select onValueChange={ (value) => field.onChange(Number(value)) }
+                          value={field?.value?.toString()}>
+                          <FormControl>
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="Select Course" />
+                            </SelectTrigger>
+                          </FormControl>
+                          
+                          <SelectContent>
+                            {courses.map( (course)=> (
+                              <SelectItem key={course.id} value={course.id.toString()}>
+                                {course.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select> 
+          
                         <FormDescription>
-                          The course under which the session exists
+                          The course under which the session belongs
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
