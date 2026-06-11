@@ -72,6 +72,7 @@ export const sessionSchema = z.object({
             invalid_type_error: "Batch Id is required",
         })
         .min(1, "Batch Id is required"),
+    courseId: z.coerce.number(),
     teacherId: z.coerce.number({
         required_error: "Teacher ID is required",
     }).min(1),
