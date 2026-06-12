@@ -127,6 +127,7 @@ import UploadWidget from "@/components/upload-widget";
     },
   ];
 
+
 // Main Component  
 const Create = () => {
   const back = useBack();
@@ -144,7 +145,8 @@ const Create = () => {
 
   const {
     handleSubmit,
-    formState: { isSubmitting, control },
+    formState: { isSubmitting, errors },
+    control
   } = form;
 
   const onSubmit = (values: z.infer<typeof sessionSchema>) => {
@@ -156,6 +158,24 @@ const Create = () => {
       console.log("Error registering the new class", e);
     }
   };
+
+  const bannerPublicId = form.watch('bannerClbPubId');
+
+  const setBannerImage = (file, field) => {
+    if(file){
+      field.onChange(file.url);
+      form.setValue('bannerCldPubId', file.publicId, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
+    } else {
+      field.onChange('');
+      form.setValue('bannerCldPubId', '', {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
+    }
+  }
 
   return (
     <CreateView className="class-view">
@@ -188,6 +208,16 @@ const Create = () => {
                   render={ ( {field} )=> (
                     <FormItem>
                       <FormLabel>Banner Image <span className="text-orange-600">*</span></FormLabel>
+                      <FormControl>
+                        <UploadWidget value={ field.value? {
+                          url: field.value,
+                          publicId: bannerPublicId ?? '' }: null }
+                        onChange={ (file: any, field: any) =>setBannerImage(file, field)}/>
+                      </FormControl>
+                      <FormMessage />
+                      {errors.bannerClbPubId && !errors.bannerUrl && (
+                        <p className="text-destructive text-sm">{errors.bannerClbPubId.message?.toString()}</p>
+                      )}
                     </FormItem>
                   ) }
                   name="bannerUrl" />
