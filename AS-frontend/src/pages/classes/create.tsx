@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2 } from "lucide-react";
+import UploadWidget from "@/components/upload-widget";
 
   // Creating Mock Options for Select Subject Dropdown
   // const subjects = [
@@ -186,7 +187,7 @@ const Create = () => {
                     Banner Image <span className="text-orange-600">*</span>
                   </Label>
 
-                  <p>Upload Image widget</p>
+                  <UploadWidget/>
                 </div>
 
                 {/* Rendering a form field  - SESSION/CLASS/TOPIC NAME*/}
