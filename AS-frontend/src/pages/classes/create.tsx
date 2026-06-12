@@ -137,9 +137,9 @@ const Create = () => {
       resource: "classes",
       action: "create",
     },
-    defaultValues: {
-      status: "scheduled",
-    },
+    // defaultValues: {
+    //   status: "scheduled",
+    // },
   });
 
   const {
@@ -182,13 +182,15 @@ const Create = () => {
           <CardContent className="mt-7 ">
             <Form {...form}>
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-                <div className="space-y-3">
-                  <Label>
-                    Banner Image <span className="text-orange-600">*</span>
-                  </Label>
-
-                  <UploadWidget/>
-                </div>
+                
+                <FormField 
+                  control= {control}
+                  render={ ( {field} )=> (
+                    <FormItem>
+                      <FormLabel>Banner Image <span className="text-orange-600">*</span></FormLabel>
+                    </FormItem>
+                  ) }
+                  name="bannerUrl" />
 
                 {/* Rendering a form field  - SESSION/CLASS/TOPIC NAME*/}
                 <FormField
