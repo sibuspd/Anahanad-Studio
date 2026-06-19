@@ -70,6 +70,7 @@ export const ALLOWED_TYPES = [
     "image/webp",
 ];
 
+// Helper function to get environment variables
 const getEnvVar = (key: string): string => {
     const value = import.meta.env[key];
     if (!value) {
@@ -88,7 +89,7 @@ export const REFRESH_TOKEN_KEY = import.meta.env.VITE_REFRESH_TOKEN_KEY
 
 export const REFRESH_TOKEN_URL = `${BASE_URL}/refresh-token`;
 
-// export const CLOUDINARY_UPLOAD_PRESET = getEnvVar("VITE_CLOUDINARY_UPLOAD_PRESET");
+export const CLOUDINARY_UPLOAD_PRESET = getEnvVar("VITE_CLOUDINARY_UPLOAD_PRESET");
 
 export const teachers = [
     {
