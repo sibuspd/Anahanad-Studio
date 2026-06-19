@@ -9,13 +9,13 @@ const UploadWidget = ({ value= null, onChange, disabled = false}) => {
   
   const [preview, setPreview] = useState<UploadWidgetValue | null>(value); // Show value if it exists or default to NULL
 
-  const [ deleteToken, setDeleteToken ] = useState<string | null>(null);
+  // const [ deleteToken, setDeleteToken ] = useState<string | null>(null);
 
-  const [isRemoving, setIsRemoving] = useState(false); //removing something on changing the UI
+  // const [isRemoving, setIsRemoving] = useState(false); //removing something on changing the UI
 
   useEffect( ()=> {
     setPreview(value);
-    if(!value) setDeleteToken(null);
+    // if(!value) setDeleteToken(null);
   }, [value]); // Widget opens up whenever the value changes
   
   useEffect( ()=>{ // Goal is to always have the onChange prop up to date
@@ -68,14 +68,16 @@ const UploadWidget = ({ value= null, onChange, disabled = false}) => {
     if(!disabled) widgetRef.current?.open();
   }
 
-  const removeFromCloudinary = async () => {} //Function to remove a file from cloudinary
+  // const removeFromCloudinary = async () => {} //Function to remove a file from cloudinary
 
 
 
   return (
     <div className='space-y-2'>
       {preview? ( // if there is a preview, show it or else show the dropzone
-        <div className='upload-preview'></div>
+        <div className='upload-preview'>
+          <img src={preview.url} alt="Uploaded file" />
+        </div>
       ): <div className='upload-dropzone' role="button" tabIndex={0} 
       onClick={openWidget} onKeyDown={ (event) => {
         if(event.key==='Enter'){
