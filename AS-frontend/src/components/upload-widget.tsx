@@ -1,4 +1,4 @@
-import { CLOUDINARY_CLOUD_NAME } from '@/constants';
+import { CLOUDINARY_CLOUD_NAME, CLOUDINARY_UPLOAD_PRESET } from '@/constants';
 import { UploadWidgetValue } from '@/types';
 import { UploadCloud } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react'
@@ -28,12 +28,40 @@ const UploadWidget = ({ value= null, onChange, disabled = false}) => {
     const initializeWidget = ()=> { // Sub-function to initialize the widget
       if(!window.cloudinary || widgetRef.current) return false; // We exit if a cloudinary is not loaded or if a widget already exists
       
-      widgetRef.current = window.cloudinary.createUploadWidget({ 
-        cloudName: CLOUDINARY_CLOUD_NAME 
-      }); // createUploadWidget accepts the settings that we configure by using Environment Variables
+      widgetRef.current = window.cloudinary.createUploadWidget({  // createUploadWidget accepts the settings that we configure by using Environment Variables
+        cloudName: CLOUDINARY_CLOUD_NAME,
+        uploadPreset: CLOUDINARY_UPLOAD_PRESET,
+        multiple: false, // We shall upload only one file at a time
+        folder: 'uploads',
+        maxFileSize: 5000000, // 5 MB,
+        clientAllowedFormats: ['png', 'jpg', 'jpeg', 'webp']
+      }, (error, result)=> {
+        if(!error && result.event === 'success'){
+          const payload: UploadWidgetValue = {
+            url: result.info.secure_url, // Public image URL
+            publidId: result.info.public_id, // Public ID
+          } 
+          setPreview(payload)
+          setDeleteToken(result.info.delete_token ?? null); // Allows to delete uploaded image from cloudinary
+          onChangeRef.current?.(payload); // Modifying the onChange prop with the payload
+        }
+
+      }); 
+
+
+      return true; // If upload is complete
     }
     
-  },[]); 
+    if(initializeWidget()) return; // Simply return if widget is initialized already and value is false
+
+    const intervalId = window.setInterval( ()=> {
+      if(initializeWidget()){
+        window.clearInterval(intervalId); // Keep checking until widget is initialized
+      }
+    }, 500) // Run the function every 500ms
+
+    return () => window.clearInterval (intervalId);
+  },[]);  
 
 
   const openWidget = ()=> { // Function to open up the widget
