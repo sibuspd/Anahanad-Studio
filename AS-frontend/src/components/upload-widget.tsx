@@ -13,6 +13,7 @@ const UploadWidget = ({ value= null, onChange, disabled = false}) => {
 
   // const [isRemoving, setIsRemoving] = useState(false); //removing something on changing the UI
 
+  // To preview the image upon upload
   useEffect( ()=> {
     setPreview(value);
     // if(!value) setDeleteToken(null);
@@ -42,7 +43,7 @@ const UploadWidget = ({ value= null, onChange, disabled = false}) => {
             publidId: result.info.public_id, // Public ID
           } 
           setPreview(payload)
-          setDeleteToken(result.info.delete_token ?? null); // Allows to delete uploaded image from cloudinary
+          // setDeleteToken(result.info.delete_token ?? null); // Allows to delete uploaded image from cloudinary
           onChangeRef.current?.(payload); // Modifying the onChange prop with the payload
         }
 
