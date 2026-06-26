@@ -1,3 +1,5 @@
+// BUSINESS SCHEMA DESIGN
+
 import { relations } from "drizzle-orm";
 // import { timestamp } from "drizzle-orm/gel-core";
 import { pgTable, integer, varchar, timestamp } from "drizzle-orm/pg-core";
