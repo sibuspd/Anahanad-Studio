@@ -4,6 +4,7 @@
 import { relations } from "drizzle-orm";
 import {user} from "./auth.js"; // Imported the User model
 import { pgTable, integer, varchar, timestamp, numeric, text, jsonb, pgEnum, index, unique, primaryKey, date, time } from "drizzle-orm/pg-core";
+import { int } from "drizzle-orm/mysql-core/index.js";
 
 const timestamps = {
     createdAt: timestamp('created_at').defaultNow().notNull(),
@@ -138,6 +139,20 @@ export const enrollments = pgTable('enrollments', {
     unique("enrollments_student_batch_unique").on(table.studentId, table.batchId),
     index("enrollments_student_idx").on(table.studentId),
     index("enrollments_batch_idx").on(table.batchId),
+]);
+
+// Attendance Table
+export const attendance = pgTable('attendance', {
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+    sessionId: integer("session_id").notNull().references(() => classSessions.id, {onDelete: "cascade"}),
+    studentId: text("student_id").notNull().references(() => user.id, {onDelete: "cascade"}),
+    status: attendanceStatusEnum("status").default("present").notNull(),
+    remarks: text("remarks"),
+    ...timestamps
+}, (table) => [
+    unique("attendance_session_student_unique").on(table.sessionId, table.studentId),
+    index("attendance_session_idx").on(table.sessionId),
+    index("attendance_student_idx").on(table.studentId),
 ]);
 
 //Defining mutual relations between various tables
