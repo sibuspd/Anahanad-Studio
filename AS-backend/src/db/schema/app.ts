@@ -41,7 +41,7 @@ export const subjects= pgTable('subjects', {
 });
 
 // Courses Table
-export const courses = pgTable("courses", {
+export const courses = pgTable('courses', {
     id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
     subjectId: integer("subject_id").notNull().references(() => subjects.id, {onDelete: "cascade"}),
     name: varchar("name", {length: 255}).notNull(),
@@ -75,6 +75,24 @@ export const courses = pgTable("courses", {
 //     index('classes_subject_id_idx').on(table.subjectId),
 //     index('classes_teacher_id_idx').on(table.teacherId),
 // ]);
+
+// Batches Table
+export const batches = pgTable('batches', {
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+    courseId: integer("course_id").notNull().references(() => courses.id, {onDelete: "cascade"}),
+    teacherId: text("teacher_id").notNull().references(() => user.id, {onDelete: "restrict"}),
+    name: varchar("name", {length: 150}).notNull(),
+    capacity: integer("capacity").default(30).notNull(),
+    schedule: jsonb("schedule").$type<{
+        day: string,
+        startTime: string,
+        endTime: string,
+    }[]>().default([]).notNull(),
+    ...timestamps, 
+}, (table) => [
+    index("batches_course_id_idx").on(table.courseId),
+    index("batches_teacher_id_idx").on(table.teacherId),
+]);
 
 // Enrollment Table
 // export const enrollments = pgTable('enrollments', {
