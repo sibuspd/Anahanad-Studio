@@ -9,6 +9,7 @@ const timestamps = {
     updatedAt: timestamp('updated_at').defaultNow().$onUpdate(() => new Date()).notNull() 
 }
 
+// Department Table
 export const departments= pgTable('departments', {
     id: integer('id').primaryKey().generatedAlwaysAsIdentity(), // Primary Key
     code: varchar('code', {length: 50}).notNull().unique(),
@@ -17,6 +18,7 @@ export const departments= pgTable('departments', {
     ...timestamps // Destructuring the timestamps object created above
 });
 
+// Subject Table
 export const subjects= pgTable('subjects', {
     id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
     departmentId: integer('department_id').notNull().references( () => departments.id, { onDelete: 'restrict' }),
@@ -26,7 +28,7 @@ export const subjects= pgTable('subjects', {
     ...timestamps 
 });
 
-//Defining relation between 'DEPARTMENTS' and 'SUBJECTS'
+//Defining mutual relations between various tables
 export const departmentRelations = relations(departments, ( {many} ) => ({ subjects: many(subjects) }));
 
 export const subjectRelations = relations(subjects, ( {one, many} ) => ({ 
@@ -36,6 +38,7 @@ export const subjectRelations = relations(subjects, ( {one, many} ) => ({
     })
 }));
 
+// Defining Types for inserting and selecting data to/from the database
 export type Department = typeof departments.$inferSelect;
 export type newDepartment = typeof departments.$inferInsert;
 
