@@ -1,3 +1,5 @@
+// AUTHENTICATION SCHEMA DESIGN
+
 import { pgTable, text, timestamp, boolean, pgEnum, index } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
