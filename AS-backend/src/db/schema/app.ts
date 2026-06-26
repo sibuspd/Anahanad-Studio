@@ -127,6 +127,19 @@ export const classSessions = pgTable('class_sessions', {
 //     index('enrollments_class_id_idx').on(table.classId),
 // ]);
 
+// Enrollments Table
+export const enrollments = pgTable('enrollments', {
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+    studentId: text("student_id").notNull().references(() => user.id, {onDelete: "cascade"}),
+    batchId: integer("batch_id").notNull().references(() => batches.id, {onDelete: "cascade"}),
+    enrolledAt: timestamp("enrolled_at").defaultNow().notNull(),
+    ...timestamps,
+}, (table) => [
+    unique("enrollments_student_batch_unique").on(table.studentId, table.batchId),
+    index("enrollments_student_idx").on(table.studentId),
+    index("enrollments_batch_idx").on(table.batchId),
+]);
+
 //Defining mutual relations between various tables
 export const departmentRelations = relations(departments, ( {many} ) => ({ subjects: many(subjects) }));
 
