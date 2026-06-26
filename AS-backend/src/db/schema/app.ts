@@ -40,7 +40,22 @@ export const subjects= pgTable('subjects', {
     ...timestamps 
 });
 
-// 
+// Courses Table
+export const courses = pgTable("courses", {
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+    subjectId: integer("subject_id").notNull().references(() => subjects.id, {onDelete: "cascade"}),
+    name: varchar("name", {length: 255}).notNull(),
+    description: text("description"),
+    level: courseLevelEnum("level").default("beginner").notNull(),
+    durationMonths: integer("duration_months").notNull(),
+    feeAmount: numeric("fee_amount", {
+        precision: 10,
+        scale: 2
+    }).notNull(),
+    ...timestamps,
+}, (table) => [
+    index("courses_subject_id_idx").on(table.subjectId), 
+]);
 
 // Classes Table 
 // export const classes = pgTable('classes', {
