@@ -5,6 +5,9 @@ import { relations } from "drizzle-orm";
 import {user} from "./auth.js"; // Imported the User model
 import { pgTable, integer, varchar, timestamp, numeric, text, jsonb, pgEnum, index, unique, primaryKey, date, time } from "drizzle-orm/pg-core";
 
+// Course Levels
+export const courseLevelEnum = pgEnum( "course_level", ["beginner", "intermediate", "advanced"]);
+
 const timestamps = {
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at').defaultNow().$onUpdate(() => new Date()).notNull() 
