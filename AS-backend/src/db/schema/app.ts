@@ -40,6 +40,8 @@ export const subjects= pgTable('subjects', {
     ...timestamps 
 });
 
+// 
+
 // Classes Table 
 // export const classes = pgTable('classes', {
 //     id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
