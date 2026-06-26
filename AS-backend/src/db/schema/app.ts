@@ -94,6 +94,28 @@ export const batches = pgTable('batches', {
     index("batches_teacher_id_idx").on(table.teacherId),
 ]);
 
+// Class or Sessions Table
+export const classSessions = pgTable('class_sessions', {
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+    batchId: integer("batch_id").notNull().references(() => batches.id, {onDelete: "cascade"}),
+    courseId: integer("course_id").notNull().references(() => courses.id, {onDelete: "cascade"}),
+    teachersId: text("teacher_id").notNull().references(() => user.id, {onDelete: "restrict"}),
+    inviteCode: text("invite_code").notNull().unique(),
+    name: varchar("name", {length: 255}).notNull(),
+    description: text("description"),
+    sessionDate: date("session_date").notNull(),
+    startTime: time("start_time").notNull(),
+    endTime: time("end_time").notNull(),
+    bannerUrl: text("banner_url"),
+    bannerCldPubId: text("banner_cld_pub_id"),
+    status: sessionStatusEnum("status").default("scheduled").notNull(),
+    ...timestamps,
+}, (table) => [
+    index("class_sessions_batch_idx").on(table.batchId),
+    index("class_sessions_course_idx").on(table.courseId),
+    index("class_sessions_teacher_idx").on(table.teachersId),
+]);
+
 // Enrollment Table
 // export const enrollments = pgTable('enrollments', {
 //     studentId: text('student_id').notNull().references(() => user.id, { onDelete: 'cascade' }),
