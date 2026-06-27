@@ -7,7 +7,7 @@ if(!process.env.ARCJET_KEY && process.env.NODE_ENV !== 'test') {
 }
 
 // Creating a new instance of Arcjet
-export const aj = arcjet({
+const aj = arcjet({
   // Get your site key from https://app.arcjet.com and set it as an environment
   // variable rather than hard coding.
   key: process.env.ARCJET_KEY!, // Importing API key from .env
@@ -44,3 +44,5 @@ export const aj = arcjet({
     // }),
   ],
 });
+
+export default aj;
