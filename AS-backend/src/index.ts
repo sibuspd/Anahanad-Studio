@@ -1,7 +1,9 @@
+/** THIS IS THE SERVER FILE */
+
 import express from 'express';
 import subjectsRouter from './routes/subject'; // Router imported for Subjects display
 import cors from 'cors';
-import { error } from 'node:console';
+import securityMiddleware from './middleware/security';
 
 const app = express();
 const PORT = 8000;
@@ -17,6 +19,7 @@ app.use(cors( {
 } ));
 
 app.use(express.json());
+app.use(securityMiddleware); // Implemented Arcjet security middleware for API Requests
 
 app.use('/api/subjects',subjectsRouter );
 
