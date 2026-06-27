@@ -27,6 +27,11 @@ const aj = arcjet({
         "CATEGORY:PREVIEW", // Link previews e.g. Slack, Discord
       ],
     }),
+    slidingWindow({
+        mode: "LIVE",
+        interval: '2s',
+        max: 5, // Limit to 5 requests per 2 seconds
+    }),
     // Create a token bucket rate limit. Other algorithms are supported.
     // tokenBucket({
     //   mode: "LIVE",
@@ -37,10 +42,5 @@ const aj = arcjet({
     //   interval: 10, // Refill every 10 seconds
     //   capacity: 10, // Bucket capacity of 10 tokens
     // }),
-    slidingWindow({
-        mode: "LIVE",
-        interval: '2s',
-        max: 5, // Limit to 5 requests per 2 seconds
-    }),
   ],
 });
