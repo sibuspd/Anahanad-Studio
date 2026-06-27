@@ -13,4 +13,5 @@
 // export type User = typeof demoUsers.$inferSelect;
 // export type NewUser = typeof demoUsers.$inferInsert;
 
-export * from './app'; // Extract schema from the file where it is defined
+export * from './app'; // Extract business schema from the file where it is defined
+export * from './auth'; // Extract authentication schema from the file where it is defined
