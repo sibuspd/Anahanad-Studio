@@ -186,3 +186,4 @@ export type NewEnrollment = typeof enrollments.$inferInsert;
 
 export type Attendance = typeof attendance.$inferSelect;
 export type NewAttendance = typeof attendance.$inferInsert;
+
