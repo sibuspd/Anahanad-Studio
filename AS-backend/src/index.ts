@@ -4,6 +4,8 @@ import express from 'express';
 import subjectsRouter from './routes/subject'; // Router imported for Subjects display
 import cors from 'cors';
 import securityMiddleware from './middleware/security';
+import {toNodeHandler} from "better-auth/node"
+import { auth } from './lib/auth';
 
 const app = express();
 const PORT = 8000;
@@ -18,7 +20,9 @@ app.use(cors( {
     credentials: true // Allow cookies
 } ));
 
-app.use(express.json());
+
+app.all('/api/auth/*splat', toNodeHandler(auth)); // Set up a route handler for authentication
+app.use(express.json()); // Middleware for parsing JSON
 app.use(securityMiddleware); // Implemented Arcjet security middleware for API Requests
 
 app.use('/api/subjects',subjectsRouter );
