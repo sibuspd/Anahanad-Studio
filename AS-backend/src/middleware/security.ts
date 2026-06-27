@@ -1,7 +1,7 @@
 // Creating a security middleware to check if the user is authenticated
 import type {Request, Response, NextFunction} from "express";
 import aj from '../config/arcjet';
-import { slidingWindow } from "@arcjet/node";
+import { ArcjetNodeRequest, slidingWindow } from "@arcjet/node";
 
 const securityMiddleware = async ( req: Request, res: Response, next: NextFunction) => {
     if(process.env.NODE_ENV === 'test') return next(); // No security analysis on a testing environment
