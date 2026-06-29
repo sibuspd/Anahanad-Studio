@@ -17,6 +17,7 @@ router.get("/", async (req, res) => {
 
         const offset = (currentPage - 1) * limitPerPage;
 
+        // Dynamic Filters
         const filterConditions = [];
 
         // If search query exists, filter by user name OR user email
@@ -33,6 +34,8 @@ router.get("/", async (req, res) => {
         if (role) {
             filterConditions.push(eq(user.role, role as any));
         }
+
+        // Filter by Email Verification Status
 
         // Combine all filters using AND if any exist
         const whereClause = filterConditions.length > 0 ? and(...filterConditions) : undefined;
