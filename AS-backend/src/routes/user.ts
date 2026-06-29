@@ -6,10 +6,10 @@ import { db } from "../db/index.js";
 
 const router = express.Router();
 
-// Get all users with optional search, filtering and pagination
+// Get all kinds of user with optional search, filtering and pagination
 router.get("/", async (req, res) => {
     try {
-        const { search, role, page = 1, limit = 10 } = req.query;
+        const { search, role, emailVerified, page = 1, limit = 10 } = req.query;
 
         const currentPage = Math.max(1, parseInt(String(page), 10) || 1);
         const limitPerPage = Math.min(Math.max(1, parseInt(String(limit), 10) || 10), 100); // Max 100 records per page
