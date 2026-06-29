@@ -34,6 +34,12 @@ app.use(securityMiddleware); // Implemented Arcjet security middleware for API R
 // Registering the ERP API Routes
 app.use('/api/subjects',subjectsRouter );
 app.use('/api/users', usersRouter);
+// app.use('/api/departments', departmentsRouter);
+// app.use('/api/courses', coursesRouter);
+// app.use('/api/batches', batchesRouter);
+// app.use('/api/class-sessions', classSessionsRouter);
+// app.use('/api/enrollments', enrollmentsRouter);
+// app.use('/api/attendance', attendanceRouter);
 
 app.get('/', (req, res) => {
     res.send('Welcome to Anahanad Studio API');
