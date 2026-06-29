@@ -4,9 +4,9 @@ import AgentAPI from 'apminsight';
 AgentAPI.config(); // Agent to run the web app performance monitoring
 
 import express from 'express';
-import subjectsRouter from './routes/subject'; // Router imported for Subjects display
+import subjectsRouter from './routes/subject.js'; // Router imported for Subjects display
 import cors from 'cors';
-import securityMiddleware from './middleware/security';
+import securityMiddleware from './middleware/security.js';
 import {toNodeHandler} from "better-auth/node"
 import { auth } from './lib/auth';
 
