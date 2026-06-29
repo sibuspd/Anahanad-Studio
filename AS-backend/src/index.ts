@@ -24,12 +24,14 @@ app.use(cors( {
     credentials: true // Allow cookies
 } ));
 
-
+// Authentication API Routes
 app.all('/api/auth/*splat', toNodeHandler(auth)); // Set up a route handler for authentication
+
+// Middleware Routes
 app.use(express.json()); // Middleware for parsing JSON
 app.use(securityMiddleware); // Implemented Arcjet security middleware for API Requests
 
-// Registering the Routes
+// Registering the ERP API Routes
 app.use('/api/subjects',subjectsRouter );
 app.use('/api/users', usersRouter);
 
