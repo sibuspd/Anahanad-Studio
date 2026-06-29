@@ -36,10 +36,16 @@ router.get("/", async (req, res) => {
         }
 
         // Filter by Email Verification Status
+        if(emailVerified!==undefined){
+            filterConditions.push(
+                eq(user.emailVerified, emailVerified==='true')
+            );
+        }
 
         // Combine all filters using AND if any exist
         const whereClause = filterConditions.length > 0 ? and(...filterConditions) : undefined;
 
+        // Count Query
         const countResult = await db
             .select({ count: sql<number>`count(*)`})
             .from(user)
@@ -47,6 +53,7 @@ router.get("/", async (req, res) => {
 
         const totalCount = countResult[0]?.count ?? 0;
 
+        // Data Query
         const usersList = await db
             .select({
                 ...getTableColumns(user),
@@ -56,6 +63,7 @@ router.get("/", async (req, res) => {
             .limit(limitPerPage)
             .offset(offset);
 
+        // Response    
         res.status(200).json({
             data: usersList,
             pagination: {
@@ -64,12 +72,12 @@ router.get("/", async (req, res) => {
                 total: totalCount,
                 totalPages: Math.ceil(totalCount / limitPerPage),
             }
-        })
+        });
 
     } catch (e) {
         console.error(`GET /users error: ${e}`);
         res.status(500).json({ error: 'Failed to get users' });
     }
-})
+});
 
 export default router;
