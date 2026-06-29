@@ -5,6 +5,7 @@ AgentAPI.config(); // Agent to run the web app performance monitoring
 
 import express from 'express';
 import subjectsRouter from './routes/subject.js'; // Router imported for Subjects display
+import usersRouter from './routes/user.js'; // Router imported for Users display
 import cors from 'cors';
 import securityMiddleware from './middleware/security.js';
 import {toNodeHandler} from "better-auth/node"
@@ -28,7 +29,9 @@ app.all('/api/auth/*splat', toNodeHandler(auth)); // Set up a route handler for 
 app.use(express.json()); // Middleware for parsing JSON
 app.use(securityMiddleware); // Implemented Arcjet security middleware for API Requests
 
+// Registering the Routes
 app.use('/api/subjects',subjectsRouter );
+app.use('/api/users', usersRouter);
 
 app.get('/', (req, res) => {
     res.send('Welcome to Anahanad Studio API');
