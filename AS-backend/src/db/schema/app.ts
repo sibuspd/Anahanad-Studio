@@ -114,7 +114,7 @@ export const classSessions = pgTable('class_sessions', {
 }, (table) => [
     index("class_sessions_batch_idx").on(table.batchId),
     index("class_sessions_course_idx").on(table.courseId),
-    index("class_sessions_teacher_idx").on(table.teachersId),
+    index("class_sessions_teacher_idx").on(table.teacherId),
 ]);
 
 // Enrollment Table
