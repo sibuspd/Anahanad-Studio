@@ -100,7 +100,7 @@ export const classSessions = pgTable('class_sessions', {
     id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
     batchId: integer("batch_id").notNull().references(() => batches.id, {onDelete: "cascade"}),
     courseId: integer("course_id").notNull().references(() => courses.id, {onDelete: "cascade"}),
-    teachersId: text("teacher_id").notNull().references(() => user.id, {onDelete: "restrict"}),
+    teacherId: text("teacher_id").notNull().references(() => user.id, {onDelete: "restrict"}),
     inviteCode: text("invite_code").notNull().unique(),
     name: varchar("name", {length: 255}).notNull(),
     description: text("description"),
