@@ -3,7 +3,7 @@ import React from "react";
 import { CreateView } from "@/components/refine-ui/views/create-view";
 import { Breadcrumb } from "@/components/refine-ui/layout/breadcrumb";
 import { Button } from "@/components/ui/button";
-import { useBack } from "@refinedev/core";
+import { useBack, useList } from "@refinedev/core";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import * as z from "zod";
@@ -32,100 +32,101 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2 } from "lucide-react";
 import UploadWidget from "@/components/upload-widget";
+import { User, Batch, Course, Subject } from "@/types";
 
-  // Creating Mock Options for Select Subject Dropdown
-  // const subjects = [
+  // // Creating Mock Options for Select Subject Dropdown
+  // // const subjects = [
+  // //   {
+  // //     id: 1,
+  // //     name: "Piano",
+  // //     code: "PIANO",
+  // //   },
+  // //   {
+  // //     id: 2,
+  // //     name: "Electronic Keyboard",
+  // //     code: "EKEY",
+  // //   },
+  // //   {
+  // //     id: 3,
+  // //     name: "Guitar",
+  // //     code: "GUITAR",
+  // //   },
+  // //   {
+  // //     id: 4,
+  // //     name: "Tabla",
+  // //     code: "TABLA",
+  // //   },
+  // //   {
+  // //     id: 5,
+  // //     name: "Drums",
+  // //     code: "DRUMS",
+  // //   },
+  // //   {
+  // //     id: 6,
+  // //     name: "Western Vocals",
+  // //     code: "WVOC",
+  // //   },
+  // // ];
+
+  // // Creating Mock Options for Select Teachers Dropdown
+  // const teachers = [
   //   {
   //     id: 1,
-  //     name: "Piano",
-  //     code: "PIANO",
+  //     name: "Anand Sirsat",
   //   },
   //   {
   //     id: 2,
-  //     name: "Electronic Keyboard",
-  //     code: "EKEY",
+  //     name: "Sabyasachi Sahani",
   //   },
   //   {
   //     id: 3,
-  //     name: "Guitar",
-  //     code: "GUITAR",
+  //     name: "Prasanna Bhure",
   //   },
   //   {
   //     id: 4,
-  //     name: "Tabla",
-  //     code: "TABLA",
+  //     name: "Makarand Jadhav",
   //   },
   //   {
   //     id: 5,
-  //     name: "Drums",
-  //     code: "DRUMS",
-  //   },
-  //   {
-  //     id: 6,
-  //     name: "Western Vocals",
-  //     code: "WVOC",
+  //     name: "Sangam Coupler",
   //   },
   // ];
 
-  // Creating Mock Options for Select Teachers Dropdown
-  const teachers = [
-    {
-      id: 1,
-      name: "Anand Sirsat",
-    },
-    {
-      id: 2,
-      name: "Sabyasachi Sahani",
-    },
-    {
-      id: 3,
-      name: "Prasanna Bhure",
-    },
-    {
-      id: 4,
-      name: "Makarand Jadhav",
-    },
-    {
-      id: 5,
-      name: "Sangam Coupler",
-    },
-  ];
+  // // Creating Mock Options for Select Batches Dropdown
+  // const batches = [
+  //   {
+  //     id: 1,
+  //     name: "Kids' Batch",
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Weekend Batch",
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Evening Batch",
+  //   },
+  // ];
 
-  // Creating Mock Options for Select Batches Dropdown
-  const batches = [
-    {
-      id: 1,
-      name: "Kids' Batch",
-    },
-    {
-      id: 2,
-      name: "Weekend Batch",
-    },
-    {
-      id: 3,
-      name: "Evening Batch",
-    },
-  ];
-
-  // Creating Mock Options for Select Course Dropdown
-  const courses = [
-    {
-      id: 1,
-      name: "Beginner Piano 101",
-    },
-    {
-      id: 2,
-      name: "Advanced Piano Performance",
-    },
-    {
-      id: 3,
-      name: "Tabla Foundation Course",
-    },
-    {
-      id: 4,
-      name: "Western Vocals Beginner Course",
-    },
-  ];
+  // // Creating Mock Options for Select Course Dropdown
+  // const courses = [
+  //   {
+  //     id: 1,
+  //     name: "Beginner Piano 101",
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Advanced Piano Performance",
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Tabla Foundation Course",
+  //   },
+  //   {
+  //     id: 4,
+  //     name: "Western Vocals Beginner Course",
+  //   },
+  // ];
 
 
 // Main Component  
@@ -158,6 +159,37 @@ const Create = () => {
       console.log("Error registering the new class", e);
     }
   };
+
+  // Fetching data from neon db 
+  const { query: batchesQuery } = useList<Batch>( {
+    resource: 'batches',
+    pagination: {
+      pageSize: 100
+    }
+  });  
+
+  const { query: teachersQuery } = useList<User>( {
+    resource: 'users',
+    filters: [ { field: 'role', operator: 'eq', value: 'teacher'}],
+    pagination: {
+      pageSize: 100
+    }
+  });
+
+  /**COURSES WILL COME FROM BACKEND */
+  const { query: coursesQuery } = useList<Course>( {
+    resource: 'courses',
+    pagination: {
+      pageSize: 100,
+    },
+  } );
+  
+  // Access the batches and users/teachers from the actual query
+  const batches = batchesQuery?.data?.data || [];
+  const batchesLoading = batchesQuery.isLoading; 
+
+  const teachers = teachersQuery?.data?.data || [];
+  const teachersLoading = teachersQuery.isLoading; 
 
   const bannerPublicId = form.watch('bannerClbPubId');
 
