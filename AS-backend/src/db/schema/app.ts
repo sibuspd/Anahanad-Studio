@@ -80,8 +80,6 @@ export const courses = pgTable('courses', {
 // Batches Table
 export const batches = pgTable('batches', {
     id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
-    courseId: integer("course_id").notNull().references(() => courses.id, {onDelete: "cascade"}),
-    teacherId: text("teacher_id").notNull().references(() => user.id, {onDelete: "restrict"}),
     name: varchar("name", {length: 150}).notNull(),
     capacity: integer("capacity").default(30).notNull(),
     schedule: jsonb("schedule").$type<{
@@ -90,10 +88,8 @@ export const batches = pgTable('batches', {
         endTime: string,
     }[]>().default([]).notNull(),
     ...timestamps, 
-}, (table) => [
-    index("batches_course_id_idx").on(table.courseId),
-    index("batches_teacher_id_idx").on(table.teacherId),
-]);
+    },
+);
 
 // Class or Sessions Table
 export const classSessions = pgTable('class_sessions', {
