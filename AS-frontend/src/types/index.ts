@@ -3,8 +3,9 @@ export type Subject = {
     name: string;
     code: string;
     description: string;
-    department: string;
+    department: Department;
     createdAt?: string;
+    updatedAt?: string;
 };
 
 export type ListResponse<T = unknown> = {
@@ -66,9 +67,13 @@ export interface UploadWidgetProps {
 }
 
 export enum UserRole {
-    STUDENT = "student",
-    TEACHER = "teacher",
+    SUPER_ADMIN = "super_admin",
     ADMIN = "admin",
+    HOD = 'hod',
+    TEACHER = "teacher",
+    STUDENT = "student",
+    PARENT = 'parent',
+    ACCOUNTANT = 'accountant',
 }
 
 export type User = {
@@ -95,21 +100,21 @@ export type Department = {
     description: string;
 };
 
-export type ClassDetails = {
+export type ClassSession = {
     id: number;
     name: string;
-    description: string;
-    status: "active" | "inactive";
-    capacity: number;
-    courseCode: string;
-    courseName: string;
-    bannerUrl?: string;
+    description?: string;
+    sessionDate: string;
+    startTime: string;
+    endTime: string;
+    status: "scheduled" | "completed" | "cancelled";
+    inviteCode: string;
     bannerCldPubId?: string;
-    subject?: Subject;
-    teacher?: User;
+    bannerUrl?: string;
+    batch: Batch;
+    course: Course;
+    teacher: User;
     department?: Department;
-    schedules: Schedule[];
-    inviteCode?: string;
 };
 
 export type SignUpPayload = {
@@ -119,4 +124,22 @@ export type SignUpPayload = {
     image?: string;
     imageCldPubId?: string;
     role: UserRole;
+};
+
+export type Course = {
+    id: number;
+    name: string;
+    description?: string;
+    level: "beginner" | "intermediate" | "advanced";
+    durationMonths: number;
+    feeAmount: string | number;
+    subject: Subject; // GET endpoints usually return joined objects
+};
+
+// Batch table is independent of Courses or Subjects
+export type Batch = {
+    id: number;
+    name: string;
+    capacity: number;
+    schedule: Schedule[];
 };
