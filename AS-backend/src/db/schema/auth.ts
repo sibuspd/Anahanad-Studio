@@ -2,6 +2,7 @@
 
 import { pgTable, text, timestamp, boolean, pgEnum, index } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
+import { classSessions, enrollments, attendance } from "./app";
 
 export const roleEnum = pgEnum("role", ["super_admin", "admin", "hod", "teacher", "student", "parent", "accountant"]);
 
@@ -64,8 +65,11 @@ export const verification = pgTable("verification", {
 ]);
 
 export const userRelations = relations(user, ({ many }) => ({
-    sessions: many(session),
-    accounts: many(account),
+    sessions: many(session), // A student will have multiple login sessions
+    accounts: many(account), // A user will have multiple sign-in accounts platforms
+    teachingSession: many(classSessions), // A student will attend multiple sessions, a teacher will take multiple sessions
+    enrollments: many(enrollments), // A student can be enrolled for different batches/courses/subjects
+    attendance: many(attendance), // Ofcourse multiple sessions record multiple attendances
 }));
 
 export const sessionRelations = relations(session, ({ one }) => ({
