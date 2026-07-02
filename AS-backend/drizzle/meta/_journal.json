@@ -15,6 +15,13 @@
       "when": 1782540359816,
       "tag": "0001_overconfident_molecule_man",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1783001970012,
+      "tag": "0002_panoramic_siren",
+      "breakpoints": true
     }
   ]
 }
