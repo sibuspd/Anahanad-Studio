@@ -162,6 +162,17 @@ export const subjectRelations = relations(subjects, ( {one, many} ) => ({
     courses: many(courses),
 }));
 
+export const courseRelations = relations(courses, ( {one, many}) => ( { 
+    subjects: one(subjects, {
+        fields: [courses.subjectId],
+        references: [subjects.id],
+    }),
+    batches: many(batches), // The same course can be run across multiple batches
+    classSessions: many(classSessions), // Obvious a course will be completed across multiple sessions
+}));
+
+
+
 // Defining Types for inserting and selecting data to/from the database
 export type Department = typeof departments.$inferSelect;
 export type newDepartment = typeof departments.$inferInsert;
