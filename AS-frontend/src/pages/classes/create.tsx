@@ -32,7 +32,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2 } from "lucide-react";
 import UploadWidget from "@/components/upload-widget";
-import { User, Batch, Course, Subject } from "@/types";
+import { User, Batch, Course, Subject, bannerCldPubId } from "@/types";
 
   // // Creating Mock Options for Select Subject Dropdown
   // // const subjects = [
@@ -136,7 +136,7 @@ const Create = () => {
   const form = useForm({
     resolver: zodResolver(sessionSchema),
     refineCoreProps: {
-      resource: "classes",
+      resource: "sessions",
       action: "create",
     },
     // defaultValues: {
@@ -176,6 +176,15 @@ const Create = () => {
     }
   });
 
+  /**SUBJECT WILL BE CHOSEN AND WILL DECIDE THE COURSES THAT APPEARS IN DROPDOWN */
+  const { query: subjectsQuery } = useList<Subject>( {
+    resource: 'subjects',
+    pagination: {
+      pageSize: 100
+    }
+  });
+
+
   /**COURSES WILL COME FROM BACKEND */
   const { query: coursesQuery } = useList<Course>( {
     resource: 'courses',
@@ -189,9 +198,12 @@ const Create = () => {
   const batchesLoading = batchesQuery.isLoading; 
 
   const teachers = teachersQuery?.data?.data || [];
-  const teachersLoading = teachersQuery.isLoading; 
+  const teachersLoading = teachersQuery.isLoading;
+  
+  const subjects = subjectsQuery?.data?.data || [];
+  const subjectsLoading = subjectsQuery.isLoading; 
 
-  const bannerPublicId = form.watch('bannerClbPubId');
+  const bannerPublicId = form.watch('bannerCldPubId');
 
   const setBannerImage = (file: any, field: any) => {
     if(file){
@@ -321,6 +333,51 @@ const Create = () => {
                     )}
                   />
 
+                  {/* SUBJECT NAME */}
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <FormField
+                    control={control}
+                    name="subjectId"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Subject Name <span className="text-orange-600">*</span>
+                        </FormLabel>
+
+                        <Select
+                          onValueChange={(value) =>
+                            field.onChange(Number(value))
+                          }
+                          value={field?.value?.toString()}
+                          disabled={subjectsLoading}
+                        >
+                          <FormControl>
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="Select Course" />
+                            </SelectTrigger>
+                          </FormControl>
+
+                          <SelectContent>
+                            {subjects.map((subject) => (
+                              <SelectItem
+                                key={subject.id}
+                                value={subject.id.toString()}
+                              >
+                                {subject.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+
+                        <FormDescription>
+                          The course under which the session belongs
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  </div>
+
                   {/* COUSE NAME */}
                   <FormField
                     control={control}
@@ -380,6 +437,7 @@ const Create = () => {
                             field.onChange(Number(value))
                           }
                           value={field?.value?.toString()}
+                          disabled={teachersLoading}
                         >
                           <FormControl>
                             <SelectTrigger className="w-full">
