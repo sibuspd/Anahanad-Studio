@@ -67,8 +67,8 @@ export const verification = pgTable("verification", {
 export const userRelations = relations(user, ({ many }) => ({
     sessions: many(session), // A student will have multiple login sessions
     accounts: many(account), // A user will have multiple sign-in accounts platforms
-    teachingSession: many(classSessions), // A student will attend multiple sessions, a teacher will take multiple sessions
-    enrollments: many(enrollments), // A student can be enrolled for different batches/courses/subjects
+    teachingSessions: many(classSessions), // A teacher will conduct multiple sessions
+    enrollments: many(enrollments), // A student can enroll into different batches
     attendance: many(attendance), // Ofcourse multiple sessions record multiple attendances
 }));
 
