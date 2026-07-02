@@ -25,7 +25,7 @@ router.get("/", async (req, res) => {
 
         // Search by Session Name
         if(search){
-            filterConditions.push( ilike(classSessions.name, `%${search}$`));
+            filterConditions.push( ilike(classSessions.name, `%${search}%`));
         }
 
         // Course Filter
@@ -59,8 +59,8 @@ router.get("/", async (req, res) => {
 
         // Fetch Sessions
         const sessions = await db.select().from(classSessions)
-        .leftJoin(batches, eq(classSessions.courseId, courses.id))
-        .leftJoin(courses, eq(classSessions.batchId, batches.id))
+        .leftJoin(batches, eq(classSessions.batchId, batches.id))
+        .leftJoin(courses, eq(classSessions.courseId, courses.id))
         .leftJoin(user, eq(classSessions.teacherId, user.id))
         .where(whereClause)
         .orderBy(desc(classSessions.createdAt))
