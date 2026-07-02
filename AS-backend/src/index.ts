@@ -13,7 +13,6 @@ import cors from 'cors';
 import securityMiddleware from './middleware/security.js';
 import {toNodeHandler} from "better-auth/node"
 import { auth } from './lib/auth.js';
-// import classesRouter from './routes/classes.js'; // Router imported for creating new Sessions/Classes
 
 const app = express();
 const PORT = 8000;
