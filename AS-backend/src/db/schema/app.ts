@@ -163,11 +163,10 @@ export const subjectRelations = relations(subjects, ( {one, many} ) => ({
 }));
 
 export const courseRelations = relations(courses, ( {one, many}) => ( { 
-    subjects: one(subjects, {
+    subject: one(subjects, {
         fields: [courses.subjectId],
         references: [subjects.id],
     }),
-    batches: many(batches), // The same course can be run across multiple batches
     classSessions: many(classSessions), // Obvious a course will be completed across multiple sessions
 }));
 
