@@ -7,7 +7,15 @@ import {courses, subjects} from "../db/schema/index.js";
 
 const router = express.Router();
 
-// GET COURSES
+/** GET /COURSES
+ * 
+ * Optional Query Parameters - 
+ * 1. search --> Search by Course name
+ * 2. subjectId --> Filter courses according to Subject selected
+ * 3. level  --> beginner | intermediate | advanced
+ * 4. page
+ * 5. limit
+ */
 
 router.get("/", async (req, res) => {
     try{
