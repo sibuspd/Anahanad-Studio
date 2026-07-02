@@ -1,3 +1,5 @@
+/**API FOR SECTION - SUBJECT */
+
 import { and, desc, eq, getTableColumns, ilike, or, sql } from "drizzle-orm";
 import express from "express";
 import { departments, subjects } from "../db/schema/index.js";
