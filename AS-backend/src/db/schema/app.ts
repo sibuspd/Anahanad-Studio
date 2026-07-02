@@ -203,6 +203,17 @@ export const enrollmentRelations = relations(enrollments, ( { one }) => ( {
     }),
 } ));
 
+export const attendanceRelations = relations(attendance, ( {one}) => ( {
+    session: one(classSessions, {
+        fields: [attendance.sessionId],
+        references: [classSessions.id],
+    }),
+    student: one(user, {
+        fields: [attendance.studentId],
+        references: [user.id],
+    }),
+} ));
+
 // Defining Types for inserting and selecting data to/from the database
 export type Department = typeof departments.$inferSelect;
 export type newDepartment = typeof departments.$inferInsert;
