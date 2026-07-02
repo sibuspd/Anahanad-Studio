@@ -1,4 +1,4 @@
-// CLASS ROUTER FOR CREATING A NEW SESSION/CLASS
+// CLASS ROUTER API FOR CREATING A NEW SESSION/CLASS
 
 import express from "express";
 import {db} from "../db/index.js";
