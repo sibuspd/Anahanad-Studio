@@ -6,13 +6,14 @@ AgentAPI.config(); // Agent to run the web app performance monitoring
 import express from 'express';
 import subjectsRouter from './routes/subject.js'; // Router imported for Subjects display
 import usersRouter from './routes/user.js'; // Router imported for Users display
-import classesRouter from './routes/classes.js'; // Router imported for creating new Sessions/Classes
+import classSessionsRouter from './routes/classSessions.js'; // Router imported for creating new Sessions/Classes
 import coursesRouter from './routes/courses.js'; // Router imported for getting all Courses
 import batchesRouter from './routes/batches.js'; // Router imported for getting all Batches
 import cors from 'cors';
 import securityMiddleware from './middleware/security.js';
 import {toNodeHandler} from "better-auth/node"
 import { auth } from './lib/auth.js';
+// import classesRouter from './routes/classes.js'; // Router imported for creating new Sessions/Classes
 
 const app = express();
 const PORT = 8000;
@@ -40,7 +41,7 @@ app.use('/api/users', usersRouter);
 // app.use('/api/departments', departmentsRouter);
 app.use('/api/courses', coursesRouter);
 app.use('/api/batches', batchesRouter);
-app.use('/api/class-sessions', classesRouter);
+app.use('/api/class-sessions', classSessionsRouter);
 // app.use('/api/enrollments', enrollmentsRouter);
 // app.use('/api/attendance', attendanceRouter);
 
