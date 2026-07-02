@@ -158,7 +158,8 @@ export const subjectRelations = relations(subjects, ( {one, many} ) => ({
     department: one(departments, {
         fields: [subjects.departmentId],
         references: [departments.id],
-    })
+    }),
+    courses: many(courses),
 }));
 
 // Defining Types for inserting and selecting data to/from the database
