@@ -35,7 +35,7 @@ router.get("/", async (req, res) => {
             );
         }
 
-        // If department is provided, results are filtered by department
+        // If department is provided, results are filtered by department (To be simplified later)
         if(department){
             filterConditions.push(
                 ilike(departments.name, `%${department}%` )
