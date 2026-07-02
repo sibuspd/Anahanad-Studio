@@ -40,12 +40,12 @@ router.get("/", async (req, res) => {
         
         // Teacher Filter
         if(teacherId){
-            filterConditions.push( eq(classSessions.teacherId, Number(teacherId)));
+            filterConditions.push( eq(classSessions.teacherId, teacherId as string));
         }
 
         // Status Filter
         if(status){
-            filterConditions.push( eq(classSessions.status, status as | "Scheduled" | "Completed" | "Cancelled"));
+            filterConditions.push( eq(classSessions.status, status as | "scheduled" | "completed" | "cancelled"));
         }
 
         const whereClause = filterConditions.length > 0 ? and(...filterConditions) : undefined;
