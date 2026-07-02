@@ -171,7 +171,37 @@ export const courseRelations = relations(courses, ( {one, many}) => ( {
     classSessions: many(classSessions), // Obvious a course will be completed across multiple sessions
 }));
 
+export const batchRelations = relations(batches, ( {many}) => ( {
+    classSessions: many(classSessions), // A morning batch can have 3 different subject sessions running concurrently
+    enrollments: many(enrollments),
+}));
 
+export const classSessionRelations = relations(classSessions, ( {one, many} ) => ( {
+    batch: one(batches, {
+        fields: [classSessions.batchId],
+        references: [batches.id],
+    }),
+    course: one(courses, {
+        fields: [classSessions.courseId],
+        references: [courses.id],
+    }),
+    teacher: one(user, {
+        fields: [classSessions.teacherId],
+        references: [user.id],
+    }),
+    attendance: many(attendance), // Attendance of all the students in that session
+}) );
+
+export const enrollmentRelations = relations(enrollments, ( { one }) => ( {
+    student: one(user, { // Each student is associated with only one enrollment
+        fields: [enrollments.studentId],
+        references: [user.id],
+    }),
+    batch: one(batches, { // An enrollment is unique to a batch
+        fields: [enrollments.batchId],
+        references: [batches.id],
+    }),
+} ));
 
 // Defining Types for inserting and selecting data to/from the database
 export type Department = typeof departments.$inferSelect;
