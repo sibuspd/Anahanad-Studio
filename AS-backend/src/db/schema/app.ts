@@ -171,7 +171,7 @@ export const courseRelations = relations(courses, ( {one, many}) => ( {
 }));
 
 export const batchRelations = relations(batches, ( {many}) => ( {
-    classSessions: many(classSessions), // A morning batch can have 3 different subject sessions running concurrently
+    classSessions: many(classSessions), // A batch can contain multiple class sessions.
     enrollments: many(enrollments),
 }));
 
@@ -192,11 +192,11 @@ export const classSessionRelations = relations(classSessions, ( {one, many} ) =>
 }) );
 
 export const enrollmentRelations = relations(enrollments, ( { one }) => ( {
-    student: one(user, { // Each student is associated with only one enrollment
+    student: one(user, { // Each enrollment belongs to exactly one student.
         fields: [enrollments.studentId],
         references: [user.id],
     }),
-    batch: one(batches, { // An enrollment is unique to a batch
+    batch: one(batches, { // Each enrollment belongs to one batch.
         fields: [enrollments.batchId],
         references: [batches.id],
     }),
