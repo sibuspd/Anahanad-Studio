@@ -52,8 +52,15 @@ router.get("/", async (req, res) => {
         const totalCount = countResult[0]?.count ?? 0;
 
         // Data Query
-        const coursesList = await db().from(courses).leftJoin(subjects, eq(courses.subjectId, subjects.id)).where(whereClause)
-        .orderBy(desc(courses.createdAt)).limit(limitPerPage).offset(offset);
+        const coursesList = await db.select( 
+            {
+            ...getTableColumns(courses),
+            subject: {
+                ...getTableColumns(subjects),
+            }
+        }).from(courses).leftJoin(subjects, eq(courses.subjectId, subjects.id))
+        .where(whereClause).orderBy(desc(courses.createdAt))
+        .limit(limitPerPage).offset(offset);
 
         // Response to be passed to frontend
         res.status(200).json( {
