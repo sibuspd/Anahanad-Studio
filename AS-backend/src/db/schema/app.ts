@@ -80,7 +80,7 @@ export const courses = pgTable('courses', {
 // Batches Table
 export const batches = pgTable('batches', {
     id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
-    name: varchar("name", {length: 150}).notNull(),
+    name: varchar("name", {length: 255}).notNull(),
     capacity: integer("capacity").default(30).notNull(),
     schedule: jsonb("schedule").$type<{
         day: string,
