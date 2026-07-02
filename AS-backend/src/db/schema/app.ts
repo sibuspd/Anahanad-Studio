@@ -152,7 +152,8 @@ export const attendance = pgTable('attendance', {
 ]);
 
 //Defining mutual relations between various tables
-export const departmentRelations = relations(departments, ( {many} ) => ({ subjects: many(subjects) }));
+export const departmentRelations = relations(departments, ( {many} ) => ({ 
+    subjects: many(subjects) }));
 
 export const subjectRelations = relations(subjects, ( {one, many} ) => ({ 
     department: one(departments, {
