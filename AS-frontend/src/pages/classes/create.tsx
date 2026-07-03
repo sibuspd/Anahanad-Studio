@@ -1,5 +1,5 @@
-// Route component responsible for creating a new class through a form
-import React from "react";
+// Route component responsible for creating a new music class session
+
 import { CreateView } from "@/components/refine-ui/views/create-view";
 import { Breadcrumb } from "@/components/refine-ui/layout/breadcrumb";
 import { Button } from "@/components/ui/button";
@@ -32,101 +32,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2 } from "lucide-react";
 import UploadWidget from "@/components/upload-widget";
-import { User, Batch, Course, Subject, bannerCldPubId } from "@/types";
-
-  // // Creating Mock Options for Select Subject Dropdown
-  // // const subjects = [
-  // //   {
-  // //     id: 1,
-  // //     name: "Piano",
-  // //     code: "PIANO",
-  // //   },
-  // //   {
-  // //     id: 2,
-  // //     name: "Electronic Keyboard",
-  // //     code: "EKEY",
-  // //   },
-  // //   {
-  // //     id: 3,
-  // //     name: "Guitar",
-  // //     code: "GUITAR",
-  // //   },
-  // //   {
-  // //     id: 4,
-  // //     name: "Tabla",
-  // //     code: "TABLA",
-  // //   },
-  // //   {
-  // //     id: 5,
-  // //     name: "Drums",
-  // //     code: "DRUMS",
-  // //   },
-  // //   {
-  // //     id: 6,
-  // //     name: "Western Vocals",
-  // //     code: "WVOC",
-  // //   },
-  // // ];
-
-  // // Creating Mock Options for Select Teachers Dropdown
-  // const teachers = [
-  //   {
-  //     id: 1,
-  //     name: "Anand Sirsat",
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Sabyasachi Sahani",
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Prasanna Bhure",
-  //   },
-  //   {
-  //     id: 4,
-  //     name: "Makarand Jadhav",
-  //   },
-  //   {
-  //     id: 5,
-  //     name: "Sangam Coupler",
-  //   },
-  // ];
-
-  // // Creating Mock Options for Select Batches Dropdown
-  // const batches = [
-  //   {
-  //     id: 1,
-  //     name: "Kids' Batch",
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Weekend Batch",
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Evening Batch",
-  //   },
-  // ];
-
-  // // Creating Mock Options for Select Course Dropdown
-  // const courses = [
-  //   {
-  //     id: 1,
-  //     name: "Beginner Piano 101",
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Advanced Piano Performance",
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Tabla Foundation Course",
-  //   },
-  //   {
-  //     id: 4,
-  //     name: "Western Vocals Beginner Course",
-  //   },
-  // ];
+import { User, Batch, Course, Subject } from "@/types";
 
 
 // Main Component  
@@ -136,7 +42,7 @@ const Create = () => {
   const form = useForm({
     resolver: zodResolver(sessionSchema),
     refineCoreProps: {
-      resource: "sessions",
+      resource: "class-sessions",
       action: "create",
     },
     // defaultValues: {
@@ -150,10 +56,11 @@ const Create = () => {
     control
   } = form;
 
-  const onSubmit = (values: z.infer<typeof sessionSchema>) => {
+  const onSubmit =  async (values: z.infer<typeof sessionSchema>) => {
     // Do something with the form values
     // this will be type-safe and validated
     try {
+      // await onFinish(values);
       console.log(values);
     } catch (e) {
       console.log("Error registering the new class", e);
@@ -205,6 +112,7 @@ const Create = () => {
 
   const bannerPublicId = form.watch('bannerCldPubId');
 
+  // Helper function
   const setBannerImage = (file: any, field: any) => {
     if(file){
       field.onChange(file.url);
@@ -224,9 +132,9 @@ const Create = () => {
   return (
     <CreateView className="class-view">
       <Breadcrumb />
-      <h1 className="page-title">Create a new class</h1>
+      <h1 className="page-title">Create a new Class Session</h1>
       <div className="intro-row">
-        <p>Provide the required information to register a new music class</p>
+        <p>Provide the required information to register a new music class session</p>
         <Button onClick={() => back()}>Go Back</Button>{" "}
         {/* Callback function to just go back after registering a new class */}
       </div>
@@ -237,7 +145,7 @@ const Create = () => {
         <Card className="class-form-card">
           <CardHeader className="relative z-10">
             <CardTitle className="text-2xl pb-0 font-bold">
-              Fill in the form
+              Session Details
             </CardTitle>
           </CardHeader>
 
