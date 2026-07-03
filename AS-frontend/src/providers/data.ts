@@ -103,6 +103,17 @@ const options: CreateDataProviderOptions = {
       const payload: ListResponse = await response.clone().json();
       return payload.pagination?.total ?? payload.data?.length ?? 0; 
     }
+  },
+
+  create: {
+    getEndPoint: ( {resource} ) => resource, // Returns the resource that is passed from the side nav bar
+    
+    buildBodyParams: async ( {variables} ) => variables, // Returns the variables that are passed from the form
+
+    mapResponse: async ( response ) => { // Returns the response from the backend
+      const json: CreateResponse = await response.json();
+      return json.data ?? [];
+    }
   }
 }
 
