@@ -37,20 +37,23 @@
 // };
 
 import { BACKEND_BASE_URL } from "@/constants"
-import { ListResponse } from "@/types";
+import { ListResponse, CreateResponse } from "@/types";
 import {createDataProvider, CreateDataProviderOptions} from "@refinedev/rest"
+import { HttpError } from "@refinedev/core"
 
 if (!BACKEND_BASE_URL){
   throw new Error('BACKEND_BASE_URL is not configured in .env file');
 }
 
+/**SHARED ERROR BUILDER */
 const buildHttpError = async (response: Response): Promise<HttpError> => {
   let message = 'Request failed.';
 
   try{
-    const payload = (await response.json()) as { message?: string}
+    const payload = (await response.json()) as { message?: string, error?: string };
 
     if(payload?.message) message = payload.message;
+    if(payload?.error) message = payload.error;
   } catch{
     // Ignore errors
   }
@@ -58,10 +61,12 @@ const buildHttpError = async (response: Response): Promise<HttpError> => {
   return {
     message,
     statusCode: response.status,
-  }
-}
+  };
+};
 
+/**  DATA PROVIDER OPTIONS */
 const options: CreateDataProviderOptions = {
+  // >> OPTION 1: SIMPLE REST DATA PROVIDER
   getList: {
     getEndpoint: ({ resource } ) => resource,
 
@@ -77,14 +82,44 @@ const options: CreateDataProviderOptions = {
       };
 
       filters?.forEach( (filter) => {
-        const field = 'field' in filter? filter.field : '';
+        const field = String('field' in filter? filter.field : '');
         const value = String(filter.value); // Convert value to string
         
-        // resource corresponds to the side nav bar selected
-        if(resource === 'subjects'){
-          if(field === 'department') params.department = value;
-          if(field === 'name'|| field === 'code') params.search = value;
-        }
+      switch(resource){ // resource corresponds to the side nav bar selected
+        /** SUBJECTS */
+        case 'subjects':
+          if(field === 'department') params.department = value; // If query param field is department, set the value to the department selected
+          if(field === 'name' || field === 'code') params.search = value; // If query param field is name or code, set the value to the search query
+          break;
+        
+        /** COURSES */
+        case 'courses':
+          if(field === 'subjectId') params.subjectId = value;
+          if(field === 'level') params.level = value;
+          if(field === 'name') params.search = value;
+          break;
+
+        /** BATCHES */
+        case 'batches':
+          if(field === 'name') params.search = value;
+          break;
+          
+        /** USERS */
+        case 'users':
+          if(field === 'role') params.role = value;
+          if(field === 'emailVerified') params.emailVerified = value;
+          if(field === 'name' || field === 'email') params.search = value;
+          break;
+
+        /** CLASS SESSIONS */
+        case 'class-sessions':
+          if(field === 'courseId') params.courseId = value;
+          if(field === 'batchId') params.batchId = value;
+          if(field === 'teacherId') params.teacherId = value;
+          if(field === 'status') params.status = value;
+          if(field === 'name') params.search = value;
+          break;
+      }
       });
 
       return params;
@@ -105,18 +140,51 @@ const options: CreateDataProviderOptions = {
     }
   },
 
+  // >> OPTION 2: CUSTOM DATA PROVIDER FOR CREATING DATA
   create: {
-    getEndPoint: ( {resource} ) => resource, // Returns the resource that is passed from the side nav bar
+    getEndpoint: ( {resource} ) => resource, // Returns the resource that is passed from the side nav bar
     
     buildBodyParams: async ( {variables} ) => variables, // Returns the variables that are passed from the form
 
     mapResponse: async ( response ) => { // Returns the response from the backend
+      if(!response.ok) throw await buildHttpError(response); 
       const json: CreateResponse = await response.json();
       return json.data ?? [];
     }
-  }
-}
+  },
+
+  /** >> OPTION 3: DATA PROVIDER FOR GETTING DATA OF SPECIFIC ID*/
+  getOne: {
+    getEndpoint: ( { resource, id }) => `${resource}/${id}`, // Returns the resource and id that are passed
+    mapResponse: async (response) => {
+      if(!response.ok) throw await buildHttpError(response);
+      const json: CreateResponse = await response.json();
+      return json.data ?? [];
+    }
+  },
+
+  /** >> OPTION 4: DATA PROVIDER FOR UPDATING DATA*/
+  update: {
+    getEndpoint: ( {resource, id}) => `${resource}/${id}`,
+    buildBodyParams: async ( {variables} ) => variables,
+    mapResponse: async (response) => {
+      if(!response.ok) throw await buildHttpError(response);
+      const json: CreateResponse = await response.json();
+      return json.data ?? [];
+    },
+  },
+
+  /** >> OPTION 5: DATA PROVIDER FOR DELETING DATA */
+  deleteOne: {
+    getEndpoint: ( { resource, id }) => `${resource}/${id}`,
+    mapResponse: async (response) => {
+      if(!response.ok) throw await buildHttpError(response);
+      const json: CreateResponse = await response.json();
+      return json.data ?? [];
+    },
+  },
+};
 
 const { dataProvider } = createDataProvider(BACKEND_BASE_URL, options);
 
-export { dataProvider};
+export { dataProvider };
