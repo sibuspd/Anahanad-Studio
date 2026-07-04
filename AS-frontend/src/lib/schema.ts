@@ -13,19 +13,19 @@ export const facultySchema = z.object( {
     
 });
 
-// Subjects under each Department
+// ZOD SCHEMA FOR SUBJECT
 export const subjectSchema = z.object({
     name: z.string().min(3, "Subject name must be at least 3 characters"),
     code: z.string().min(3, "Subject code must be at least 3 characters"),
     description: z
         .string()
         .min(5, "Subject description must be at least 5 characters"),
-    department: z
-        .string()
+    departmentId: z
+        .coerce.number()
         .min(2, "Subject department must be at least 2 characters"),
 });
 
-// Schedules for each class
+// ZOD SCHEMA FOR SCHEDULE
 export const scheduleSchema = z.object({
     day: z.string().min(1, "Day is required"),
     startTime: z.string().min(1, "Start time is required"),
@@ -33,7 +33,7 @@ export const scheduleSchema = z.object({
 });
 
 
-// Combination Courses under each Subject having fee structure attached
+// ZOD SCHEMA FOR COURSE WHERE FEES ARE ATTACHED
 export const courseSchema = z.object( {
     name: z.string(),
     subjectId: z.coerce.number(),
@@ -43,10 +43,8 @@ export const courseSchema = z.object( {
     description: z.string(),
 });
 
-// Batches under each Course with capacity limit
+// ZOD SCHEMA FOR BATCH
 export const batchSchema = z.object( {
-    courseId: z.coerce.number(),
-    teacherId: z.coerce.number(),
     name: z.string(),
         capacity: z.coerce
         .number({
@@ -57,7 +55,7 @@ export const batchSchema = z.object( {
     schedule: z.array(scheduleSchema),
 } );
 
-// Schema for each class/session that has an attached attendance
+// ZOD SCHEMA FOR SESSION
 export const sessionSchema = z.object({ 
     name: z
         .string()
@@ -90,7 +88,7 @@ export const sessionSchema = z.object({
     status: z.enum(["scheduled", "completed", "cancelled"]),
 });
 
-// Enrollment details of a student in a class
+// ZOD SCHEMA FOR STUDENT ENROLLMENT
 export const enrollmentSchema = z.object({
     batchId: z.coerce
         .number({
@@ -101,7 +99,7 @@ export const enrollmentSchema = z.object({
     studentId: z.string().min(1, "Student ID is required"),
 });
 
-// Attendance scheme for each session/class
+// ZOD SCHEMA FOR ATTENDANCE
 export const attendanceSchema = z.object({
     sessionId: z.number(),
     studentId: z.string(),
