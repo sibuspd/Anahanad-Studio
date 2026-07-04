@@ -3,7 +3,7 @@
 import { CreateView } from "@/components/refine-ui/views/create-view";
 import { Breadcrumb } from "@/components/refine-ui/layout/breadcrumb";
 import { Button } from "@/components/ui/button";
-import { useBack, useList } from "@refinedev/core";
+import { useBack, useList, CrudFilter } from "@refinedev/core";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import * as z from "zod";
@@ -61,7 +61,7 @@ const Create = () => {
   //   form.resetField('courseId');
   // }, [selectedSubjectId, form]); // exhaustive-deps rule of React Hook
 
-  const courseFilters = useMemo( () => {
+  const courseFilters = useMemo<CrudFilter[]>( () => {
     if(!selectedSubjectId) return [];
 
     return [{
