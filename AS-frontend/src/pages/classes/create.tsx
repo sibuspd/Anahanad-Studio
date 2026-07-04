@@ -82,7 +82,7 @@ const Create = () => {
 
   /** READING THE RETURNED COURSE */
   const courses = coursesQuery.data?.data ?? [];
-  const coursesLoading = coursesQuery?.isLoading;
+  const coursesLoading = coursesQuery.isLoading;
 
   const {
     handleSubmit,
