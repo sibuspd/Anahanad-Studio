@@ -1,7 +1,7 @@
 import { CLOUDINARY_CLOUD_NAME, CLOUDINARY_UPLOAD_PRESET } from '@/constants';
 import { UploadWidgetValue, UploadWidgetProps } from '@/types';
 import { UploadCloud } from 'lucide-react';
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const UploadWidget = ({ value= null, onChange, disabled = false}: UploadWidgetProps) => {
   const widgetRef = useRef<CloudinaryWidget | null>(null); // Create a ref for the widget and hold it in state
