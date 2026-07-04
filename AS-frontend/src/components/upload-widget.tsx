@@ -40,7 +40,7 @@ const UploadWidget = ({ value= null, onChange, disabled = false}: UploadWidgetPr
         if(!error && result.event === 'success'){
           const payload: UploadWidgetValue = {
             url: result.info.secure_url, // Public image URL
-            publidId: result.info.public_id, // Public ID
+            publicId: result.info.public_id, // Public ID
           } 
           setPreview(payload)
           // setDeleteToken(result.info.delete_token ?? null); // Allows to delete uploaded image from cloudinary
