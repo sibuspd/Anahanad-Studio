@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "@refinedev/react-hook-form";
+import { useWatch } from "react-hook-form";
 import { sessionSchema } from "@/lib/schema.ts";
 // Below are all imports needed for constructing the form for creating a new class
 import {
@@ -21,7 +22,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -33,7 +33,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Loader2 } from "lucide-react";
 import UploadWidget from "@/components/upload-widget";
 import { User, Batch, Course, Subject } from "@/types";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 
 // Main Component  
@@ -52,20 +52,29 @@ const Create = () => {
   });
 
   
-  const selectedSubjectId = form.watch("subjectId"); // Alerts React Hook form that subjectId has changed
+  const selectedSubjectId = useWatch( {
+    control: form.control,
+    name: "subjectId",
+  } );
 
   useEffect( () =>{
     form.resetField('courseId');
   }, [selectedSubjectId, form]); // exhaustive-deps rule of React Hook
 
+  const courseFilters = useMemo( () => {
+    if(!selectedSubjectId) return [];
+
+    return [{
+      field: "subjectId",
+      operator: "eq",
+      value: selectedSubjectId,
+    }];
+  }, [selectedSubjectId]);
+
   /** DYNAMIC COURSE FETCHING */
   const { query: coursesQuery} = useList<Course>( {
     resource: "courses",
-    filters: selectedSubjectId? [ {
-      field: "subjectId",
-      operator: "eq",
-      value: selectedSubjectId
-    }] : [], // If subjectId is not selected, do not filter
+    filters: courseFilters,
     pagination: {
       pageSize: 100
     },
@@ -127,7 +136,10 @@ const Create = () => {
   const subjects = subjectsQuery?.data?.data || [];
   const subjectsLoading = subjectsQuery.isLoading; 
 
-  const bannerPublicId = form.watch('bannerCldPubId');
+  const bannerPublicId = useWatch( {
+    control: form.control,
+    name: "bannerCldPubId",
+  } );
 
   // Helper function
   const setBannerImage = (file: any, field: any) => {
@@ -362,7 +374,6 @@ const Create = () => {
                             field.onChange(value)
                           }
                           value={field?.value?.toString()}
-                          disabled={teachersLoading}
                         >
                           <FormControl>
                             <SelectTrigger className="w-full">
