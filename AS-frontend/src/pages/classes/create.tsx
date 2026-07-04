@@ -81,7 +81,7 @@ const Create = () => {
   } );
 
   /** READING THE RETURNED COURSE */
-  const courses = coursesQuery?.data?.data || [];
+  const courses = coursesQuery.data?.data ?? [];
   const coursesLoading = coursesQuery?.isLoading;
 
   const {
@@ -127,13 +127,13 @@ const Create = () => {
 
   
   // Access the batches and users/teachers from the actual query
-  const batches = batchesQuery?.data?.data || [];
+  const batches = batchesQuery.data?.data ?? [];
   const batchesLoading = batchesQuery.isLoading;
   
-  const teachers = teachersQuery?.data?.data || [];
+  const teachers = teachersQuery.data?.data ?? [];
   const teachersLoading = teachersQuery.isLoading;
   
-  const subjects = subjectsQuery?.data?.data || [];
+  const subjects = subjectsQuery.data?.data ?? [];
   const subjectsLoading = subjectsQuery.isLoading; 
 
   const bannerPublicId = useWatch( {
