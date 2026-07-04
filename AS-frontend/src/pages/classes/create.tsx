@@ -33,6 +33,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Loader2 } from "lucide-react";
 import UploadWidget from "@/components/upload-widget";
 import { User, Batch, Course, Subject } from "@/types";
+import { useEffect } from "react";
 
 
 // Main Component  
@@ -52,6 +53,10 @@ const Create = () => {
 
   
   const selectedSubjectId = form.watch("subjectId"); // Alerts React Hook form that subjectId has changed
+
+  useEffect( () =>{
+    form.resetField('courseId');
+  }, [selectedSubjectId, form]); // exhaustive-deps rule of React Hook
 
   /** DYNAMIC COURSE FETCHING */
   const { query: coursesQuery} = useList<Course>( {
@@ -114,7 +119,7 @@ const Create = () => {
   
   // Access the batches and users/teachers from the actual query
   const batches = batchesQuery?.data?.data || [];
-  const batchesLoading = batchesQuery.isLoading; 
+  // const batchesLoading = batchesQuery.isLoading;
 
   const teachers = teachersQuery?.data?.data || [];
   const teachersLoading = teachersQuery.isLoading;
@@ -179,8 +184,8 @@ const Create = () => {
                         onChange={ (file: any) =>setBannerImage(file, field)}/>
                       </FormControl>
                       <FormMessage />
-                      {errors.bannerClbPubId && !errors.bannerUrl && (
-                        <p className="text-destructive text-sm">{errors.bannerClbPubId.message?.toString()}</p>
+                      {errors.bannerCldPubId && !errors.bannerUrl && (
+                        <p className="text-destructive text-sm">{errors.bannerCldPubId.message?.toString()}</p>
                       )}
                     </FormItem>
                   ) }
@@ -298,7 +303,7 @@ const Create = () => {
                   />
                   </div>
 
-                  {/* COUSE NAME */}
+                  {/* COURSE NAME */}
                   <FormField
                     control={control}
                     name="courseId"
@@ -307,7 +312,7 @@ const Create = () => {
                         <FormLabel>
                           Course Name <span className="text-orange-600">*</span>
                         </FormLabel>
-                        /** DISABLING COURSE DROPDOWN UNTIL SUBJECT IS CHOSEN */
+                        {/* DISABLING COURSE DROPDOWN UNTIL SUBJECT IS CHOSEN */}
                         <Select disabled={!selectedSubjectId || coursesLoading}
                           onValueChange={(value) =>
                             field.onChange(Number(value))
@@ -354,7 +359,7 @@ const Create = () => {
                         </FormLabel>
                         <Select
                           onValueChange={(value) =>
-                            field.onChange(Number(value))
+                            field.onChange(value)
                           }
                           value={field?.value?.toString()}
                           disabled={teachersLoading}
@@ -367,7 +372,7 @@ const Create = () => {
                           <SelectContent>
                             {teachers.map((teacher) => (
                               <SelectItem
-                                value={teacher.id.toString()}
+                                value={teacher.id}
                                 key={teacher.id}
                               >
                                 {teacher.name}
