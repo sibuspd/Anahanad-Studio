@@ -57,9 +57,9 @@ const Create = () => {
     name: "subjectId",
   } );
 
-  useEffect( () =>{
-    form.resetField('courseId');
-  }, [selectedSubjectId, form]); // exhaustive-deps rule of React Hook
+  // useEffect( () =>{
+  //   form.resetField('courseId');
+  // }, [selectedSubjectId, form]); // exhaustive-deps rule of React Hook
 
   const courseFilters = useMemo( () => {
     if(!selectedSubjectId) return [];
