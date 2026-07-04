@@ -38,6 +38,8 @@ import { useEffect, useMemo } from "react";
 
 // Main Component  
 const Create = () => {
+
+  console.log("Create Render");
   const back = useBack();
 
   const form = useForm({
@@ -63,6 +65,7 @@ const Create = () => {
 
   const courseFilters = useMemo<CrudFilter[]>( () => {
     if(!selectedSubjectId) return [];
+    
 
     return [{
       field: "subjectId",
@@ -71,13 +74,16 @@ const Create = () => {
     }];
   }, [selectedSubjectId]);
 
+  const dropdownPagination = useMemo( () => ({
+    pageSize: 100,
+  }), []);
+
+  console.log("courses useList");
   /** DYNAMIC COURSE FETCHING */
   const { query: coursesQuery} = useList<Course>( {
     resource: "courses",
     filters: courseFilters,
-    pagination: {
-      pageSize: 100
-    },
+    pagination: dropdownPagination,
   } );
 
   /** READING THE RETURNED COURSE */
@@ -101,28 +107,25 @@ const Create = () => {
     }
   };
 
+  console.log("batches useList");
   // Fetching data from neon db 
   const { query: batchesQuery } = useList<Batch>( {
     resource: 'batches',
-    pagination: {
-      pageSize: 100
-    }
+    pagination: dropdownPagination,
   });  
 
+  console.log("teachers useList");
   const { query: teachersQuery } = useList<User>( {
     resource: 'users',
     filters: [ { field: 'role', operator: 'eq', value: 'teacher'}],
-    pagination: {
-      pageSize: 100
-    }
+    pagination: dropdownPagination,
   });
 
+  console.log("Subject useList");
   /**SUBJECT WILL BE CHOSEN AND WILL DECIDE THE COURSES THAT APPEARS IN DROPDOWN */
   const { query: subjectsQuery } = useList<Subject>( {
     resource: 'subjects',
-    pagination: {
-      pageSize: 100
-    }
+    pagination: dropdownPagination,
   });
 
   
