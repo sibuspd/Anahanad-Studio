@@ -119,8 +119,8 @@ const Create = () => {
   
   // Access the batches and users/teachers from the actual query
   const batches = batchesQuery?.data?.data || [];
-  // const batchesLoading = batchesQuery.isLoading;
-
+  const batchesLoading = batchesQuery.isLoading;
+  
   const teachers = teachersQuery?.data?.data || [];
   const teachersLoading = teachersQuery.isLoading;
   
@@ -225,7 +225,7 @@ const Create = () => {
                         <FormLabel>
                           Batch Name <span className="text-orange-600">*</span>
                         </FormLabel>
-                        <Select
+                        <Select disabled={batchesLoading}
                           onValueChange={(value) =>
                             field.onChange(Number(value))
                           }
@@ -278,7 +278,7 @@ const Create = () => {
                         >
                           <FormControl>
                             <SelectTrigger className="w-full">
-                              <SelectValue placeholder="Select Course" />
+                              <SelectValue placeholder="Select Subject" />
                             </SelectTrigger>
                           </FormControl>
 
@@ -295,7 +295,7 @@ const Create = () => {
                         </Select>
 
                         <FormDescription>
-                          The course under which the session belongs
+                          Choose the subject first. Courses will be filtered automatically.
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -338,7 +338,7 @@ const Create = () => {
                         </Select>
 
                         <FormDescription>
-                          The course under which the session belongs
+                          Choose a course under the selected subject.
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -357,7 +357,7 @@ const Create = () => {
                           Teacher to be assigned{" "}
                           <span className="text-orange-600">*</span>
                         </FormLabel>
-                        <Select
+                        <Select disabled={teachersLoading}
                           onValueChange={(value) =>
                             field.onChange(value)
                           }
