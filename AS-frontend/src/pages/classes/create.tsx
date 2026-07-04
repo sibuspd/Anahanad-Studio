@@ -50,6 +50,26 @@ const Create = () => {
     // },
   });
 
+  
+  const selectedSubjectId = form.watch("subjectId"); // Alerts React Hook form that subjectId has changed
+
+  /** DYNAMIC COURSE FETCHING */
+  const { query: coursesQuery} = useList<Course>( {
+    resource: "courses",
+    filters: selectedSubjectId? [ {
+      field: "subjectId",
+      operator: "eq",
+      value: selectedSubjectId
+    }] : [], // If subjectId is not selected, do not filter
+    pagination: {
+      pageSize: 100
+    },
+  } );
+
+  /** READING THE RETURNED COURSE */
+  const courses = coursesQuery?.data?.data || [];
+  const coursesLoading = coursesQuery?.isLoading;
+
   const {
     handleSubmit,
     formState: { isSubmitting, errors },
@@ -287,8 +307,8 @@ const Create = () => {
                         <FormLabel>
                           Course Name <span className="text-orange-600">*</span>
                         </FormLabel>
-
-                        <Select
+                        /** DISABLING COURSE DROPDOWN UNTIL SUBJECT IS CHOSEN */
+                        <Select disabled={!selectedSubjectId || coursesLoading}
                           onValueChange={(value) =>
                             field.onChange(Number(value))
                           }
