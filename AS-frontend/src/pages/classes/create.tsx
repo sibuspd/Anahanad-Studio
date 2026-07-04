@@ -91,14 +91,6 @@ const Create = () => {
     }
   });
 
-
-  /**COURSES WILL COME FROM BACKEND */
-  const { query: coursesQuery } = useList<Course>( {
-    resource: 'courses',
-    pagination: {
-      pageSize: 100,
-    },
-  } );
   
   // Access the batches and users/teachers from the actual query
   const batches = batchesQuery?.data?.data || [];
