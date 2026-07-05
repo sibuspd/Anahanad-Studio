@@ -8,8 +8,8 @@ import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "@refinedev/react-hook-form";
-import { useWatch } from "react-hook-form";
+// import { useForm } from "@refinedev/react-hook-form";
+import { useWatch, useForm } from "react-hook-form";
 import { sessionSchema } from "@/lib/schema.ts";
 // Below are all imports needed for constructing the form for creating a new class
 import {
@@ -42,15 +42,19 @@ const Create = () => {
   console.log("Create Render");
   const back = useBack();
 
-  const form = useForm({
+  // const form = useForm({
+  //   resolver: zodResolver(sessionSchema),
+  //   refineCoreProps: {
+  //     resource: "class-sessions",
+  //     action: "create",
+  //   },
+  //   // defaultValues: {
+  //   //   status: "scheduled",
+  //   // },
+  // });
+
+    const form = useForm({
     resolver: zodResolver(sessionSchema),
-    refineCoreProps: {
-      resource: "class-sessions",
-      action: "create",
-    },
-    // defaultValues: {
-    //   status: "scheduled",
-    // },
   });
 
   
@@ -59,9 +63,10 @@ const Create = () => {
     name: "subjectId",
   } );
 
-  // useEffect( () =>{
-  //   form.resetField('courseId');
-  // }, [selectedSubjectId, form]); // exhaustive-deps rule of React Hook
+  useEffect( () =>{
+    console.log("Use Effect is called here.");
+    form.resetField('courseId');
+  }, [selectedSubjectId, form]); // exhaustive-deps rule of React Hook
 
   const courseFilters = useMemo<CrudFilter[]>( () => {
     if(!selectedSubjectId) return [];
@@ -78,7 +83,6 @@ const Create = () => {
     pageSize: 100,
   }), []);
 
-  console.log("courses useList");
   /** DYNAMIC COURSE FETCHING */
   const { query: coursesQuery} = useList<Course>( {
     resource: "courses",
@@ -87,8 +91,8 @@ const Create = () => {
   } );
 
   /** READING THE RETURNED COURSE */
-  const courses = coursesQuery.data?.data ?? [];
-  const coursesLoading = coursesQuery.isLoading;
+  // const courses = coursesQuery.data?.data ?? [];
+  // const coursesLoading = coursesQuery.isLoading;
 
   const {
     handleSubmit,
@@ -107,34 +111,46 @@ const Create = () => {
     }
   };
 
-  console.log("batches useList");
-  // Fetching data from neon db 
-  const { query: batchesQuery } = useList<Batch>( {
-    resource: 'batches',
-    pagination: dropdownPagination,
-  });  
+const batches = [];
+const teachers = [];
+// const subjects = [];
+const courses = [];
 
-  console.log("teachers useList");
-  const { query: teachersQuery } = useList<User>( {
-    resource: 'users',
-    filters: [ { field: 'role', operator: 'eq', value: 'teacher'}],
-    pagination: dropdownPagination,
-  });
+const batchesLoading = false;
+const teachersLoading = false;
+// const subjectsLoading = false;
+const coursesLoading = false;
 
+  // console.log("batches useList");
+  // // Fetching data from neon db 
+  // const { query: batchesQuery } = useList<Batch>( {
+  //   resource: 'batches',
+  //   pagination: dropdownPagination,
+  // });  
+
+  // console.log("teachers useList");
+  // const { query: teachersQuery } = useList<User>( {
+  //   resource: 'users',
+  //   filters: [ { field: 'role', operator: 'eq', value: 'teacher'}],
+  //   pagination: dropdownPagination,
+  // });
+
+console.count("subjects hook");
   console.log("Subject useList");
   /**SUBJECT WILL BE CHOSEN AND WILL DECIDE THE COURSES THAT APPEARS IN DROPDOWN */
   const { query: subjectsQuery } = useList<Subject>( {
     resource: 'subjects',
     pagination: dropdownPagination,
   });
+console.log(subjectsQuery.status);
 
   
   // Access the batches and users/teachers from the actual query
-  const batches = batchesQuery.data?.data ?? [];
-  const batchesLoading = batchesQuery.isLoading;
+  // const batches = batchesQuery.data?.data ?? [];
+  // const batchesLoading = batchesQuery.isLoading;
   
-  const teachers = teachersQuery.data?.data ?? [];
-  const teachersLoading = teachersQuery.isLoading;
+  // const teachers = teachersQuery.data?.data ?? [];
+  // const teachersLoading = teachersQuery.isLoading;
   
   const subjects = subjectsQuery.data?.data ?? [];
   const subjectsLoading = subjectsQuery.isLoading; 
