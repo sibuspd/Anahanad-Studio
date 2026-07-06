@@ -33,14 +33,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { Loader2 } from "lucide-react";
 import UploadWidget from "@/components/upload-widget";
 import { User, Batch, Course, Subject } from "@/types";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 
 
 // Main Component  
 const Create = () => {
 
-  console.log("Create Render");
-  const back = useBack();
+  // console.log("Create Render");
+  // const back = useBack();
 
   // const form = useForm({
   //   resolver: zodResolver(sessionSchema),
@@ -57,6 +57,9 @@ const Create = () => {
     resolver: zodResolver(sessionSchema),
   });
 
+const previousForm = useRef(form);
+
+previousForm.current = form;
   
   const selectedSubjectId = useWatch( {
     control: form.control,
@@ -142,7 +145,6 @@ console.count("subjects hook");
     resource: 'subjects',
     pagination: dropdownPagination,
   });
-console.log(subjectsQuery.status);
 
   
   // Access the batches and users/teachers from the actual query
@@ -448,61 +450,6 @@ console.log(subjectsQuery.status);
                     )}
                   />
                 </div>
-
-                {/* SUBJECT TYPE */}
-                {/* <div className="grid sm:grid-cols-2 gap-4">
-                <FormField control={control} name='subjectId' render={ ( {field} )=> (
-                  <FormItem>
-                    <FormLabel>Subject Name <span className='text-orange-600'>*</span></FormLabel>
-                      <Select onValueChange={ (value)=> field.onChange(Number(value))} value={field?.value?.toString()}>
-                        <FormControl>
-                          <SelectTrigger className='w-full'>
-                            <SelectValue placeholder='Select a subject'/>
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {subjects.map( (subject)=> (
-                            <SelectItem value={subject.id.toString()} key={subject.id}>
-                              {subject.name} ({subject.code})
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    <FormDescription>
-                      The subject under which the session exists
-                    </FormDescription>
-                    <FormMessage/>
-                  </FormItem>
-                )}/>
-                </div> */}
-
-                {/* CAPACITY LIMIT */}
-                {/* <div className="grid sm:grid-cols-2 gap-4">
-                  <FormField
-                                        control={control}
-                                        name="capacity"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Batch Capacity</FormLabel>
-                                                <FormControl>
-                                                    <Input
-                                                        type="number"
-                                                        placeholder="30"
-                                                        onChange={(e) => {
-                                                            const value = e.target.value;
-                                                            field.onChange(value ? Number(value) : undefined);
-                                                        }}
-                                                        value={(field.value as number | undefined) ?? ""}
-                                                        name={field.name}
-                                                        ref={field.ref}
-                                                        onBlur={field.onBlur}
-                                                    />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                </div> */}
 
                 <div className="grid sm:grid-cols-3 gap-4">
                   {/* SESSION DATE */}
