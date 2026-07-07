@@ -175,6 +175,24 @@ const Create = () => {
 
   /**
    * ------------------------------------------------------------------
+   * BANNER UPLOAD
+   * ------------------------------------------------------------------
+   */
+
+  const handleBannerUpload = (file: UploadWidgetValue) => {
+    form.setValue("bannerUrl", file.url, {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+
+    form.setValue("bannerCldPubId", file.publicId, {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+  };
+
+  /**
+   * ------------------------------------------------------------------
    * SUBMIT
    * ------------------------------------------------------------------
    */
@@ -404,7 +422,11 @@ const Create = () => {
                     <FormLabel>Session Date</FormLabel>
 
                     <FormControl>
-                      <Input type="date" {...field} min={new Date().toISOString().split("T")[0]}/>
+                      <Input
+                        type="date"
+                        {...field}
+                        min={new Date().toISOString().split("T")[0]}
+                      />
                     </FormControl>
 
                     <FormMessage />
@@ -552,7 +574,6 @@ export default Create;
 //                     </FormItem>
 //                   ) }
 //                   name="bannerUrl" />
-
 
 //                 <FormField
 //                   control={control}
