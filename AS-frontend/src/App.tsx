@@ -14,10 +14,16 @@ import { ThemeProvider } from "./components/refine-ui/theme/theme-provider";
 // import dataProvider from "@refinedev/simple-rest";
 import { dataProvider } from "./providers/data";
 import Dashboard from "./pages/dashboard";
-import {BookOpen, Home} from "lucide-react"
+import { AlignVerticalDistributeStart, BookOpen, GraduationCap, Home } from "lucide-react";
 import { Layout } from "./components/refine-ui/layout/layout";
 import SubjectsList from "./pages/subjects/subjectslist";
 import SubjectsCreate from "./pages/subjects/create";
+import ClassesList from "./pages/classes/list";
+import ClassesCreate from "./pages/classes/create";
+import CoursesList from "./pages/courses/list";
+import CoursesCreate from "./pages/courses/create";
+import BatchesCreate from "./pages/batches/create";
+import BatchesManage from "./pages/batches/manage";
 // import { API_URL } from "@/providers/constants";
 
 function App() {
@@ -37,30 +43,67 @@ function App() {
               }}
               resources={[
                 {
-                  name: 'dashboard',
-                  list: '/',
-                  meta: {label: 'Home', icon: <Home/>}
+                  name: "dashboard",
+                  list: "/",
+                  meta: { label: "Home", icon: <Home /> },
                 },
                 {
-                  name: 'subjects',
-                  list: '/subjects',
-                  create: 'subjects/create', //Create sub routes
-                  meta: {label: 'Subjects', icon: <BookOpen/>}
-                }
+                  name: "subjects",
+                  list: "/subjects",
+                  create: "subjects/create", //Create sub routes
+                  meta: { label: "Subjects", icon: <BookOpen /> },
+                },
+                {
+                  name: "classes",
+                  list: "/classes",
+                  create: "classes/create", //Create sub routes
+                  meta: { label: "Classes", icon: <GraduationCap /> },
+                },
+                {
+                  name: "courses",
+                  list: "/courses",
+                  create: "courses/create",
+                  meta: { label: "Courses", icon: <BookOpen /> },
+                },
+                {
+                  name: "batches",
+                  list: "/batches/manage",
+                  create: "batches/create",
+                  meta: { label: "Batches", icon: <AlignVerticalDistributeStart/> },
+                },
               ]}
             >
               {/* Wrapping up all routes inside it */}
-              <Routes>  
-                <Route element={
-                  <Layout>
-                    <Outlet/>
-                  </Layout>
-                }>
-                <Route path="/" element={<Dashboard/>} />
-                <Route path="subjects"> 
-                  <Route index element={<SubjectsList/>}/>
-                  <Route path="create" element={<SubjectsCreate/>}/>
-                </Route>
+              <Routes>
+                <Route
+                  element={
+                    <Layout>
+                      <Outlet />
+                    </Layout>
+                  }
+                >
+                  {/* DASHBOARD ROUTE */}
+                  <Route path="/" element={<Dashboard />} />
+                  {/* SUBJECT ROUTE */}
+                  <Route path="subjects">
+                    <Route index element={<SubjectsList />} />
+                    <Route path="create" element={<SubjectsCreate />} />
+                  </Route>
+                  {/* CLASSES ROUTE */}
+                  <Route path="classes">
+                    <Route index element={<ClassesList />} />
+                    <Route path="create" element={<ClassesCreate />} />
+                  </Route>
+                  {/* COURSES ROUTE */}
+                  <Route path="courses">
+                    <Route index element={<CoursesList/>}/>
+                    <Route path="create" element={<CoursesCreate/>}/>
+                  </Route>
+                  {/* BATCHES ROUTE */}
+                  <Route path='batches'>
+                    <Route path="create" element={<BatchesCreate/>} />
+                    <Route index path="manage" element={<BatchesManage/>} />
+                  </Route>
                 </Route>
               </Routes>
               <Toaster />
