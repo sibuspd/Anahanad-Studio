@@ -68,10 +68,18 @@ const buildHttpError = async (response: Response): Promise<HttpError> => {
 const options: CreateDataProviderOptions = {
   // >> OPTION 1: SIMPLE REST DATA PROVIDER
   getList: {
-    getEndpoint: ({ resource } ) => resource,
+    getEndpoint: ({ resource } ) => {
+      // console.log("GET ENDPOINT:", resource);
+      return resource;
+    },
 
     // Below is the default implementation of a function that returns the params to be sent to the backend
     buildQueryParams: async ( { resource, pagination, filters }) => {
+      // console.count("buildQueryParams");
+      // console.log("RESOURCE:", resource);
+      // console.log("PAGINATION:", pagination);
+      // console.log("FILTERS:", filters);
+
       const page = pagination?.currentPage ?? 1; // pagination decides which page to fetch
       const pageSize = pagination?.pageSize ?? 10; // pageSize decides how many items to fetch per page
 
@@ -126,13 +134,16 @@ const options: CreateDataProviderOptions = {
     },  
     
     mapResponse: async (response) => {
+      // console.log(">>> mapResponse reached", response.status);
       if(!response.ok) throw await buildHttpError(response);
 
       const payload: ListResponse = await response.clone().json();
+      // console.log(">>> payload", payload);
       return payload.data ?? [];
     },
 
     getTotalCount: async ( response ) => {
+      // console.log(">>> getTotalCount reached");
       if(!response.ok) throw await buildHttpError(response);
 
       const payload: ListResponse = await response.clone().json();
