@@ -54,6 +54,16 @@ const Create = () => {
   });
 
   /**
+   * ---------------------------------------------------------
+   * REGISTER HIDDEN FORM FIELDS
+   * ---------------------------------------------------------
+   */
+  const bannerPublicId = useWatch({
+    control: form.control,
+    name: "bannerCldPubId",
+  });
+
+  /**
    * ---------------------------------------------
    * SHARED PAGINATION
    * ---------------------------------------------
@@ -177,7 +187,21 @@ const Create = () => {
    * ------------------------------------------------------------------
    */
 
-  const handleBannerUpload = (file: UploadWidgetValue) => {
+  const handleBannerUpload = (file: UploadWidgetValue | null) => {
+    if (!file) {
+      form.setValue("bannerUrl", "", {
+        shouldDirty: true,
+        shouldValidate: true,
+      });
+
+      form.setValue("bannerCldPubId", "", {
+        shouldDirty: true,
+        shouldValidate: true,
+      });
+
+      return;
+    }
+
     form.setValue("bannerUrl", file.url, {
       shouldDirty: true,
       shouldValidate: true,
@@ -210,7 +234,7 @@ const Create = () => {
 
           <Card>
             <CardHeader>
-              <CardTitle>Session Cover</CardTitle>
+              <CardTitle>Upload a subject thumbnail</CardTitle>
             </CardHeader>
 
             <CardContent>
@@ -230,7 +254,7 @@ const Create = () => {
                           field.value
                             ? {
                                 url: field.value,
-                                publicId: form.watch("bannerCldPubId") ?? "",
+                                publicId: bannerPublicId ?? "",
                               }
                             : null
                         }
