@@ -28,8 +28,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { Loader2 } from "lucide-react";
+// import { Textarea } from "@/components/ui/textarea";
+// import { Loader2 } from "lucide-react";
 import { User, Batch, Course, Subject, UploadWidgetValue } from "@/types";
 import { useEffect, useMemo, useRef } from "react";
 import { Separator } from "@/components/ui/separator";
@@ -192,11 +192,13 @@ const Create = () => {
       form.setValue("bannerUrl", "", {
         shouldDirty: true,
         shouldValidate: true,
+        shouldTouch: true,
       });
 
       form.setValue("bannerCldPubId", "", {
         shouldDirty: true,
         shouldValidate: true,
+        shouldTouch: true,
       });
 
       return;
@@ -205,11 +207,13 @@ const Create = () => {
     form.setValue("bannerUrl", file.url, {
       shouldDirty: true,
       shouldValidate: true,
+      shouldTouch: true,
     });
 
     form.setValue("bannerCldPubId", file.publicId, {
       shouldDirty: true,
       shouldValidate: true,
+      shouldTouch: true,
     });
   };
 
