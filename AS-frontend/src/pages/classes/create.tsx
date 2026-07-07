@@ -553,9 +553,6 @@ export default Create;
 //                   ) }
 //                   name="bannerUrl" />
 
-//             
-
-//   
 
 //                 <FormField
 //                   control={control}
