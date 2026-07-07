@@ -216,7 +216,7 @@ const Create = () => {
               />
             </CardContent>
           </Card>
-          <Separator/>
+          <Separator />
 
           {/* ------------------------------------------------ */}
           {/* COURSE DETAILS                                  */}
@@ -316,7 +316,7 @@ const Create = () => {
                     <FormLabel>Select a batch</FormLabel>
 
                     <Select
-                      value={field.value? String(field.value) : undefined}
+                      value={field.value ? String(field.value) : undefined}
                       onValueChange={(value) => field.onChange(Number(value))}
                     >
                       <FormControl>
@@ -382,9 +382,103 @@ const Create = () => {
               />
             </CardContent>
           </Card>
-          <Separator/>
+          <Separator />
 
+          {/* ------------------------------------------------ */}
+          {/* SESSION SCHEDULE                                */}
+          {/* ------------------------------------------------ */}
 
+          <Card>
+            <CardHeader>
+              <CardTitle>Session Schedule</CardTitle>
+            </CardHeader>
+
+            <CardContent className="grid gap-6 md:grid-cols-2">
+              {/* Session Date */}
+
+              <FormField
+                control={form.control}
+                name="sessionDate"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Session Date</FormLabel>
+
+                    <FormControl>
+                      <Input type="date" {...field} min={new Date().toISOString().split("T")[0]}/>
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Status */}
+
+              <FormField
+                control={form.control}
+                name="status"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Status</FormLabel>
+
+                    <Select value={field.value} onValueChange={field.onChange}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                      </FormControl>
+
+                      <SelectContent>
+                        <SelectItem value="scheduled">Scheduled</SelectItem>
+
+                        <SelectItem value="completed">Completed</SelectItem>
+
+                        <SelectItem value="cancelled">Cancelled</SelectItem>
+                      </SelectContent>
+                    </Select>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Start Time */}
+
+              <FormField
+                control={form.control}
+                name="startTime"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Start Time</FormLabel>
+
+                    <FormControl>
+                      <Input type="time" {...field} />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* End Time */}
+
+              <FormField
+                control={form.control}
+                name="endTime"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>End Time</FormLabel>
+
+                    <FormControl>
+                      <Input type="time" {...field} />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </CardContent>
+          </Card>
         </form>
       </Form>
     </CreateView>
