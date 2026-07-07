@@ -5,7 +5,6 @@ import {
   CreateViewHeader,
 } from "@/components/refine-ui/views/create-view";
 import { useList, CrudFilter } from "@refinedev/core";
-// import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -34,7 +33,7 @@ import { Loader2 } from "lucide-react";
 import { User, Batch, Course, Subject, UploadWidgetValue } from "@/types";
 import { useEffect, useMemo, useRef } from "react";
 import { Separator } from "@/components/ui/separator";
-
+import UploadWidget from "@/components/upload-widget";
 const Create = () => {
   /**
    * ---------------------------------------------
@@ -205,6 +204,46 @@ const Create = () => {
       <CreateViewHeader title="Create New Session" />
       <Form {...form}>
         <form onSubmit={onSubmit} className="space-y-6">
+          {/* ------------------------------------------------ */}
+          {/* SESSION COVER                                   */}
+          {/* ------------------------------------------------ */}
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Session Cover</CardTitle>
+            </CardHeader>
+
+            <CardContent>
+              <FormField
+                control={form.control}
+                name="bannerUrl"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Cover Image
+                      <span className="text-orange-600">*</span>
+                    </FormLabel>
+
+                    <FormControl>
+                      <UploadWidget
+                        value={
+                          field.value
+                            ? {
+                                url: field.value,
+                                publicId: form.watch("bannerCldPubId") ?? "",
+                              }
+                            : null
+                        }
+                        onChange={handleBannerUpload}
+                      />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </CardContent>
+          </Card>
           {/* ---------------------------------------------------------- */}
           {/* BASIC INFORMATION */}
           {/* ---------------------------------------------------------- */}
