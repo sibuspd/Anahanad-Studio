@@ -31,8 +31,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2 } from "lucide-react";
-import UploadWidget from "@/components/upload-widget";
-import { User, Batch, Course, Subject } from "@/types";
+import { User, Batch, Course, Subject, UploadWidgetValue } from "@/types";
 import { useEffect, useMemo, useRef } from "react";
 import { Separator } from "@/components/ui/separator";
 
