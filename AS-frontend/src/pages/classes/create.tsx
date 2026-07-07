@@ -5,7 +5,6 @@ import {
   CreateViewHeader,
 } from "@/components/refine-ui/views/create-view";
 import { useList, CrudFilter } from "@refinedev/core";
-// import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -29,13 +28,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { Loader2 } from "lucide-react";
-import UploadWidget from "@/components/upload-widget";
-import { User, Batch, Course, Subject } from "@/types";
+// import { Textarea } from "@/components/ui/textarea";
+// import { Loader2 } from "lucide-react";
+import { User, Batch, Course, Subject, UploadWidgetValue } from "@/types";
 import { useEffect, useMemo, useRef } from "react";
 import { Separator } from "@/components/ui/separator";
-
+import UploadWidget from "@/components/upload-widget";
 const Create = () => {
   /**
    * ---------------------------------------------
@@ -53,6 +51,16 @@ const Create = () => {
   const selectedSubjectId = useWatch({
     control: form.control,
     name: "subjectId",
+  });
+
+  /**
+   * ---------------------------------------------------------
+   * REGISTER HIDDEN FORM FIELDS
+   * ---------------------------------------------------------
+   */
+  const bannerPublicId = useWatch({
+    control: form.control,
+    name: "bannerCldPubId",
   });
 
   /**
@@ -175,6 +183,42 @@ const Create = () => {
 
   /**
    * ------------------------------------------------------------------
+   * BANNER UPLOAD
+   * ------------------------------------------------------------------
+   */
+
+  const handleBannerUpload = (file: UploadWidgetValue | null) => {
+    if (!file) {
+      form.setValue("bannerUrl", "", {
+        shouldDirty: true,
+        shouldValidate: true,
+        shouldTouch: true,
+      });
+
+      form.setValue("bannerCldPubId", "", {
+        shouldDirty: true,
+        shouldValidate: true,
+        shouldTouch: true,
+      });
+
+      return;
+    }
+
+    form.setValue("bannerUrl", file.url, {
+      shouldDirty: true,
+      shouldValidate: true,
+      shouldTouch: true,
+    });
+
+    form.setValue("bannerCldPubId", file.publicId, {
+      shouldDirty: true,
+      shouldValidate: true,
+      shouldTouch: true,
+    });
+  };
+
+  /**
+   * ------------------------------------------------------------------
    * SUBMIT
    * ------------------------------------------------------------------
    */
@@ -188,6 +232,46 @@ const Create = () => {
       <CreateViewHeader title="Create New Session" />
       <Form {...form}>
         <form onSubmit={onSubmit} className="space-y-6">
+          {/* ------------------------------------------------ */}
+          {/* SESSION COVER                                   */}
+          {/* ------------------------------------------------ */}
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Upload a subject thumbnail</CardTitle>
+            </CardHeader>
+
+            <CardContent>
+              <FormField
+                control={form.control}
+                name="bannerUrl"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Cover Image
+                      <span className="text-orange-600">*</span>
+                    </FormLabel>
+
+                    <FormControl>
+                      <UploadWidget
+                        value={
+                          field.value
+                            ? {
+                                url: field.value,
+                                publicId: bannerPublicId ?? "",
+                              }
+                            : null
+                        }
+                        onChange={handleBannerUpload}
+                      />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </CardContent>
+          </Card>
           {/* ---------------------------------------------------------- */}
           {/* BASIC INFORMATION */}
           {/* ---------------------------------------------------------- */}
@@ -216,7 +300,7 @@ const Create = () => {
               />
             </CardContent>
           </Card>
-          <Separator/>
+          <Separator />
 
           {/* ------------------------------------------------ */}
           {/* COURSE DETAILS                                  */}
@@ -316,7 +400,7 @@ const Create = () => {
                     <FormLabel>Select a batch</FormLabel>
 
                     <Select
-                      value={field.value? String(field.value) : undefined}
+                      value={field.value ? String(field.value) : undefined}
                       onValueChange={(value) => field.onChange(Number(value))}
                     >
                       <FormControl>
@@ -382,9 +466,107 @@ const Create = () => {
               />
             </CardContent>
           </Card>
-          <Separator/>
+          <Separator />
 
+          {/* ------------------------------------------------ */}
+          {/* SESSION SCHEDULE                                */}
+          {/* ------------------------------------------------ */}
 
+          <Card>
+            <CardHeader>
+              <CardTitle>Session Schedule</CardTitle>
+            </CardHeader>
+
+            <CardContent className="grid gap-6 md:grid-cols-2">
+              {/* Session Date */}
+
+              <FormField
+                control={form.control}
+                name="sessionDate"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Session Date</FormLabel>
+
+                    <FormControl>
+                      <Input
+                        type="date"
+                        {...field}
+                        min={new Date().toISOString().split("T")[0]}
+                      />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Status */}
+
+              <FormField
+                control={form.control}
+                name="status"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Status</FormLabel>
+
+                    <Select value={field.value} onValueChange={field.onChange}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                      </FormControl>
+
+                      <SelectContent>
+                        <SelectItem value="scheduled">Scheduled</SelectItem>
+
+                        <SelectItem value="completed">Completed</SelectItem>
+
+                        <SelectItem value="cancelled">Cancelled</SelectItem>
+                      </SelectContent>
+                    </Select>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Start Time */}
+
+              <FormField
+                control={form.control}
+                name="startTime"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Start Time</FormLabel>
+
+                    <FormControl>
+                      <Input type="time" {...field} />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* End Time */}
+
+              <FormField
+                control={form.control}
+                name="endTime"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>End Time</FormLabel>
+
+                    <FormControl>
+                      <Input type="time" {...field} />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </CardContent>
+          </Card>
         </form>
       </Form>
     </CreateView>
@@ -458,239 +640,6 @@ export default Create;
 //                     </FormItem>
 //                   ) }
 //                   name="bannerUrl" />
-
-//                 {/* Rendering a form field  - SESSION/CLASS/TOPIC NAME*/}
-//                 <FormField
-//                   control={control}
-//                   name="name"
-//                   render={({ field }) => (
-//                     <FormItem>
-//                       <FormLabel>
-//                         Session/Class Name{" "}
-//                         <span className="text-orange-600">*</span>
-//                       </FormLabel>
-//                       <FormControl>
-//                         <Input
-//                           placeholder="Introduction to 7 Musical Modes"
-//                           {...field}
-//                         />
-//                       </FormControl>
-//                       <FormDescription>
-//                         This is the lesson name to be taught
-//                       </FormDescription>
-//                       <FormMessage />
-//                     </FormItem>
-//                   )}
-//                 />
-
-//                 {/* BATCH TYPE */}
-//                 <div className="grid sm:grid-cols-2 gap-4">
-//                   <FormField
-//                     control={control}
-//                     name="batchId"
-//                     render={({ field }) => (
-//                       <FormItem>
-//                         <FormLabel>
-//                           Batch Name <span className="text-orange-600">*</span>
-//                         </FormLabel>
-//                         <Select disabled={batchesLoading}
-//                           onValueChange={(value) =>
-//                             field.onChange(Number(value))
-//                           }
-//                           value={field?.value?.toString()}
-//                         >
-//                           <FormControl>
-//                             <SelectTrigger className="w-full">
-//                               <SelectValue placeholder="Select Batch" />
-//                             </SelectTrigger>
-//                           </FormControl>
-
-//                           <SelectContent>
-//                             {batches.map((batch) => (
-//                               <SelectItem
-//                                 key={batch.id}
-//                                 value={batch.id.toString()}
-//                               >
-//                                 {batch.name}
-//                               </SelectItem>
-//                             ))}
-//                           </SelectContent>
-//                         </Select>
-
-//                         <FormDescription>
-//                           The Batch this class is assigned to ** Each batch has
-//                           limited capacity **
-//                         </FormDescription>
-//                         <FormMessage />
-//                       </FormItem>
-//                     )}
-//                   />
-
-//                   {/* SUBJECT NAME */}
-//                   <div className="grid sm:grid-cols-2 gap-4">
-//                     <FormField
-//                     control={control}
-//                     name="subjectId"
-//                     render={({ field }) => (
-//                       <FormItem>
-//                         <FormLabel>
-//                           Subject Name <span className="text-orange-600">*</span>
-//                         </FormLabel>
-
-//                         <Select
-//                           onValueChange={(value) =>
-//                             field.onChange(Number(value))
-//                           }
-//                           value={field?.value?.toString()}
-//                           disabled={subjectsLoading}
-//                         >
-//                           <FormControl>
-//                             <SelectTrigger className="w-full">
-//                               <SelectValue placeholder="Select Subject" />
-//                             </SelectTrigger>
-//                           </FormControl>
-
-//                           <SelectContent>
-//                             {subjects.map((subject) => (
-//                               <SelectItem
-//                                 key={subject.id}
-//                                 value={subject.id.toString()}
-//                               >
-//                                 {subject.name}
-//                               </SelectItem>
-//                             ))}
-//                           </SelectContent>
-//                         </Select>
-
-//                         <FormDescription>
-//                           Choose the subject first. Courses will be filtered automatically.
-//                         </FormDescription>
-//                         <FormMessage />
-//                       </FormItem>
-//                     )}
-//                   />
-//                   </div>
-
-//                   {/* COURSE NAME */}
-
-//                 <div className="grid sm:grid-cols-2 gap-4">
-//                   {/* TEACHER TO BE ASSIGNED */}
-//                   <FormField
-//                     control={control}
-//                     name="teacherId"
-//                     render={({ field }) => (
-//                       <FormItem>
-//                         <FormLabel>
-//                           Teacher to be assigned{" "}
-//                           <span className="text-orange-600">*</span>
-//                         </FormLabel>
-//                         <Select disabled={teachersLoading}
-//                           onValueChange={(value) =>
-//                             field.onChange(value)
-//                           }
-//                           value={field?.value?.toString()}
-//                         >
-//                           <FormControl>
-//                             <SelectTrigger className="w-full">
-//                               <SelectValue placeholder="Select a teacher" />
-//                             </SelectTrigger>
-//                           </FormControl>
-//                           <SelectContent>
-//                             {teachers.map((teacher) => (
-//                               <SelectItem
-//                                 value={teacher.id}
-//                                 key={teacher.id}
-//                               >
-//                                 {teacher.name}
-//                               </SelectItem>
-//                             ))}
-//                           </SelectContent>
-//                         </Select>
-//                         <FormDescription>
-//                           Allot teacher according to relevant
-//                           discipline/expertise
-//                         </FormDescription>
-//                         <FormMessage />
-//                       </FormItem>
-//                     )}
-//                   />
-
-//                   {/* STATUS OF THE SESSION */}
-//                   <FormField
-//                     control={control}
-//                     name="status"
-//                     render={({ field }) => (
-//                       <FormItem>
-//                         <FormLabel>
-//                           Status <span className="text-orange-600">*</span>
-//                         </FormLabel>
-//                         <Select
-//                           onValueChange={field.onChange}
-//                           value={field.value}
-//                         >
-//                           <FormControl>
-//                             <SelectTrigger className="w-full">
-//                               <SelectValue placeholder="Select status" />
-//                             </SelectTrigger>
-//                           </FormControl>
-//                           <SelectContent>
-//                             <SelectItem value="scheduled">Scheduled</SelectItem>
-//                             <SelectItem value="completed">Completed</SelectItem>
-//                             <SelectItem value="cancelled">Cancelled</SelectItem>
-//                           </SelectContent>
-//                         </Select>
-//                         <FormMessage />
-//                       </FormItem>
-//                     )}
-//                   />
-//                 </div>
-
-//                 <div className="grid sm:grid-cols-3 gap-4">
-//                   {/* SESSION DATE */}
-//                   <FormField
-//                     control={control}
-//                     name="sessionDate"
-//                     render={({ field }) => (
-//                       <FormItem>
-//                         <FormLabel>Session Date</FormLabel>
-//                         <FormControl>
-//                           <Input type="date" {...field} />
-//                         </FormControl>
-//                         <FormMessage />
-//                       </FormItem>
-//                     )}
-//                   />
-
-//                   {/* SESSION START TIME */}
-//                   <FormField
-//                     control={control}
-//                     name="startTime"
-//                     render={({ field }) => (
-//                       <FormItem>
-//                         <FormLabel>Start Time</FormLabel>
-//                         <FormControl>
-//                           <Input type="time" {...field} />
-//                         </FormControl>
-//                         <FormMessage />
-//                       </FormItem>
-//                     )}
-//                   />
-
-//                   {/* SESSION END TIME */}
-//                   <FormField
-//                     control={control}
-//                     name="endTime"
-//                     render={({ field }) => (
-//                       <FormItem>
-//                         <FormLabel>End Time</FormLabel>
-//                         <FormControl>
-//                           <Input type="time" {...field} />
-//                         </FormControl>
-//                         <FormMessage />
-//                       </FormItem>
-//                     )}
-//                   />
-//                 </div>
 
 //                 <FormField
 //                   control={control}
