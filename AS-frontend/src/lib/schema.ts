@@ -68,7 +68,10 @@ export const sessionSchema = z.object({
         .number({ required_error: "Batch Id is required", invalid_type_error: "Batch Id is required",})
         .min(1, "Batch Id is required"),
     subjectId: z.coerce.number().optional(), // Optional because the session's subject is not sent to the database
-    courseId: z.coerce.number(),
+    courseId: z.coerce.number({
+        required_error: "Course is required",
+        invalid_type_error: "Course is required",
+    }).min(1, "Course is required").optional(),
     teacherId: z.coerce.string({ required_error: "Teacher ID is required", })
         .min(1, "Teacher is required"),
     bannerUrl: z
