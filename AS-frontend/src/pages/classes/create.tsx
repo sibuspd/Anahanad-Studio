@@ -57,8 +57,7 @@ const Create = () => {
 
   const go = useGo();
   const { open } = useNotification();
-  const { mutateAsync: createSession, isPending: isCreatingSession } =
-    useCreate();
+  const { mutateAsync: createSession } = useCreate();
 
   const selectedSubjectId = useWatch({
     control: form.control,
@@ -248,6 +247,7 @@ const Create = () => {
        * Create Session
        * --------------------------------------------------------------
        */
+      console.log(payload);
       await createSession({
         resource: "class-sessions",
         values: payload,
@@ -275,14 +275,18 @@ const Create = () => {
        * --------------------------------------------------------------
        */
       go({
-        to: "/class-sessions",
+        to: "/classes",
         type: "replace",
       });
-    } catch (e: any) {
+    } catch (e: unknown) {
       console.log(e);
+      let message = "Failed to create session";
+      if(e instanceof Error){
+        message = e.message;
+      }
       open?.({
         type: "error",
-        message: e?.message ?? "Failed to create session",
+        message,
       });
     }
   });
@@ -636,13 +640,13 @@ const Create = () => {
             <Button
               type="button"
               variant="outline"
-              onClick={() => go({ to: "/class-sessions" })}
-              disabled={isCreatingSession}
+              onClick={() => go({ to: "/classes/create" })}
+              disabled={form.formState.isSubmitting}
             >
               Cancel
             </Button >
-            <Button type="submit" disabled={isCreatingSession}>
-              {isCreatingSession? (<>
+            <Button type="submit" disabled={form.formState.isSubmitting}>
+              {form.formState.isSubmitting? (<>
               <Loader2 className="mr-2 h-4 w-4 animate-spin"/>Creating Session...</>):("Create Session")}
             </Button>
           </div>
