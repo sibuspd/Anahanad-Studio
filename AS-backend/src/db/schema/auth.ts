@@ -2,7 +2,7 @@
 
 import { pgTable, text, timestamp, boolean, pgEnum, index } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
-import { classSessions, enrollments, attendance } from "./app";
+import { classSessions, enrollments, attendance } from "./app.js";
 
 export const roleEnum = pgEnum("role", ["super_admin", "admin", "hod", "teacher", "student", "parent", "accountant"]);
 
