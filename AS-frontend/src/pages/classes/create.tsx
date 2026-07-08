@@ -4,7 +4,13 @@ import {
   CreateView,
   CreateViewHeader,
 } from "@/components/refine-ui/views/create-view";
-import { useList, CrudFilter } from "@refinedev/core";
+import {
+  useList,
+  CrudFilter,
+  useCreate,
+  useGo,
+  useNotification,
+} from "@refinedev/core";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -29,11 +35,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 // import { Textarea } from "@/components/ui/textarea";
-// import { Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { User, Batch, Course, Subject, UploadWidgetValue } from "@/types";
 import { useEffect, useMemo, useRef } from "react";
 import { Separator } from "@/components/ui/separator";
 import UploadWidget from "@/components/upload-widget";
+import { Button } from "@/components/ui/button";
 const Create = () => {
   /**
    * ---------------------------------------------
@@ -47,6 +54,11 @@ const Create = () => {
       status: "scheduled",
     },
   });
+
+  const go = useGo();
+  const { open } = useNotification();
+  const { mutateAsync: createSession, isPending: isCreatingSession } =
+    useCreate();
 
   const selectedSubjectId = useWatch({
     control: form.control,
@@ -224,7 +236,55 @@ const Create = () => {
    */
 
   const onSubmit = form.handleSubmit(async (values) => {
-    console.log(values);
+    try {
+      /**
+       * --------------------------------------------------------------
+       * Remove UI-only fields
+       * --------------------------------------------------------------
+       */
+      const { subjectId, inviteCode, ...payload } = values;
+      /**
+       * --------------------------------------------------------------
+       * Create Session
+       * --------------------------------------------------------------
+       */
+      await createSession({
+        resource: "class-sessions",
+        values: payload,
+      });
+      /**
+       * --------------------------------------------------------------
+       * Success Notification
+       * --------------------------------------------------------------
+       */
+      open?.({
+        type: "success",
+        message: "Session created successfully",
+      });
+      /**
+       * --------------------------------------------------------------
+       * Reset Form
+       * --------------------------------------------------------------
+       */
+
+      form.reset();
+
+      /**
+       * --------------------------------------------------------------
+       * Navigate back to Sessions
+       * --------------------------------------------------------------
+       */
+      go({
+        to: "/class-sessions",
+        type: "replace",
+      });
+    } catch (e: any) {
+      console.log(e);
+      open?.({
+        type: "error",
+        message: e?.message ?? "Failed to create session",
+      });
+    }
   });
 
   return (
@@ -567,13 +627,31 @@ const Create = () => {
               />
             </CardContent>
           </Card>
+          <Separator />
+
+          {/* ------------------------------------------------ */}
+          {/* FORM ACTIONS                                    */}
+          {/* ------------------------------------------------ */}
+          <div className="flex justify-end gap-3">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => go({ to: "/class-sessions" })}
+              disabled={isCreatingSession}
+            >
+              Cancel
+            </Button >
+            <Button type="submit" disabled={isCreatingSession}>
+              {isCreatingSession? (<>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin"/>Creating Session...</>):("Create Session")}
+            </Button>
+          </div>
         </form>
       </Form>
     </CreateView>
   );
 };
 export default Create;
-
 
 //                 <FormField
 //                   control={control}
