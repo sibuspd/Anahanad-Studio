@@ -34,7 +34,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-// import { Textarea } from "@/components/ui/textarea";
+import { Textarea } from "@/components/ui/textarea";
 import { Loader2 } from "lucide-react";
 import { User, Batch, Course, Subject, UploadWidgetValue } from "@/types";
 import { useEffect, useMemo, useRef } from "react";
@@ -235,6 +235,8 @@ const Create = () => {
    */
 
   const onSubmit = form.handleSubmit(async (values) => {
+    console.log("onSubmit reached");
+    console.log(values);
     try {
       /**
        * --------------------------------------------------------------
@@ -281,7 +283,7 @@ const Create = () => {
     } catch (e: unknown) {
       console.log(e);
       let message = "Failed to create session";
-      if(e instanceof Error){
+      if (e instanceof Error) {
         message = e.message;
       }
       open?.({
@@ -354,6 +356,30 @@ const Create = () => {
                     <FormControl>
                       <Input
                         placeholder="e.g. Piano Foundation - Saturday Morning"
+                        {...field}
+                      />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* SESSION DESCRIPTION */}
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Description
+                      <span className="text-orange-600">*</span>
+                    </FormLabel>
+
+                    <FormControl>
+                      <Textarea
+                        placeholder="Briefly describe this class session..."
+                        rows={4}
                         {...field}
                       />
                     </FormControl>
@@ -644,10 +670,16 @@ const Create = () => {
               disabled={form.formState.isSubmitting}
             >
               Cancel
-            </Button >
+            </Button>
             <Button type="submit" disabled={form.formState.isSubmitting}>
-              {form.formState.isSubmitting? (<>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin"/>Creating Session...</>):("Create Session")}
+              {form.formState.isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Creating Session...
+                </>
+              ) : (
+                "Create Session"
+              )}
             </Button>
           </div>
         </form>
@@ -673,24 +705,3 @@ export default Create;
 //                     </FormItem>
 //                   )}
 //                 />
-
-//                 <Separator />
-
-//                 <Button type="submit" size="lg" className="w-full">
-//                   {isSubmitting ? (
-//                     <div className="flex gap-1">
-//                       <span>Creating Class...</span>
-//                       <Loader2 className="inline-block ml-2 animate-spin" />
-//                     </div>
-//                   ) : (
-//                     "Create Class"
-//                   )}
-//                 </Button>
-//               </form>
-//             </Form>
-//           </CardContent>
-//         </Card>
-//       </div>
-//     </CreateView>
-//   //   );
-// };
