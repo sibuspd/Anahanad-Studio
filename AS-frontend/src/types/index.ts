@@ -181,8 +181,7 @@ export type ClassDetails = {
     id: number;
     name: string;
     description: string;
-    status: "active" | "inactive";
-    capacity: number;
+    status: "scheduled" | "completed" | "cancelled";
     courseCode: string;
     courseName: string;
     bannerUrl?: string;
