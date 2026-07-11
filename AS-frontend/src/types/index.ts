@@ -100,22 +100,22 @@ export type Department = {
     description: string;
 };
 
-export type ClassSession = {
-    id: number;
-    name: string;
-    description?: string;
-    sessionDate: string;
-    startTime: string;
-    endTime: string;
-    status: "scheduled" | "completed" | "cancelled";
-    inviteCode: string;
-    bannerCldPubId?: string;
-    bannerUrl?: string;
-    batch: Batch;
-    course: Course;
-    teacher: User;
-    department?: Department;
-};
+// export type ClassSession = {
+//     id: number;
+//     name: string;
+//     description?: string;
+//     sessionDate: string;
+//     startTime: string;
+//     endTime: string;
+//     status: "scheduled" | "completed" | "cancelled";
+//     inviteCode: string;
+//     bannerCldPubId?: string;
+//     bannerUrl?: string;
+//     batch: Batch;
+//     course: Course;
+//     teacher: User;
+//     department?: Department;
+// };
 
 export type SignUpPayload = {
     email: string;
@@ -176,3 +176,20 @@ export interface ClassSession {
         name: string;
     }
 }
+
+export type ClassDetails = {
+    id: number;
+    name: string;
+    description: string;
+    status: "active" | "inactive";
+    capacity: number;
+    courseCode: string;
+    courseName: string;
+    bannerUrl?: string;
+    bannerCldPubId?: string;
+    subject?: Subject;
+    teacher?: User;
+    department?: Department;
+    schedules: Schedule[];
+    inviteCode?: string;
+};
