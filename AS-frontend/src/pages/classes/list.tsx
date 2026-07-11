@@ -17,6 +17,7 @@ import { useList, CrudFilter } from "@refinedev/core";
 import { ColumnDef } from "@tanstack/react-table";
 import { Batch, Course, User, ClassSession } from "@/types";
 import { Breadcrumb } from "@/components/refine-ui/layout/breadcrumb";
+import { ShowButton } from "@/components/refine-ui/buttons/show";
 
 //Rendering a list of all class Sessions
 
@@ -164,6 +165,13 @@ const SessionsList = () => {
         cell: ({ getValue }) => (
           <Badge variant="secondary">{getValue<string>()}</Badge>
         ),
+      },
+      {
+        id: 'details',
+        size: 140,
+        header: () => <p className="column-title">Details"</p>,
+        cell: ( { row }) => <ShowButton resource="classes" recordItemId={row.original.id}
+        variant="outline" size="sm" >View</ShowButton>
       },
     ],
     [],
