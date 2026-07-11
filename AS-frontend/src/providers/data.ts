@@ -107,16 +107,15 @@ const options: CreateDataProviderOptions = {
     },  
     
     mapResponse: async (response) => {
-      // console.log(">>> mapResponse reached", response.status);
       if(!response.ok) throw await buildHttpError(response);
 
       const payload: ListResponse = await response.clone().json();
-      // console.log(">>> payload", payload);
+      
       return payload.data ?? [];
     },
 
     getTotalCount: async ( response ) => {
-      // console.log(">>> getTotalCount reached");
+    
       if(!response.ok) throw await buildHttpError(response);
 
       const payload: ListResponse = await response.clone().json();
