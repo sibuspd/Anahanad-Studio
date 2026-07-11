@@ -16,6 +16,7 @@ import { useTable } from "@refinedev/react-table";
 import { useList, CrudFilter } from "@refinedev/core";
 import { ColumnDef } from "@tanstack/react-table";
 import { Batch, Course, User, ClassSession } from "@/types";
+import { Breadcrumb } from "@/components/refine-ui/layout/breadcrumb";
 
 //Rendering a list of all class Sessions
 
@@ -124,55 +125,58 @@ const SessionsList = () => {
    * TABLE COLUMNS
    * ---------------------------
    */
-  columns: useMemo<ColumnDef<ClassSession>[]>(() => [
-    {
-      id: "subjectCode",
-      accessorKey: "course.subject.code",
-      header: () => <p className="column-title">Subject Code</p>,
-      cell: ({ getValue }) => <Badge>{getValue<string>()}</Badge>,
-    },
-    {
-      id: "course",
-      accessorKey: "course.name",
-      header: () => <p className="column-title">Course</p>,
-    },
+  const columns = useMemo<ColumnDef<ClassSession>[]>(
+    () => [
+      {
+        id: "subjectCode",
+        accessorKey: "course.subject.code",
+        header: () => <p className="column-title">Subject Code</p>,
+        cell: ({ getValue }) => <Badge>{getValue<string>()}</Badge>,
+      },
+      {
+        id: "course",
+        accessorKey: "course.name",
+        header: () => <p className="column-title">Course</p>,
+      },
 
-    {
-      id: "department",
-      accessorKey: "course.subject.department.name",
-      header: () => <p className="column-title">Department</p>,
-    },
+      {
+        id: "department",
+        accessorKey: "course.subject.department.name",
+        header: () => <p className="column-title">Department</p>,
+      },
 
-    {
-      id: "teacher",
-      accessorKey: "teacher.name",
-      header: () => <p className="column-title">Teacher</p>,
-    },
+      {
+        id: "teacher",
+        accessorKey: "teacher.name",
+        header: () => <p className="column-title">Teacher</p>,
+      },
 
-    {
-      id: "batch",
-      accessorKey: "batch.name",
-      header: () => <p className="column-title">Batch</p>,
-    },
+      {
+        id: "batch",
+        accessorKey: "batch.name",
+        header: () => <p className="column-title">Batch</p>,
+      },
 
-    {
-      id: "status",
-      accessorKey: "status",
-      header: () => <p className="column-title">Status</p>,
-      cell: ({ getValue }) => (
-        <Badge variant="secondary">{getValue<string>()}</Badge>
-      ),
-    },
-  ], []);
+      {
+        id: "status",
+        accessorKey: "status",
+        header: () => <p className="column-title">Status</p>,
+        cell: ({ getValue }) => (
+          <Badge variant="secondary">{getValue<string>()}</Badge>
+        ),
+      },
+    ],
+    [],
+  );
 
   /**---------------------------
    * USE TABLE
    * ---------------------------
    */
-  const classTable = useTable<ClassSession>( {
+  const classTable = useTable<ClassSession>({
     columns,
     refineCoreProps: {
-      resource: "class-sessions",
+      resource: "classes",
       pagination: {
         pageSize: 10,
         mode: "server",
@@ -182,19 +186,107 @@ const SessionsList = () => {
           ...searchFilters,
           ...courseFilters,
           ...batchFilters,
-          ...teacherFiltersPermanent
+          ...teacherFiltersPermanent,
         ],
       },
       sorters: {
-        initial: [{
-          field: "id",
-          order: "desc",
-        }],
+        initial: [
+          {
+            field: "id",
+            order: "desc",
+          },
+        ],
       },
     },
-  } );
+  });
 
-  return <div>List of Classes</div>;
+  return (
+    <ListView>
+      <Breadcrumb />
+
+      <h1 className="page-title">List of Sessions</h1>
+
+      <div className="intro-row">
+        <p>Quick access to essential metrics and management tools</p>
+
+        <div className="actions-rows">
+          {/* Search */}
+          <div className="search-field">
+            <Search className="search-icon" />
+
+            <Input
+              type="text"
+              placeholder="Search by Session/Class Name"
+              className="pl-10 w-full"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+
+          {/* Filters */}
+          <div className="flex gap-2 flex-wrap w-full sm:w-auto">
+            {/* Course */}
+            <Select value={selectedCourse} onValueChange={setSelectedCourse}>
+              <SelectTrigger className="min-w-[180px]">
+                <SelectValue placeholder="Course" />
+              </SelectTrigger>
+
+              <SelectContent>
+                <SelectItem value="all">All Courses</SelectItem>
+
+                {courses.map((course) => (
+                  <SelectItem key={course.id} value={course.id.toString()}>
+                    {course.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            {/* Batch */}
+            <Select value={selectedBatch} onValueChange={setSelectedBatch}>
+              <SelectTrigger className="min-w-[180px]">
+                <SelectValue placeholder="Batch" />
+              </SelectTrigger>
+
+              <SelectContent>
+                <SelectItem value="all">All Batches</SelectItem>
+                {batches.map((batch) => (
+                  <SelectItem key={batch.id} value={batch.id.toString()}>
+                    {batch.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            {/* Teacher */}
+            <Select value={selectedTeacher} onValueChange={setSelectedTeacher}>
+              <SelectTrigger className="min-w-[180px]">
+                <SelectValue placeholder="Teacher" />
+              </SelectTrigger>
+
+              <SelectContent>
+                <SelectItem value="all">All Teachers</SelectItem>
+
+                {teachers.map((teacher) => (
+                  <SelectItem key={teacher.id} value={teacher.id}>
+                    {teacher.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <CreateButton resource="classes"
+            meta={{
+              to:"/classes/create"
+            }} />
+          </div>
+        </div>
+      </div>
+
+      {/* Table */}
+      <DataTable table={classTable} />
+    </ListView>
+  );
 };
 
 export default SessionsList;
