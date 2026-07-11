@@ -18,7 +18,7 @@ import { AlignVerticalDistributeStart, BookOpen, GraduationCap, Home } from "luc
 import { Layout } from "./components/refine-ui/layout/layout";
 import SubjectsList from "./pages/subjects/subjectslist";
 import SubjectsCreate from "./pages/subjects/create";
-import ClassesList from "./pages/classes/list";
+import SessionsList from "./pages/classes/list";
 import ClassesCreate from "./pages/classes/create";
 import CoursesList from "./pages/courses/list";
 import CoursesCreate from "./pages/courses/create";
@@ -91,7 +91,7 @@ function App() {
                   </Route>
                   {/* CLASSES ROUTE */}
                   <Route path="classes">
-                    <Route index element={<ClassesList />} />
+                    <Route index element={<SessionsList />} />
                     <Route path="create" element={<ClassesCreate />} />
                   </Route>
                   {/* COURSES ROUTE */}
