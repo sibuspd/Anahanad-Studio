@@ -20,6 +20,7 @@ import SubjectsList from "./pages/subjects/subjectslist";
 import SubjectsCreate from "./pages/subjects/create";
 import SessionsList from "./pages/classes/list";
 import ClassesCreate from "./pages/classes/create";
+import ClassesShow from "./pages/classes/show";
 import CoursesList from "./pages/courses/list";
 import CoursesCreate from "./pages/courses/create";
 import BatchesCreate from "./pages/batches/create";
@@ -57,6 +58,7 @@ function App() {
                   name: "classes",
                   list: "/classes",
                   create: "classes/create", //Create sub routes
+                  show: 'classes/show/:id', // Display a selected session's details
                   meta: { label: "Classes", icon: <GraduationCap /> },
                 },
                 {
@@ -93,6 +95,7 @@ function App() {
                   <Route path="classes">
                     <Route index element={<SessionsList />} />
                     <Route path="create" element={<ClassesCreate />} />
+                    <Route path="show/:id" element={<ClassesShow />} />
                   </Route>
                   {/* COURSES ROUTE */}
                   <Route path="courses">
