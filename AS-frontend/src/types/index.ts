@@ -143,3 +143,36 @@ export type Batch = {
     capacity: number;
     schedule: Schedule[];
 };
+
+export interface ClassSession {
+    id: number;
+    name: string;
+    status: "scheduled" | "completed" | "cancelled";
+    bannerUrl: string;
+
+    course: {
+        id: number;
+        name: string;
+
+        subject: {
+            id: number;
+            code: string;
+            name: string;
+
+            department: {
+                id: number;
+                name: string;
+            };
+        };
+    };
+
+    batch: {
+        id: number;
+        name: string;
+    };
+
+    teacher: {
+        id: string;
+        name: string;
+    }
+}
