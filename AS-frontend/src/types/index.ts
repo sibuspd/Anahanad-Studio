@@ -179,16 +179,48 @@ export interface ClassSession {
 
 export type ClassDetails = {
     id: number;
+
     name: string;
     description: string;
+
     status: "scheduled" | "completed" | "cancelled";
-    courseCode: string;
-    courseName: string;
+    
+    sessionDate: string;
+    startTime: string;
+    endTime: string;
+
+    inviteCode?: string;
+    
     bannerUrl?: string;
     bannerCldPubId?: string;
-    subject?: Subject;
-    teacher?: User;
-    department?: Department;
-    schedules: Schedule[];
-    inviteCode?: string;
+
+   course: {
+    id: number;
+    name: string;
+
+    subject: {
+        id: number;
+        code:string;
+        name: string;
+
+        department: {
+            id: number;
+            code: string;
+            name: string;
+            description?: string;
+        };
+    };
+   };
+
+   batch: {
+    id: number;
+    name: string;
+   };
+
+   teacher: {
+    id: string;
+    name: string;
+    email?: string;
+    image?: string;  
+   };
 };
