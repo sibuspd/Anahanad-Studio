@@ -99,17 +99,37 @@ router.get("/", async (req, res) => {
 
     // Fetch Sessions
     const sessions = await db
-      .select()
+      .select({
+        // Session Fields
+        ...getTableColumns(classSessions),
+
+        //Related Course
+        course: {
+          id: courses.id,
+          name: courses.name,
+        },
+
+        //Related Batch
+        batch: {
+          id: batches.id,
+          name: batches.name,
+        },
+
+        //Related teacher
+        teacher: {
+          id: user.id,
+          name: user.name,
+        },
+      })
       .from(classSessions)
-      .leftJoin(batches, eq(classSessions.batchId, batches.id))
       .leftJoin(courses, eq(classSessions.courseId, courses.id))
+      .leftJoin(batches, eq(classSessions.batchId, batches.id))
       .leftJoin(user, eq(classSessions.teacherId, user.id))
       .where(whereClause)
       .orderBy(desc(classSessions.createdAt))
       .limit(limitPerPage)
       .offset(offset);
 
-    // Response
     res.status(200).json({
       data: sessions,
       pagination: {
@@ -121,8 +141,10 @@ router.get("/", async (req, res) => {
       totalCount,
     });
   } catch (e) {
-    console.error(`GET /class-sessions error: ${e}`);
-    res.status(500).json({ error: "Failed to get class sessions" });
+    console.error("GET /class-sessions error:", e);
+    res.status(500).json({
+      error: "Failed to fetch class sessions",
+    });
   }
 });
 
@@ -174,11 +196,11 @@ router.post("/", async (req, res) => {
     });
   } catch (e) {
     console.error(`POST /class-sessions error: ${e}`);
-    if(e instanceof z.ZodError){
-        return res.status(400).json({
-            error: "Validation failed",
-            issues: e.issues,
-        });
+    if (e instanceof z.ZodError) {
+      return res.status(400).json({
+        error: "Validation failed",
+        issues: e.issues,
+      });
     }
     res.status(500).json({ error: "Failed to create class session" });
   }
