@@ -217,4 +217,28 @@ router.post("/", async (req, res) => {
   }
 });
 
+// GET /class-sessions/:id | Each class session details on clicking
+router.get('/:id', async (req, res) => {
+  const classId = Number(req.params.id);
+
+  if(!Number.isFinite(classId)) return res.status(400).json({error: "No session found"});
+
+  const [classDetails] = await db.select({
+    ...getTableColumns(classSessions),
+    subject: {
+      ...getTableColumns(subjects),
+    },
+    department: {
+      ...getTableColumns(departments),
+    },
+    teacher: {
+      ...getTableColumns(user),
+    }
+  }).from(classSessions)
+  .leftJoin(subjects, eq(classSessions.courseId, subjects.id))
+  .leftJoin(user, eq(classSessions.teacherId, user.id))
+  .leftJoin(departments, eq(subjects.departmentId, departments.id))
+  .where(eq(classSessions.id, classId)); // whose id mathes the parameter id
+});
+
 export default router;
