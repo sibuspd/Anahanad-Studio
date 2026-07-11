@@ -239,6 +239,11 @@ router.get('/:id', async (req, res) => {
   .leftJoin(user, eq(classSessions.teacherId, user.id))
   .leftJoin(departments, eq(subjects.departmentId, departments.id))
   .where(eq(classSessions.id, classId)); // whose id mathes the parameter id
+
+  if(!classDetails) return res.status(404).json({error: "No session found"});
+  return res.status(200).json({
+    data: classDetails,
+  });
 });
 
 export default router;
