@@ -4,7 +4,7 @@
 import express from "express";
 import { and, desc, eq, getTableColumns, ilike, sql } from "drizzle-orm";
 import { db } from "../db/index.js";
-import { classSessions, courses, batches } from "../db/schema/app.js";
+import { classSessions, courses, batches, subjects, departments } from "../db/schema/app.js";
 import { user } from "../db/schema/auth.js";
 import { z } from "zod";
 
@@ -107,6 +107,15 @@ router.get("/", async (req, res) => {
         course: {
           id: courses.id,
           name: courses.name,
+          subject: {
+            id: subjects.id,
+            code: subjects.code,
+            name: subjects.name,
+            department: {
+              id: departments.id,
+              name: departments.name,
+            }
+          },
         },
 
         //Related Batch
@@ -123,6 +132,8 @@ router.get("/", async (req, res) => {
       })
       .from(classSessions)
       .leftJoin(courses, eq(classSessions.courseId, courses.id))
+      .leftJoin(subjects, eq(courses.subjectId, subjects.id))
+      .leftJoin(departments, eq(subjects.departmentId, departments.id))
       .leftJoin(batches, eq(classSessions.batchId, batches.id))
       .leftJoin(user, eq(classSessions.teacherId, user.id))
       .where(whereClause)
