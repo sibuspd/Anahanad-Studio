@@ -235,9 +235,11 @@ router.get('/:id', async (req, res) => {
       ...getTableColumns(user),
     }
   }).from(classSessions)
-  .leftJoin(subjects, eq(classSessions.courseId, subjects.id))
+  .leftJoin(courses, eq(classSessions.courseId, courses.id))
+  .leftJoin(subjects, eq(courses.subjectId, subjects.id))
   .leftJoin(user, eq(classSessions.teacherId, user.id))
   .leftJoin(departments, eq(subjects.departmentId, departments.id))
+  .leftJoin(user, eq(classSessions.teacherId, user.id))
   .where(eq(classSessions.id, classId)); // whose id mathes the parameter id
 
   if(!classDetails) return res.status(404).json({error: "No session found"});
