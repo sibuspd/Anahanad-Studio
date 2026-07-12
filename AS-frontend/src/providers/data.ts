@@ -125,7 +125,7 @@ const options: CreateDataProviderOptions = {
 
   // >> OPTION 2: CUSTOM DATA PROVIDER FOR CREATING DATA
   create: {
-    getEndpoint: ( {resource} ) => resource, // Returns the resource that is passed from the side nav bar
+    getEndpoint: ( {resource} ) => resolveResource(resource), // Returns the resource that is passed from the side nav bar
     
     buildBodyParams: async ( {variables} ) => variables, // Returns the variables that are passed from the form
 
@@ -138,7 +138,7 @@ const options: CreateDataProviderOptions = {
 
   /** >> OPTION 3: DATA PROVIDER FOR GETTING DATA OF SPECIFIC ID*/
   getOne: {
-    getEndpoint: ( { resource, id }) => `${resource}/${id}`, // Returns the resource and id that are passed
+    getEndpoint: ( { resource, id }) => `${resolveResource(resource)}/${id}`, // Returns the resource and id that are passed
     mapResponse: async (response) => {
       if(!response.ok) throw await buildHttpError(response);
       const json: GetOneResponse = await response.json();
@@ -148,7 +148,7 @@ const options: CreateDataProviderOptions = {
 
   /** >> OPTION 4: DATA PROVIDER FOR UPDATING DATA*/
   update: {
-    getEndpoint: ( {resource, id}) => `${resource}/${id}`,
+    getEndpoint: ( {resource, id}) => `${resolveResource(resource)}/${id}`,
     buildBodyParams: async ( {variables} ) => variables,
     mapResponse: async (response) => {
       if(!response.ok) throw await buildHttpError(response);
@@ -159,7 +159,7 @@ const options: CreateDataProviderOptions = {
 
   /** >> OPTION 5: DATA PROVIDER FOR DELETING DATA */
   deleteOne: {
-    getEndpoint: ( { resource, id }) => `${resource}/${id}`,
+    getEndpoint: ( { resource, id }) => `${resolveResource(resource)}/${id}`,
     mapResponse: async (response) => {
       if(!response.ok) throw await buildHttpError(response);
       const json: CreateResponse = await response.json();
