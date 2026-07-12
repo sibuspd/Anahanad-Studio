@@ -47,10 +47,7 @@ const Show = () => {
     teachersInitials || "NA",
   )}`;
 
-  const {
-    name,
-    description,
-    bannerCldPubId,
+  const { name, description, bannerCldPubId, teacher,
     department,
     startTime,
     endTime,
@@ -59,7 +56,6 @@ const Show = () => {
     sessionDate,
     status,
     subject,
-    teacher,
   } = classDetails;
 
   return (
