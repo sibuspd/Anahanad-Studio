@@ -22,14 +22,14 @@ export const bannerPhoto = (imageCldPubId: string, name: string) => {
     .delivery(dpr("auto"))
     .overlay(
       source(
-        text(name, new TextStyle("roboto", 42).fontWeight("bold")).textColor(
+        text(name, new TextStyle("roboto", 50).fontWeight("bold")).textColor(
           "white",
         ),
       ) // Renders the name of the class in a specific chosen Text style
         .position(
           new Position()
-            .gravity(compass("south_west"))
-            .offsetY(0.2)
+            .gravity(compass("west"))
+            // .offsetY(0.2)
             .offsetX(0.02),
         ),
     );
