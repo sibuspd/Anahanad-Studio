@@ -16,7 +16,7 @@ const cld = new Cloudinary({
 export const bannerPhoto = (imageCldPubId: string, name: string) => {
   return cld
     .image(imageCldPubId)
-    .resize(fill().width(200).height(300))
+    .resize(fill())
     .delivery(format("auto"))
     .delivery(quality("auto"))
     .delivery(dpr("auto"))
