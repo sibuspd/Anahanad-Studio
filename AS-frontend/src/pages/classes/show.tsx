@@ -48,24 +48,18 @@ const Show = () => {
   )}`;
 
   const {
-    bannerUrl,
     name,
     description,
     bannerCldPubId,
-    batchId,
-    courseId,
-    createdAt,
     department,
+    startTime,
     endTime,
     id,
     inviteCode,
     sessionDate,
-    startTime,
     status,
     subject,
     teacher,
-    teacherId,
-    updatedAt,
   } = classDetails;
 
   return (
@@ -74,7 +68,7 @@ const Show = () => {
 
       <div className="banner">
         {classDetails.bannerUrl ? (
-          <AdvancedImage alt="Session Banner" cldImg={bannerPhoto(bannerCldPubId as string, name) }/>
+          <AdvancedImage alt="Session Banner" cldImg={bannerPhoto(bannerCldPubId?? "", name) }/>
         ) : (
           <div className="placeholder" />
         )}
