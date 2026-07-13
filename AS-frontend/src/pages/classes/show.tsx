@@ -63,7 +63,7 @@ const Show = () => {
       <ShowViewHeader resource="classes" title="Class Details" />
 
       <div className="banner">
-        {classDetails.bannerUrl ? (
+        {classDetails.bannerCldPubId ? (
           <AdvancedImage alt="Session Banner" cldImg={bannerPhoto(bannerCldPubId?? "", name) }/>
         ) : (
           <div className="placeholder" />
@@ -80,7 +80,7 @@ const Show = () => {
           <div>
             <Badge variant="outline">{department.code}</Badge>
             <Badge
-              variant={status == "scheduled" ? "default" : "secondary"}
+              variant={status === "scheduled" ? "default" : "secondary"}
               data-status={status}
             >
               {status.toUpperCase()}
