@@ -14,6 +14,10 @@ const cld = new Cloudinary({
   },
 }); // Creating Cloudinary instance
 export const bannerPhoto = (imageCldPubId: string, name: string) => {
+  // Addinng validation for preventing image url misuse
+  if(!imageCldPubId || !name){
+    throw new Error ( "bannerPhoto requires both imageCldPubId and name." );
+  }
   return cld
     .image(imageCldPubId)
     .resize(fill())
