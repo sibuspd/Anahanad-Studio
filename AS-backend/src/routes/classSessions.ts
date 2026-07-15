@@ -218,33 +218,106 @@ router.post("/", async (req, res) => {
 });
 
 // GET /class-sessions/:id | Each class session details on clicking
-router.get('/:id', async (req, res) => {
-  const classId = Number(req.params.id);
+// GET /class-sessions/:id
+router.get("/:id", async (req, res) => {
+  try {
+    const classId = Number(req.params.id);
 
-  if(!Number.isFinite(classId)) return res.status(400).json({error: "No session found"});
-
-  const [classDetails] = await db.select({
-    ...getTableColumns(classSessions),
-    subject: {
-      ...getTableColumns(subjects),
-    },
-    department: {
-      ...getTableColumns(departments),
-    },
-    teacher: {
-      ...getTableColumns(user),
+    if (!Number.isFinite(classId)) {
+      return res.status(400).json({
+        error: "Invalid session id",
+      });
     }
-  }).from(classSessions)
-  .leftJoin(courses, eq(classSessions.courseId, courses.id))
-  .leftJoin(subjects, eq(courses.subjectId, subjects.id))
-  .leftJoin(user, eq(classSessions.teacherId, user.id))
-  .leftJoin(departments, eq(subjects.departmentId, departments.id))
-  .where(eq(classSessions.id, classId)); // whose id mathes the parameter id
 
-  if(!classDetails) return res.status(404).json({error: "No session found"});
-  return res.status(200).json({
-    data: classDetails,
-  });
+    const [session] = await db
+      .select({
+        ...getTableColumns(classSessions),
+
+        course: {
+          id: courses.id,
+          name: courses.name,
+
+          subject: {
+            id: subjects.id,
+            code: subjects.code,
+            name: subjects.name,
+
+            department: {
+              id: departments.id,
+              code: departments.code,
+              name: departments.name,
+              description: departments.description,
+            },
+          },
+        },
+
+        batch: {
+          id: batches.id,
+          name: batches.name,
+        },
+
+        teacher: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          image: user.image,
+        },
+      })
+      .from(classSessions)
+      .leftJoin(courses, eq(classSessions.courseId, courses.id))
+      .leftJoin(subjects, eq(courses.subjectId, subjects.id))
+      .leftJoin(departments, eq(subjects.departmentId, departments.id))
+      .leftJoin(batches, eq(classSessions.batchId, batches.id))
+      .leftJoin(user, eq(classSessions.teacherId, user.id))
+      .where(eq(classSessions.id, classId));
+
+    if (!session) {
+      return res.status(404).json({
+        error: "Session not found",
+      });
+    }
+
+    return res.status(200).json({
+      data: session,
+    });
+  } catch (error) {
+    console.error("GET /class-sessions/:id", error);
+
+    return res.status(500).json({
+      error: "Failed to fetch session",
+    });
+  }
 });
+/**
+ * ------------------------COMMENTED OUT------------------------
+ */
+// router.get('/:id', async (req, res) => {
+//   const classId = Number(req.params.id);
+
+//   if(!Number.isFinite(classId)) return res.status(400).json({error: "No session found"});
+
+//   const [classDetails] = await db.select({
+//     ...getTableColumns(classSessions),
+//     subject: {
+//       ...getTableColumns(subjects),
+//     },
+//     department: {
+//       ...getTableColumns(departments),
+//     },
+//     teacher: {
+//       ...getTableColumns(user),
+//     }
+//   }).from(classSessions)
+//   .leftJoin(courses, eq(classSessions.courseId, courses.id))
+//   .leftJoin(subjects, eq(courses.subjectId, subjects.id))
+//   .leftJoin(user, eq(classSessions.teacherId, user.id))
+//   .leftJoin(departments, eq(subjects.departmentId, departments.id))
+//   .where(eq(classSessions.id, classId)); // whose id mathes the parameter id
+
+//   if(!classDetails) return res.status(404).json({error: "No session found"});
+//   return res.status(200).json({
+//     data: classDetails,
+//   });
+// });
 
 export default router;
