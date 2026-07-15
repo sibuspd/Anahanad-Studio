@@ -177,50 +177,103 @@ export interface ClassSession {
     }
 }
 
-export type ClassDetails = {
+export interface ClassDetails {
     id: number;
 
     name: string;
     description: string;
 
-    status: "scheduled" | "completed" | "cancelled";
-    
     sessionDate: string;
     startTime: string;
     endTime: string;
 
-    inviteCode?: string;
-    
+    status: "scheduled" | "completed" | "cancelled";
+
+    inviteCode: string;
+
     bannerUrl?: string;
     bannerCldPubId?: string;
 
-   course: {
-    id: number;
-    name: string;
-
-    subject: {
+    batch: {
         id: number;
-        code:string;
+        name: string;
+    };
+
+    course: {
+        id: number;
         name: string;
 
-        department: {
+        subject: {
             id: number;
             code: string;
             name: string;
             description?: string;
+
+            department: {
+                id: number;
+                code: string;
+                name: string;
+                description?: string;
+            };
         };
     };
-   };
 
-   batch: {
-    id: number;
-    name: string;
-   };
+    teacher: {
+        id: string;
+        name: string;
+        email: string;
+        image?: string;
+    };
+}
 
-   teacher: {
-    id: string;
-    name: string;
-    email?: string;
-    image?: string;  
-   };
-};
+
+/**
+ * -----COMMENTED OUT SECTION ----------------
+ */
+// export type ClassDetails = {
+//     id: number;
+
+//     name: string;
+//     description: string;
+
+//     status: "scheduled" | "completed" | "cancelled";
+    
+//     sessionDate: string;
+//     startTime: string;
+//     endTime: string;
+
+//     inviteCode?: string;
+    
+//     bannerUrl?: string;
+//     bannerCldPubId?: string;
+
+//    course: {
+//     id: number;
+//     name: string;
+
+//     subject: {
+//         id: number;
+//         code:string;
+//         name: string;
+
+//         department: {
+//             id: number;
+//             code: string;
+//             name: string;
+//             description?: string;
+//         };
+//     };
+//    };
+
+//    batch: {
+//     id: number;
+//     name: string;
+//    };
+
+//    teacher: {
+//     id: string;
+//     name: string;
+//     email?: string;
+//     image?: string;  
+//    };
+// };
