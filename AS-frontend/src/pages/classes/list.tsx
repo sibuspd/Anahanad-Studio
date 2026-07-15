@@ -169,7 +169,7 @@ const SessionsList = () => {
       {
         id: 'details',
         size: 140,
-        header: () => <p className="column-title">Details"</p>,
+        header: () => <p className="column-title">Details</p>,
         cell: ( { row }) => <ShowButton resource="classes" recordItemId={row.original.id}
         variant="outline" size="sm" >View</ShowButton>
       },
@@ -217,7 +217,7 @@ const SessionsList = () => {
       <div className="intro-row">
         <p>Quick access to essential metrics and management tools</p>
 
-        <div className="actions-rows">
+        <div className="actions-row">
           {/* Search */}
           <div className="search-field">
             <Search className="search-icon" />
