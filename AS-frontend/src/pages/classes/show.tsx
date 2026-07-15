@@ -8,7 +8,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { AdvancedImage } from "@cloudinary/react"; 
+import { AdvancedImage } from "@cloudinary/react";
 import { bannerPhoto } from "@/lib/cloudinary";
 
 const Show = () => {
@@ -47,16 +47,22 @@ const Show = () => {
     teachersInitials || "NA",
   )}`;
 
-  const { name, description, bannerCldPubId, teacher,
-    department,
+  const {
+    name,
+    description,
+    bannerCldPubId,
+    teacher,
+    course,
+    batch,
     startTime,
     endTime,
-    id,
     inviteCode,
     sessionDate,
     status,
-    subject,
   } = classDetails;
+
+  const subject = course.subject;
+  const department = course.subject.department;
 
   return (
     <ShowView className="class-view class-show">
@@ -64,7 +70,10 @@ const Show = () => {
 
       <div className="banner">
         {classDetails.bannerCldPubId ? (
-          <AdvancedImage alt="Session Banner" cldImg={bannerPhoto(bannerCldPubId?? "", name) }/>
+          <AdvancedImage
+            alt="Session Banner"
+            cldImg={bannerPhoto(bannerCldPubId ?? "", name)}
+          />
         ) : (
           <div className="placeholder" />
         )}
@@ -78,7 +87,7 @@ const Show = () => {
           </div>
 
           <div>
-            <Badge variant="outline">{department.code}</Badge>
+            <Badge variant="outline">{department?.code}</Badge>
             <Badge
               variant={status === "scheduled" ? "default" : "secondary"}
               data-status={status}
@@ -89,47 +98,48 @@ const Show = () => {
         </div>
 
         <div className="details-grid">
-            <div className="instructor">
-                <p>Instructor</p>
-                <div>
-                    <img src={teacher?.image ?? placeholderUrl}
-                    alt={teacher?.name}/>
-                    <div>
-                        <p>{teacher?.name}</p>
-                        <p>{teacher?.email}</p>
-                    </div>
-                </div>
+          <div className="instructor">
+            <p>Instructor</p>
+            <div>
+              <img src={teacher?.image ?? placeholderUrl} alt={teacher?.name} />
+              <div>
+                <p>{teacher?.name}</p>
+                <p>{teacher?.email}</p>
+              </div>
             </div>
+          </div>
 
-            <div className="department">
-                <p>Department</p>
-                <div>
-                    <p>{department?.name}</p>
-                    <p>{department?.description}</p>
-                </div>
+          <div className="department">
+            <p>Department</p>
+            <div>
+              <p>{department?.name}</p>
+              <p>{department?.description}</p>
             </div>
+          </div>
         </div>
-        <Separator/>
+        <Separator />
 
         <div className="subject">
-            <p>Subject</p>
-            <div>
-                <Badge variant="outline">{subject?.name}</Badge>
-                <p>{subject?.description}</p>
-            </div>
+          <p>Subject</p>
+          <div>
+            <Badge variant="outline">{subject?.name}</Badge>
+            <p>{subject?.description}</p>
+          </div>
         </div>
-        <Separator/>
+        <Separator />
 
         <div className="join">
-            <h2>Join Class</h2>
-            <ol>
-                <li>Ask your teacher for the invite code</li>
-                <li>Click on the "Join Session" Button </li>
-                <li>Paste the code and click "join"</li>
-            </ol>
+          <h2>Join Class</h2>
+          <ol>
+            <li>Ask your teacher for the invite code</li>
+            <li>Click on the "Join Session" Button </li>
+            <li>Paste the code and click "join"</li>
+          </ol>
         </div>
 
-        <Button size="lg" className="w-full">Join Class</Button>
+        <Button size="lg" className="w-full">
+          Join Class
+        </Button>
       </Card>
     </ShowView>
   );
