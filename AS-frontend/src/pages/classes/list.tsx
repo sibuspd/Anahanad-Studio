@@ -3,6 +3,7 @@ import { ListView } from "@/components/refine-ui/views/list-view";
 import { DataTable } from "@/components/refine-ui/data-table/data-table";
 import { CreateButton } from "@/components/refine-ui/buttons/create";
 import { EditButton } from "@/components/refine-ui/buttons/edit";
+import { DeleteButton } from "@/components/refine-ui/buttons/delete";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -168,9 +169,9 @@ const SessionsList = () => {
         ),
       },
       {
-        id: "details",
-        size: 140,
-        header: () => <p className="column-title">Details</p>,
+        id: "actions",
+        size: 220,
+        header: () => <p className="column-title">Actions</p>,
         cell: ({ row }) => (
           <div className="flex gap-2">
             <ShowButton
@@ -190,6 +191,15 @@ const SessionsList = () => {
             >
               Edit
             </EditButton>
+
+            <DeleteButton
+              resource="classes"
+              recordItemId={row.original.id}
+              variant="destructive"
+              size="sm"
+            >
+              Delete
+            </DeleteButton>
           </div>
         ),
       },
