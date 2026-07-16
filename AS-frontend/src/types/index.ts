@@ -1,103 +1,103 @@
 export type Subject = {
-    id: number;
-    name: string;
-    code: string;
-    description: string;
-    department: Department;
-    createdAt?: string;
-    updatedAt?: string;
+  id: number;
+  name: string;
+  code: string;
+  description: string;
+  department: Department;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 export type ListResponse<T = unknown> = {
-    data?: T[];
-    pagination?: {
-        page: number;
-        limit: number;
-        total: number;
-        totalPages: number;
-    };
+  data?: T[];
+  pagination?: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
 };
 
 export type CreateResponse<T = unknown> = {
-    data?: T;
+  data?: T;
 };
 
 export type GetOneResponse<T = unknown> = {
-    data?: T;
+  data?: T;
 };
 
 declare global {
-    interface CloudinaryUploadWidgetResults {
-        event: string;
-        info: {
-            secure_url: string;
-            public_id: string;
-            delete_token?: string;
-            resource_type: string;
-            original_filename: string;
-        };
-    }
+  interface CloudinaryUploadWidgetResults {
+    event: string;
+    info: {
+      secure_url: string;
+      public_id: string;
+      delete_token?: string;
+      resource_type: string;
+      original_filename: string;
+    };
+  }
 
-    interface CloudinaryWidget {
-        open: () => void;
-    }
+  interface CloudinaryWidget {
+    open: () => void;
+  }
 
-    interface Window {
-        cloudinary?: {
-            createUploadWidget: (
-                options: Record<string, unknown>,
-                callback: (
-                    error: unknown,
-                    result: CloudinaryUploadWidgetResults
-                ) => void
-            ) => CloudinaryWidget;
-        };
-    }
+  interface Window {
+    cloudinary?: {
+      createUploadWidget: (
+        options: Record<string, unknown>,
+        callback: (
+          error: unknown,
+          result: CloudinaryUploadWidgetResults,
+        ) => void,
+      ) => CloudinaryWidget;
+    };
+  }
 }
 
 export interface UploadWidgetValue {
-    url: string;
-    publicId: string;
+  url: string;
+  publicId: string;
 }
 
 export interface UploadWidgetProps {
-    value?: UploadWidgetValue | null;
-    onChange?: (value: UploadWidgetValue | null) => void;
-    disabled?: boolean;
+  value?: UploadWidgetValue | null;
+  onChange?: (value: UploadWidgetValue | null) => void;
+  disabled?: boolean;
 }
 
 export enum UserRole {
-    SUPER_ADMIN = "super_admin",
-    ADMIN = "admin",
-    HOD = 'hod',
-    TEACHER = "teacher",
-    STUDENT = "student",
-    PARENT = 'parent',
-    ACCOUNTANT = 'accountant',
+  SUPER_ADMIN = "super_admin",
+  ADMIN = "admin",
+  HOD = "hod",
+  TEACHER = "teacher",
+  STUDENT = "student",
+  PARENT = "parent",
+  ACCOUNTANT = "accountant",
 }
 
 export type User = {
-    id: string;
-    createdAt: string;
-    updatedAt: string;
-    email: string;
-    name: string;
-    role: UserRole;
-    image?: string;
-    imageCldPubId?: string;
-    department?: string;
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  email: string;
+  name: string;
+  role: UserRole;
+  image?: string;
+  imageCldPubId?: string;
+  department?: string;
 };
 
 export type Schedule = {
-    day: string;
-    startTime: string;
-    endTime: string;
+  day: string;
+  startTime: string;
+  endTime: string;
 };
 
 export type Department = {
-    id: number;
-    name: string;
-    description: string;
+  id: number;
+  name: string;
+  description: string;
 };
 
 // export type ClassSession = {
@@ -118,115 +118,116 @@ export type Department = {
 // };
 
 export type SignUpPayload = {
-    email: string;
-    name: string;
-    password: string;
-    image?: string;
-    imageCldPubId?: string;
-    role: UserRole;
+  email: string;
+  name: string;
+  password: string;
+  image?: string;
+  imageCldPubId?: string;
+  role: UserRole;
 };
 
 export type Course = {
-    id: number;
-    name: string;
-    description?: string;
-    level: "beginner" | "intermediate" | "advanced";
-    durationMonths: number;
-    feeAmount: string | number;
-    subject: Subject; // GET endpoints usually return joined objects
+  id: number;
+  name: string;
+  description?: string;
+  level: "beginner" | "intermediate" | "advanced";
+  durationMonths: number;
+  feeAmount: string | number;
+  subject: Subject; // GET endpoints usually return joined objects
 };
 
 // Batch table is independent of Courses or Subjects
 export type Batch = {
-    id: number;
-    name: string;
-    capacity: number;
-    schedule: Schedule[];
+  id: number;
+  name: string;
+  capacity: number;
+  schedule: Schedule[];
 };
 
 export interface ClassSession {
+  id: number;
+  name: string;
+  status: "scheduled" | "completed" | "cancelled";
+  bannerUrl: string;
+  sessionDate: string;
+  startTime: string;
+  endTime: string;
+
+  course: {
     id: number;
     name: string;
-    status: "scheduled" | "completed" | "cancelled";
-    bannerUrl: string;
-    sessionDate: string;
 
-    course: {
+    subject: {
+      id: number;
+      code: string;
+      name: string;
+
+      department: {
         id: number;
         name: string;
-
-        subject: {
-            id: number;
-            code: string;
-            name: string;
-
-            department: {
-                id: number;
-                name: string;
-            };
-        };
+      };
     };
+  };
 
-    batch: {
-        id: number;
-        name: string;
-    };
+  batch: {
+    id: number;
+    name: string;
+  };
 
-    teacher: {
-        id: string;
-        name: string;
-    }
+  teacher: {
+    id: string;
+    name: string;
+  };
 }
 
 export interface ClassDetails {
+  id: number;
+
+  name: string;
+  description: string;
+
+  sessionDate: string;
+  startTime: string;
+  endTime: string;
+
+  status: "scheduled" | "completed" | "cancelled";
+
+  inviteCode: string;
+
+  bannerUrl?: string;
+  bannerCldPubId?: string;
+
+  batch: {
     id: number;
-
     name: string;
-    description: string;
+  };
 
-    sessionDate: string;
-    startTime: string;
-    endTime: string;
+  course: {
+    id: number;
+    name: string;
 
-    status: "scheduled" | "completed" | "cancelled";
+    subject: {
+      id: number;
+      code: string;
+      name: string;
+      description?: string;
 
-    inviteCode: string;
-
-    bannerUrl?: string;
-    bannerCldPubId?: string;
-
-    batch: {
+      department: {
         id: number;
+        code: string;
         name: string;
+        description?: string;
+      };
     };
+  };
 
-    course: {
-        id: number;
-        name: string;
-
-        subject: {
-            id: number;
-            code: string;
-            name: string;
-            description?: string;
-
-            department: {
-                id: number;
-                code: string;
-                name: string;
-                description?: string;
-            };
-        };
-    };
-
-    teacher: {
-        id: string;
-        name: string;
-        email: string;
-        image?: string;
-    };
+  teacher: {
+    id: string;
+    name: string;
+    email: string;
+    image?: string;
+  };
 }
-
 
 /**
  * -----COMMENTED OUT SECTION ----------------
@@ -238,13 +239,13 @@ export interface ClassDetails {
 //     description: string;
 
 //     status: "scheduled" | "completed" | "cancelled";
-    
+
 //     sessionDate: string;
 //     startTime: string;
 //     endTime: string;
 
 //     inviteCode?: string;
-    
+
 //     bannerUrl?: string;
 //     bannerCldPubId?: string;
 
@@ -275,6 +276,6 @@ export interface ClassDetails {
 //     id: string;
 //     name: string;
 //     email?: string;
-//     image?: string;  
+//     image?: string;
 //    };
 // };
