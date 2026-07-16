@@ -4,7 +4,13 @@
 import express from "express";
 import { and, desc, eq, getTableColumns, ilike, sql } from "drizzle-orm";
 import { db } from "../db/index.js";
-import { classSessions, courses, batches, subjects, departments } from "../db/schema/app.js";
+import {
+  classSessions,
+  courses,
+  batches,
+  subjects,
+  departments,
+} from "../db/schema/app.js";
 import { user } from "../db/schema/auth.js";
 import { z } from "zod";
 
@@ -114,7 +120,7 @@ router.get("/", async (req, res) => {
             department: {
               id: departments.id,
               name: departments.name,
-            }
+            },
           },
         },
 
@@ -217,6 +223,29 @@ router.post("/", async (req, res) => {
   }
 });
 
+const updateSessionSchema = z.object({
+  name: z.string().min(2).max(100),
+  description: z.string().min(5),
+
+  courseId: z.number().int().positive(),
+
+  batchId: z.number().int().positive(),
+
+  teacherId: z.string().min(1),
+
+  sessionDate: z.string(),
+
+  startTime: z.string(),
+
+  endTime: z.string(),
+
+  bannerUrl: z.string().optional(),
+
+  bannerCldPubId: z.string().optional(),
+
+  status: z.enum(["scheduled", "completed", "cancelled"]),
+});
+
 // GET /class-sessions/:id | Each class session details on clicking
 // GET /class-sessions/:id
 router.get("/:id", async (req, res) => {
@@ -285,6 +314,91 @@ router.get("/:id", async (req, res) => {
 
     return res.status(500).json({
       error: "Failed to fetch session",
+    });
+  }
+});
+
+// PATCH /class-sessions/:id
+router.patch("/:id", async (req, res) => {
+  try {
+    const sessionId = Number(req.params.id);
+
+    if (!Number.isFinite(sessionId)) {
+      return res.status(400).json({
+        error: "Invalid session id",
+      });
+    }
+
+    const payload = updateSessionSchema.parse(req.body);
+
+    const [updated] = await db
+      .update(classSessions)
+      .set({
+        ...payload,
+        updatedAt: new Date(),
+      })
+      .where(eq(classSessions.id, sessionId))
+      .returning({
+        id: classSessions.id,
+      });
+
+    if (!updated) {
+      return res.status(404).json({
+        error: "Session not found",
+      });
+    }
+
+    return res.status(200).json({
+      data: updated,
+      message: "Session updated successfully",
+    });
+  } catch (error) {
+    console.error(error);
+
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({
+        issues: error.issues,
+      });
+    }
+
+    return res.status(500).json({
+      error: "Failed to update session",
+    });
+  }
+});
+
+// DELETE /class-sessions/:id
+router.delete("/:id", async (req, res) => {
+  try {
+    const sessionId = Number(req.params.id);
+
+    if (!Number.isFinite(sessionId)) {
+      return res.status(400).json({
+        error: "Invalid session id",
+      });
+    }
+
+    const [deleted] = await db
+      .delete(classSessions)
+      .where(eq(classSessions.id, sessionId))
+      .returning({
+        id: classSessions.id,
+      });
+
+    if (!deleted) {
+      return res.status(404).json({
+        error: "Session not found",
+      });
+    }
+
+    return res.status(200).json({
+      message: "Session deleted successfully",
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      error: "Failed to delete session",
     });
   }
 });
