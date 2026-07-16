@@ -1,5 +1,5 @@
 import express from "express";
-import { sql } from "drizzle-orm";
+import { sql, eq, desc, gte, asc } from "drizzle-orm";
 
 import { db } from "../db";
 import {
@@ -26,6 +26,11 @@ router.get("/", async (_, res) => {
       batchesCount,
       sessionsCount,
       enrollmentsCount,
+      todaysSessions,
+      upcomingSessions,
+      recentEnrollments,
+      recentTeachers,
+      recentStudents,
     ] = await Promise.all([
       db
         .select({
@@ -76,6 +81,62 @@ router.get("/", async (_, res) => {
           count: sql<number>`count(*)`,
         })
         .from(enrollments),
+      db
+        .select({
+          id: classSessions.id,
+          name: classSessions.name,
+          startTime: classSessions.startTime,
+          endTime: classSessions.endTime,
+        })
+        .from(classSessions)
+        .where(eq(classSessions.sessionDate, today))
+        .orderBy(asc(classSessions.startTime))
+        .limit(10),
+      db
+        .select({
+          id: classSessions.id,
+          name: classSessions.name,
+          sessionDate: classSessions.sessionDate,
+          startTime: classSessions.startTime,
+        })
+        .from(classSessions)
+        .where(gte(classSessions.sessionDate, today))
+        .orderBy(asc(classSessions.sessionDate))
+        .limit(10),
+      db
+        .select({
+          id: enrollments.id,
+          enrolledAt: enrollments.enrolledAt,
+
+          student: {
+            id: user.id,
+            name: user.name,
+          },
+        })
+        .from(enrollments)
+        .leftJoin(user, eq(enrollments.studentId, user.id))
+        .orderBy(desc(enrollments.enrolledAt))
+        .limit(8),
+      db
+        .select({
+          id: user.id,
+          name: user.name,
+          image: user.image,
+        })
+        .from(user)
+        .where(sql`${user.role}='teacher'`)
+        .orderBy(desc(user.createdAt))
+        .limit(5),
+      db
+        .select({
+          id: user.id,
+          name: user.name,
+          image: user.image,
+        })
+        .from(user)
+        .where(sql`${user.role}='student'`)
+        .orderBy(desc(user.createdAt))
+        .limit(5),
     ]);
 
     res.json({
@@ -88,6 +149,18 @@ router.get("/", async (_, res) => {
         batches: batchesCount[0].count,
         sessions: sessionsCount[0].count,
         enrollments: enrollmentsCount[0].count,
+      },
+
+      today: todaysSessions,
+
+      upcoming: upcomingSessions,
+
+      recent: {
+        enrollments: recentEnrollments,
+
+        teachers: recentTeachers,
+
+        students: recentStudents,
       },
     });
   } catch (err) {
