@@ -196,6 +196,14 @@ const SessionsList = () => {
         },
       },
       {
+        id: "inviteCode",
+        accessorKey: "inviteCode",
+        header: () => <p className="column-title">Invite Code</p>,
+        cell: ({ getValue }) => (
+          <Badge variant="outline">{getValue<string>()}</Badge>
+        ),
+      },
+      {
         id: "actions",
         size: 220,
         header: () => <p className="column-title">Actions</p>,
