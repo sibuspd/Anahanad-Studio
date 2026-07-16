@@ -164,9 +164,18 @@ const SessionsList = () => {
         id: "status",
         accessorKey: "status",
         header: () => <p className="column-title">Status</p>,
-        cell: ({ getValue }) => (
-          <Badge variant="secondary">{getValue<string>()}</Badge>
-        ),
+        cell: ({ getValue }) => {
+          const status = getValue<"scheduled" | "completed" | "cancelled">();
+
+          const variant =
+            status === "scheduled"
+              ? "default"
+              : status === "completed"
+              ? "secondary"
+              : "destructive";
+
+          return <Badge variant={variant}>{status}</Badge>;
+        },
       },
       {
         id: "actions",
