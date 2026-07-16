@@ -149,6 +149,7 @@ export interface ClassSession {
     name: string;
     status: "scheduled" | "completed" | "cancelled";
     bannerUrl: string;
+    sessionDate: string;
 
     course: {
         id: number;
