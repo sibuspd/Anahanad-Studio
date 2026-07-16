@@ -2,6 +2,7 @@ import React, { useMemo, useState } from "react";
 import { ListView } from "@/components/refine-ui/views/list-view";
 import { DataTable } from "@/components/refine-ui/data-table/data-table";
 import { CreateButton } from "@/components/refine-ui/buttons/create";
+import { EditButton } from "@/components/refine-ui/buttons/edit";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -167,11 +168,30 @@ const SessionsList = () => {
         ),
       },
       {
-        id: 'details',
+        id: "details",
         size: 140,
         header: () => <p className="column-title">Details</p>,
-        cell: ( { row }) => <ShowButton resource="classes" recordItemId={row.original.id}
-        variant="outline" size="sm" >View</ShowButton>
+        cell: ({ row }) => (
+          <div className="flex gap-2">
+            <ShowButton
+              resource="classes"
+              recordItemId={row.original.id}
+              variant="outline"
+              size="sm"
+            >
+              View
+            </ShowButton>
+
+            <EditButton
+              resource="classes"
+              recordItemId={row.original.id}
+              variant="secondary"
+              size="sm"
+            >
+              Edit
+            </EditButton>
+          </div>
+        ),
       },
     ],
     [],
@@ -283,10 +303,12 @@ const SessionsList = () => {
               </SelectContent>
             </Select>
 
-            <CreateButton resource="classes"
-            meta={{
-              to:"/classes/create"
-            }} />
+            <CreateButton
+              resource="classes"
+              meta={{
+                to: "/classes/create",
+              }}
+            />
           </div>
         </div>
       </div>
