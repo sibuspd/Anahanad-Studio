@@ -159,7 +159,16 @@ const SessionsList = () => {
         accessorKey: "batch.name",
         header: () => <p className="column-title">Batch</p>,
       },
+      {
+        id: "sessionDate",
+        accessorKey: "sessionDate",
+        header: () => <p className="column-title">Date</p>,
+        cell: ({ getValue }) => {
+          const date = getValue<string>();
 
+          return <span>{new Date(date).toLocaleDateString()}</span>;
+        },
+      },
       {
         id: "status",
         accessorKey: "status",
