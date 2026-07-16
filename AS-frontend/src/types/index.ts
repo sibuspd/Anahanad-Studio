@@ -152,6 +152,7 @@ export interface ClassSession {
   sessionDate: string;
   startTime: string;
   endTime: string;
+  inviteCode: string;
 
   course: {
     id: number;
