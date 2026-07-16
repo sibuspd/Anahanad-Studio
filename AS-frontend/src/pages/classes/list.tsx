@@ -170,6 +170,15 @@ const SessionsList = () => {
         },
       },
       {
+        id: "time",
+        header: () => <p className="column-title">Time</p>,
+        cell: ({ row }) => (
+          <span>
+            {row.original.startTime} - {row.original.endTime}
+          </span>
+        ),
+      },
+      {
         id: "status",
         accessorKey: "status",
         header: () => <p className="column-title">Status</p>,
