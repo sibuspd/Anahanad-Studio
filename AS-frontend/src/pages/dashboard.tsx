@@ -12,57 +12,9 @@ import {
 } from "lucide-react";
 
 import { Card, CardContent } from "@/components/ui/card";
+import { DashboardHeader, StatsCard } from "@/components/dashboard";
+import type { DashboardResponse } from "@/components/dashboard/dashboard-types";
 
-type DashboardResponse = {
-  stats: {
-    students: number;
-    teachers: number;
-    departments: number;
-    subjects: number;
-    courses: number;
-    batches: number;
-    sessions: number;
-    enrollments: number;
-  };
-
-  today: {
-    id: number;
-    name: string;
-    startTime: string;
-    endTime: string;
-  }[];
-
-  upcoming: {
-    id: number;
-    name: string;
-    sessionDate: string;
-    startTime: string;
-  }[];
-
-  recent: {
-    students: {
-      id: string;
-      name: string;
-      image?: string;
-    }[];
-
-    teachers: {
-      id: string;
-      name: string;
-      image?: string;
-    }[];
-
-    enrollments: {
-      id: number;
-      enrolledAt: string;
-
-      student: {
-        id: string;
-        name: string;
-      };
-    }[];
-  };
-};
 
 const Dashboard = () => {
   const { data, isLoading, isError } =
