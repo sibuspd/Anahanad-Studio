@@ -11,32 +11,21 @@ import {
   UserPlus,
 } from "lucide-react";
 
-import { Card, CardContent } from "@/components/ui/card";
 import { DashboardHeader, StatsCard } from "@/components/dashboard";
 import type { DashboardResponse } from "@/components/dashboard/dashboard-types";
 
-
 const Dashboard = () => {
-  const { data, isLoading, isError } =
-    useCustom<DashboardResponse>({
-      url: "/dashboard",
-      method: "get",
-    });
+  const { data, isLoading, isError } = useCustom<DashboardResponse>({
+    url: "/dashboard",
+    method: "get",
+  });
 
   if (isLoading) {
-    return (
-      <div className="p-8 text-center">
-        Loading dashboard...
-      </div>
-    );
+    return <div className="p-8 text-center">Loading dashboard...</div>;
   }
 
   if (isError || !data?.data) {
-    return (
-      <div className="p-8 text-center">
-        Failed to load dashboard.
-      </div>
-    );
+    return <div className="p-8 text-center">Failed to load dashboard.</div>;
   }
 
   const dashboard = data.data;
@@ -86,51 +75,18 @@ const Dashboard = () => {
 
   return (
     <div className="space-y-8 p-8">
-
-      <div>
-        <h1 className="text-3xl font-bold">
-          Dashboard
-        </h1>
-
-        <p className="text-muted-foreground">
-          Welcome to Anahanad Studio ERP
-        </p>
-      </div>
+      <DashboardHeader />
 
       <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-
-        {stats.map((card) => {
-
-          const Icon = card.icon;
-
-          return (
-            <Card key={card.title}>
-
-              <CardContent className="flex items-center justify-between p-6">
-
-                <div>
-
-                  <p className="text-sm text-muted-foreground">
-                    {card.title}
-                  </p>
-
-                  <h2 className="mt-2 text-3xl font-bold">
-                    {card.value}
-                  </h2>
-
-                </div>
-
-                <Icon className="h-9 w-9 opacity-70" />
-
-              </CardContent>
-
-            </Card>
-          );
-
-        })}
-
+        {stats.map((card) => (
+          <StatsCard
+            key={card.title}
+            title={card.title}
+            value={card.value}
+            icon={card.icon}
+          />
+        ))}
       </div>
-
     </div>
   );
 };
