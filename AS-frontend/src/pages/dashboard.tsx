@@ -11,7 +11,13 @@ import {
   UserPlus,
 } from "lucide-react";
 
-import { DashboardHeader, StatsCard } from "@/components/dashboard";
+import {
+  DashboardHeader,
+  StatsCard,
+  TodaysSessions,
+  UpcomingSessions,
+  RecentEnrollments,
+} from "@/components/dashboard";
 import type { DashboardResponse } from "@/components/dashboard/dashboard-types";
 
 const Dashboard = () => {
@@ -86,6 +92,14 @@ const Dashboard = () => {
             icon={card.icon}
           />
         ))}
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-3">
+        <TodaysSessions sessions={dashboard.today} />
+
+        <UpcomingSessions sessions={dashboard.upcoming} />
+
+        <RecentEnrollments enrollments={dashboard.recent.enrollments} />
       </div>
     </div>
   );
