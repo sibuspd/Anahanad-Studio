@@ -1,5 +1,5 @@
-import { useCustom } from "@refinedev/core";
-
+import { useEffect, useState } from "react";
+import { BACKEND_BASE_URL } from "@/constants";
 import {
   GraduationCap,
   Users,
@@ -21,20 +21,43 @@ import {
 import type { DashboardResponse } from "@/components/dashboard/dashboard-types";
 
 const Dashboard = () => {
-  const { data, isLoading, isError } = useCustom<DashboardResponse>({
-    url: "/dashboard",
-    method: "get",
-  });
+  const [dashboard, setDashboard] = useState<DashboardResponse | null>(null);
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  const [isError, setIsError] = useState(false);
+
+  useEffect(() => {
+    const loadDashboard = async () => {
+      try {
+        const response = await fetch(`${BACKEND_BASE_URL}dashboard`);
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch dashboard");
+        }
+
+        const json = await response.json();
+        console.log("Dashboard API Response:", json);
+
+        setDashboard(json);
+      } catch (error) {
+        console.error(error);
+        setIsError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadDashboard();
+  }, []);
 
   if (isLoading) {
     return <div className="p-8 text-center">Loading dashboard...</div>;
   }
 
-  if (isError || !data?.data) {
+  if (isError || !dashboard) {
     return <div className="p-8 text-center">Failed to load dashboard.</div>;
   }
-
-  const dashboard = data.data;
 
   const stats = [
     {
