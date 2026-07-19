@@ -42,6 +42,9 @@ function App() {
                 syncWithLocation: true,
                 warnWhenUnsavedChanges: true,
                 projectId: "F9fF6R-sQfDl3-Eid1gY",
+                title: {
+                  text: "Anahanad Studio",
+                },
               }}
               resources={[
                 {
