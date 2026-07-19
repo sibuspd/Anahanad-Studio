@@ -14,8 +14,12 @@ import {
 import { user } from "../db/schema/auth";
 
 const router = express.Router();
+const today = new Date().toISOString().split("T")[0];
+
+console.log("Dashboard router loaded");
 
 router.get("/", async (_, res) => {
+    
   try {
     const [
       students,
@@ -141,18 +145,18 @@ router.get("/", async (_, res) => {
 
     res.json({
       stats: {
-        students: students[0].count,
-        teachers: teachers[0].count,
-        departments: departmentsCount[0].count,
-        subjects: subjectsCount[0].count,
-        courses: coursesCount[0].count,
-        batches: batchesCount[0].count,
-        sessions: sessionsCount[0].count,
-        enrollments: enrollmentsCount[0].count,
+        students: students[0]?.count ?? 0,
+        teachers: teachers[0]?.count ?? 0,
+        departments: departmentsCount[0]?.count ?? 0,
+        subjects: subjectsCount[0]?.count ?? 0,
+        courses: coursesCount[0]?.count ?? 0,
+        batches: batchesCount[0]?.count ?? 0,
+        sessions: sessionsCount[0]?.count ?? 0,
+        enrollments: enrollmentsCount[0]?.count ?? 0,
       },
 
       today: todaysSessions,
-
+      
       upcoming: upcomingSessions,
 
       recent: {
