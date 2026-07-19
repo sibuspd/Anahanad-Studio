@@ -51,7 +51,7 @@ import { Button } from "@/components/ui/button";
 
 import { Loader2 } from "lucide-react";
 
-const Create = () => {
+const CoursesEdit = () => {
   /**
    * Creating Form
    */
@@ -304,4 +304,4 @@ const Create = () => {
   );
 };
 
-export default Create;
+export default CoursesEdit;
