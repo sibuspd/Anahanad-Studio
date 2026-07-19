@@ -14,16 +14,22 @@ import { ThemeProvider } from "./components/refine-ui/theme/theme-provider";
 // import dataProvider from "@refinedev/simple-rest";
 import { dataProvider } from "./providers/data";
 import Dashboard from "./pages/dashboard";
-import { AlignVerticalDistributeStart, BookOpen, GraduationCap, Home } from "lucide-react";
+import {
+  AlignVerticalDistributeStart,
+  BookOpen,
+  GraduationCap,
+  Home,
+} from "lucide-react";
 import { Layout } from "./components/refine-ui/layout/layout";
 import SubjectsList from "./pages/subjects/subjectslist";
 import SubjectsCreate from "./pages/subjects/create";
 import SessionsList from "./pages/classes/list";
+import ClassesShow from "./pages/classes/show";
 import ClassesCreate from "./pages/classes/create";
 import EditSession from "./pages/classes/edit";
-import ClassesShow from "./pages/classes/show";
 import CoursesList from "./pages/courses/list";
 import CoursesCreate from "./pages/courses/create";
+import CoursesEdit from "@/pages/courses/edit";
 import BatchesCreate from "./pages/batches/create";
 import BatchesManage from "./pages/batches/manage";
 // import { API_URL } from "@/providers/constants";
@@ -62,21 +68,25 @@ function App() {
                   name: "classes",
                   list: "/classes",
                   create: "classes/create", //Create sub routes
-                  show: 'classes/show/:id', // Display a selected session's details
-                  edit: 'classes/edit/:id',
+                  show: "classes/show/:id", // Display a selected session's details
+                  edit: "classes/edit/:id",
                   meta: { label: "Classes", icon: <GraduationCap /> },
                 },
                 {
                   name: "courses",
                   list: "/courses",
                   create: "courses/create",
+                  edit: "/courses/edit/:id",
                   meta: { label: "Courses", icon: <BookOpen /> },
                 },
                 {
                   name: "batches",
                   list: "/batches/manage",
                   create: "batches/create",
-                  meta: { label: "Batches", icon: <AlignVerticalDistributeStart/> },
+                  meta: {
+                    label: "Batches",
+                    icon: <AlignVerticalDistributeStart />,
+                  },
                 },
               ]}
             >
@@ -105,13 +115,14 @@ function App() {
                   </Route>
                   {/* COURSES ROUTE */}
                   <Route path="courses">
-                    <Route index element={<CoursesList/>}/>
-                    <Route path="create" element={<CoursesCreate/>}/>
+                    <Route index element={<CoursesList />} />
+                    <Route path="create" element={<CoursesCreate />} />
+                    <Route path="edit/:id" element={<CoursesEdit />} />
                   </Route>
                   {/* BATCHES ROUTE */}
-                  <Route path='batches'>
-                    <Route path="create" element={<BatchesCreate/>} />
-                    <Route index path="manage" element={<BatchesManage/>} />
+                  <Route path="batches">
+                    <Route path="create" element={<BatchesCreate />} />
+                    <Route index path="manage" element={<BatchesManage />} />
                   </Route>
                 </Route>
               </Routes>
