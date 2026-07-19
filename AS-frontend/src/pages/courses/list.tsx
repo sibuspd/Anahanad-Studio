@@ -24,6 +24,7 @@ import { DataTable } from "@/components/refine-ui/data-table/data-table";
 
 import { CreateButton } from "@/components/refine-ui/buttons/create";
 import { EditButton } from "@/components/refine-ui/buttons/edit";
+import { DeleteButton } from "@/components/refine-ui/buttons/delete";
 
 const CoursesList = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -111,10 +112,18 @@ const CoursesList = () => {
       },
       {
         id: "actions",
+
         header: () => <p className="column-title">Actions</p>,
+
         cell: ({ row }) => (
           <div className="flex gap-2">
             <EditButton
+              resource="courses"
+              recordItemId={row.original.id}
+              size="sm"
+            />
+
+            <DeleteButton
               resource="courses"
               recordItemId={row.original.id}
               size="sm"
@@ -235,4 +244,4 @@ const CoursesList = () => {
   );
 };
 
-export default CoursesList
+export default CoursesList;
