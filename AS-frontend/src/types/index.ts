@@ -133,6 +133,7 @@ export type Course = {
   level: "beginner" | "intermediate" | "advanced";
   durationMonths: number;
   feeAmount: string | number;
+  subjectId?: number;
   subject: Subject; // GET endpoints usually return joined objects
 };
 
