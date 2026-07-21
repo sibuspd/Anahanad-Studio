@@ -32,6 +32,7 @@ import CoursesCreate from "./pages/courses/create";
 import CoursesEdit from "@/pages/courses/edit";
 import BatchesCreate from "./pages/batches/create";
 import BatchesManage from "./pages/batches/manage";
+import BatchesEdit from "@/pages/batches/edit";
 // import { API_URL } from "@/providers/constants";
 
 function App() {
@@ -123,6 +124,7 @@ function App() {
                   <Route path="batches">
                     <Route path="create" element={<BatchesCreate />} />
                     <Route index path="manage" element={<BatchesManage />} />
+                    <Route path="edit/:id" element={<BatchesEdit />} />
                   </Route>
                 </Route>
               </Routes>
