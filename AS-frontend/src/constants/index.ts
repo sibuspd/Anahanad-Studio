@@ -1,5 +1,5 @@
 // FRONTEND DATA + DROPDOWN LAYER
-import { GraduationCap, School, ShieldCheck, Users, BadgeDollarSign, Crown, UserCog } from "lucide-react";
+import { GraduationCap, School, ShieldCheck, Users, BadgeDollarSign, Crown, UserCog, GraduationCapIcon } from "lucide-react";
 
 export const USER_ROLES = {
     SUPER_ADMIN: "super_admin", // Sabyasachi Sahani who oversees the app 
@@ -48,6 +48,23 @@ export const ROLE_OPTIONS = [ // To set the roles in the dropdown
         icon: UserCog,
     },
 ];
+
+/**
+ * RESTRICTING ROLES FOR REGISTATION AND PUBLIC VIEW
+ */
+export const PUBLIC_ROLE_OPTIONS = [
+    {
+        value: USER_ROLES.STUDENT,
+        label: "Student",
+        icon: GraduationCap,
+    },
+    {
+        value: USER_ROLES.PARENT,
+        label: "Parent",
+        icon: Users,
+    },
+];
+
 
 export const DEPARTMENTS = [
     "Keyboard",
