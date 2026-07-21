@@ -69,7 +69,7 @@ const ManageBatches = () => {
                 </Badge>
               ))}
               <p className="text-xs text-muted-foreground mt-1">
-                {schedule.length} classes/week
+                {schedule.length} {schedule.length === 1 ? "class" : "classes"}/week
               </p>
             </div>
           );
