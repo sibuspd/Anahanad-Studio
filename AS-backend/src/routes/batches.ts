@@ -2,7 +2,7 @@
 // Provides Batch listing with optional searching and pagination
 
 import express from "express";
-import { and, desc, getTableColumns, ilike, sql } from "drizzle-orm";
+import { and, desc, getTableColumns, ilike, sql, eq } from "drizzle-orm";
 import { db } from "../db/index.js";
 import { batches } from "../db/schema/index.js";
 import { z } from "zod";
