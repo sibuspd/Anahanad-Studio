@@ -45,12 +45,13 @@ export const courseSchema = z.object( {
 
 // ZOD SCHEMA FOR BATCH
 export const batchSchema = z.object( {
-    name: z.string(),
+    name: z.string().min(2).max(255),
         capacity: z.coerce
         .number({
             required_error: "Capacity is required",
             invalid_type_error: "Capacity is required",
         })
+        .positive()
         .min(1, "Capacity must be at least 1"),
     schedule: z.array(scheduleSchema),
 } );
