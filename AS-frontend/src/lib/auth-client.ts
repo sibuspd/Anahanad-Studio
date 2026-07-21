@@ -4,7 +4,7 @@ import { BACKEND_BASE_URL } from "@/constants";
 import { USER_ROLES } from "@/constants/"
 
 export const authClient = createAuthClient( {
-    baseUrl: `${BACKEND_BASE_URL}auth`,
+    baseURL: `${BACKEND_BASE_URL}auth`,
     
     user: {
         additionalFields: {
