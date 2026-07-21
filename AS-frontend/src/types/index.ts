@@ -143,6 +143,8 @@ export type Batch = {
   name: string;
   capacity: number;
   schedule: Schedule[];
+  createdAt: string;
+  updatedAt: string;
 };
 
 export interface ClassSession {
