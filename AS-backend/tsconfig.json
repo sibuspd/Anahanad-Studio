@@ -31,5 +31,7 @@
     /* Environment types */
     "types": ["node"]
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src",
+  "drizzle.config.js",
+]
 }
