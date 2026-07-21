@@ -84,6 +84,7 @@ function App() {
                   name: "batches",
                   list: "/batches/manage",
                   create: "batches/create",
+                  edit: "/batches/edit/:id",
                   meta: {
                     label: "Batches",
                     icon: <AlignVerticalDistributeStart />,
