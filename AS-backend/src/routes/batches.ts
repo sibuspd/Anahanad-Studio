@@ -5,7 +5,6 @@ import express from "express";
 import { and, desc, getTableColumns, ilike, sql } from "drizzle-orm";
 import {db} from "../db/index.js";
 import {batches} from "../db/schema/index.js";
-import { filter } from "@arcjet/node";
 
 const router = express.Router();
 
