@@ -12,7 +12,8 @@ import { Toaster } from "./components/refine-ui/notification/toaster";
 import { useNotificationProvider } from "./components/refine-ui/notification/use-notification-provider";
 import { ThemeProvider } from "./components/refine-ui/theme/theme-provider";
 // import dataProvider from "@refinedev/simple-rest";
-import { dataProvider } from "./providers/data";
+import { dataProvider } from "./providers/data.js";
+import { authProvider } from "./providers/auth.js"; 
 import Dashboard from "./pages/dashboard";
 import {
   AlignVerticalDistributeStart,
@@ -43,6 +44,7 @@ function App() {
           <DevtoolsProvider>
             <Refine
               dataProvider={dataProvider}
+              authProvider={authProvider}
               notificationProvider={useNotificationProvider()}
               routerProvider={routerProvider}
               options={{
