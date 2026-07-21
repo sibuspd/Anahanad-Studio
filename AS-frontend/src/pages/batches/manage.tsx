@@ -41,20 +41,36 @@ const ManageBatches = () => {
         header: () => <p className="column-title">Capacity</p>,
       },
       {
+        id: "created",
+        accessorKey: "createdAt",
+        header: () => <p className="column-title">Created</p>,
+        cell: ({ getValue }) => {
+          const date = new Date(getValue<string>());
+          return <span>{date.toLocaleDateString()}</span>;
+        },
+      },
+      {
         id: "schedule",
         header: () => <p className="column-title">Schedule</p>,
         cell: ({ row }) => {
           const schedule = row.original.schedule;
           if (schedule.length === 0)
-            return <span className="text-muted-foreground">No Schedule</span>;
+            return (
+              <span className="text-muted-foreground">
+                <Badge variant="outline">No Schedule</Badge>
+              </span>
+            );
 
           return (
             <div className="flex flex-wrap gap-1">
               {schedule.map((item, index) => (
                 <Badge key={index} variant="secondary">
-                  {item.day}
+                  {item.day.slice(0, 3)}
                 </Badge>
               ))}
+              <p className="text-xs text-muted-foreground mt-1">
+                {schedule.length} classes/week
+              </p>
             </div>
           );
         },
@@ -92,7 +108,7 @@ const ManageBatches = () => {
       sorters: {
         initial: [
           {
-            field: "id",
+            field: "createdAt",
             order: "desc",
           },
         ],
@@ -114,7 +130,7 @@ const ManageBatches = () => {
             <Search className="search-icon" />
 
             <Input
-              placeholder="Search Batch"
+              placeholder="Search Batch by Name..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
