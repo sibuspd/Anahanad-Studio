@@ -146,7 +146,7 @@ function App() {
                   {/* BATCHES ROUTE */}
                   <Route path="batches">
                     <Route path="create" element={<BatchesCreate />} />
-                    <Route index element={<BatchesManage />} />
+                    <Route path="manage" element={<BatchesManage />} />
                     <Route path="edit/:id" element={<BatchesEdit />} />
                   </Route>
                 </Route>
