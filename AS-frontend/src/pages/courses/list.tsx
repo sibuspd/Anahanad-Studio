@@ -26,10 +26,17 @@ import { CreateButton } from "@/components/refine-ui/buttons/create";
 import { EditButton } from "@/components/refine-ui/buttons/edit";
 import { DeleteButton } from "@/components/refine-ui/buttons/delete";
 
+import { PERMISSIONS } from "@/lib/permissions.js";
+import { usePermission } from "@/hooks/usePermission";
+
 const CoursesList = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSubject, setSelectedSubject] = useState("all");
   const [selectedLevel, setSelectedLevel] = useState("all");
+
+  const canCreateCourse = usePermission(PERMISSIONS.COURSE_CREATE);
+  const canEditCourse = usePermission(PERMISSIONS.COURSE_EDIT);
+  const canDeleteCourse = usePermission(PERMISSIONS.COURSE_DELETE);
 
   /**
    * Extracting Subjects
@@ -117,22 +124,22 @@ const CoursesList = () => {
 
         cell: ({ row }) => (
           <div className="flex gap-2">
-            <EditButton
+            { canEditCourse && (<EditButton
               resource="courses"
               recordItemId={row.original.id}
               size="sm"
-            />
+            />)}
 
-            <DeleteButton
+            { canDeleteCourse && (<DeleteButton
               resource="courses"
               recordItemId={row.original.id}
               size="sm"
-            />
+            />)}
           </div>
         ),
       },
     ],
-    [],
+    [canEditCourse, canDeleteCourse],
   );
 
   /**
@@ -227,12 +234,12 @@ const CoursesList = () => {
             </Select>
 
             {/* CREATE BUTTON */}
-            <CreateButton
+            { canCreateCourse && (<CreateButton
               resource="courses"
               meta={{
                 to: "/courses/create",
               }}
-            />
+            />)}
           </div>
         </div>
       </div>
