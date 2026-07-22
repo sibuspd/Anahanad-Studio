@@ -2,7 +2,7 @@
 
 import { usePermissions } from "@refinedev/core";
 
-export const usePersmission = ( allowedRoles: readonly string[]) => {
+export const usePermission = ( allowedRoles: readonly string[]) => {
     const { data: role } = usePermissions<string>( {} );
 
     return allowedRoles.includes( role?? "");
