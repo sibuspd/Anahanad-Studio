@@ -35,7 +35,7 @@ const signInSchema = z.object({
   password: z.string().min(1, "Password is required"),
 });
 
-type SignInValues = z.Infer<typeof signInSchema>;
+type SignInValues = z.infer<typeof signInSchema>;
 
 /**
  * Main COMPONENT
