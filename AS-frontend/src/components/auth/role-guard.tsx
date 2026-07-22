@@ -19,7 +19,7 @@ interface RoleGuardProps {
 }
 
 const RoleGuard = ( {children, allowedRoles}: RoleGuardProps ) => {
-    const { data: role, isLoading } = usePermissions<Role>();
+    const { data: role, isLoading } = usePermissions<Role>({});
 
     if(isLoading){
         return <div>Loading...</div>;
