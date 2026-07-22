@@ -1,6 +1,6 @@
 import { createAuthClient } from "better-auth/react";
 
-import { BACKEND_BASE_URL } from "@/constants";
+import { BACKEND_BASE_URL, USER_ROLES } from "@/constants";
 import { USER_ROLES } from "@/constants/"
 
 export const authClient = createAuthClient( {
@@ -11,7 +11,7 @@ export const authClient = createAuthClient( {
             role: {
                 type: USER_ROLES,
                 required: true,
-                defaultValue: "student",
+                defaultValue: USER_ROLES.STUDENT,
                 input: true
             },
             imageCldPubId: {
