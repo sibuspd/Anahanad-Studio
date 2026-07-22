@@ -14,7 +14,7 @@ import { useNotificationProvider } from "./components/refine-ui/notification/use
 import { ThemeProvider } from "./components/refine-ui/theme/theme-provider";
 // import dataProvider from "@refinedev/simple-rest";
 import { dataProvider } from "./providers/data.js";
-import { authProvider } from "./providers/auth.js"; 
+import { authProvider } from "./providers/auth.js";
 import Dashboard from "./pages/dashboard";
 import {
   AlignVerticalDistributeStart,
@@ -98,13 +98,29 @@ function App() {
                 },
               ]}
             >
-              {/* Wrapping up all routes inside it */}
+              {/* Wrapping up the Routes */}
               <Routes>
+                
+                {/* PUBLIC ROUTES */}
                 <Route
                   element={
-                    <Layout>
-                      <Outlet />
-                    </Layout>
+                    <Authenticated key="public" fallback={<Outlet />}>
+                      <NavigateToResource resource="dashboard" />
+                    </Authenticated>
+                  }
+                >
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/register" element={<Register />} />
+                </Route>
+
+                {/* PRIVATE ROUTES */}
+                <Route
+                  element={
+                    <Authenticated key="private" fallback={<Login />}>
+                      <Layout>
+                        <Outlet />
+                      </Layout>
+                    </Authenticated>
                   }
                 >
                   {/* DASHBOARD ROUTE */}
@@ -135,6 +151,7 @@ function App() {
                   </Route>
                 </Route>
               </Routes>
+
               <Toaster />
               <RefineKbar />
               <UnsavedChangesNotifier />
