@@ -124,10 +124,8 @@ function App() {
                     </Authenticated>
                   }
                 >
-                  {/* DASHBOARD ROUTE WRAPPED WITH ROLE GUARD*/}
-                  <Route path="/" element={<RoleGuard allowedRoles={
-                    ["admin", "super_admin",]
-                  }><Dashboard/></RoleGuard>} />
+                  {/* DASHBOARD ROUTE */}
+                  <Route path="/" element={<Dashboard/>} />
                   {/* SUBJECT ROUTE */}
                   <Route path="subjects">
                     <Route index element={<SubjectsList />} />
