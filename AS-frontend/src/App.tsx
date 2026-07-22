@@ -35,6 +35,9 @@ import CoursesEdit from "@/pages/courses/edit";
 import BatchesCreate from "./pages/batches/create";
 import BatchesManage from "./pages/batches/manage";
 import BatchesEdit from "@/pages/batches/edit";
+
+import Login from "@/pages/login/index.js";
+import Register from "@/pages/register/index.js";
 // import { API_URL } from "@/providers/constants";
 
 function App() {
