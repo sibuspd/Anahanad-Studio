@@ -38,6 +38,7 @@ import BatchesEdit from "@/pages/batches/edit";
 
 import Login from "@/pages/login/index.js";
 import Register from "@/pages/register/index.js";
+import RoleGuard from "./components/auth/role-guard.js";
 // import { API_URL } from "@/providers/constants";
 
 function App() {
@@ -123,8 +124,10 @@ function App() {
                     </Authenticated>
                   }
                 >
-                  {/* DASHBOARD ROUTE */}
-                  <Route path="/" element={<Dashboard />} />
+                  {/* DASHBOARD ROUTE WRAPPED WITH ROLE GUARD*/}
+                  <Route path="/" element={<RoleGuard allowedRoles={
+                    ["admin", "super_admin",]
+                  }><Dashboard/></RoleGuard>} />
                   {/* SUBJECT ROUTE */}
                   <Route path="subjects">
                     <Route index element={<SubjectsList />} />
