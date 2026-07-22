@@ -100,7 +100,7 @@ function App() {
             >
               {/* Wrapping up the Routes */}
               <Routes>
-                
+
                 {/* PUBLIC ROUTES */}
                 <Route
                   element={
@@ -146,7 +146,7 @@ function App() {
                   {/* BATCHES ROUTE */}
                   <Route path="batches">
                     <Route path="create" element={<BatchesCreate />} />
-                    <Route index path="manage" element={<BatchesManage />} />
+                    <Route index element={<BatchesManage />} />
                     <Route path="edit/:id" element={<BatchesEdit />} />
                   </Route>
                 </Route>
