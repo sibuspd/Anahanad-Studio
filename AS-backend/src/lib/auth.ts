@@ -18,13 +18,13 @@ export const auth = betterAuth({
     // Setting up email and password Authentication methods
     emailAndPassword: {
         enabled: true,
-        requiredEmailVerification: true,
-        sendVerificationEmail: async ( { user, url }: any) => {
-            await sendVerificationEmail(user.email, url,);
-        },
         emailVerification: {
+            requiredEmailVerification: true,
             sendOnSignUp: true,
             autoSignInAfterVerification: true,
+            sendVerificationEmail: async (user, url) => {
+                await sendVerificationEmail(user.email, url);
+            },
         },
     },
     user: {
