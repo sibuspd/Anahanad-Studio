@@ -4,6 +4,7 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "../db/index.js"; // your drizzle instance
 import * as schema from "../db/schema/auth.js";
+import { sendVerificationEmail } from "./email.js";
 
 // Configuring Database Adapter for connecting to PostgreSQL 
 export const auth = betterAuth({
@@ -17,6 +18,14 @@ export const auth = betterAuth({
     // Setting up email and password Authentication methods
     emailAndPassword: {
         enabled: true,
+        requiredEmailVerification: true,
+        sendVerificationEmail: async ( { user, url }: any) => {
+            await sendVerificationEmail(user.email, url,);
+        },
+        emailVerification: {
+            sendOnSignUp: true,
+            autoSignInAfterVerification: true,
+        },
     },
     user: {
         additionalFields: {
