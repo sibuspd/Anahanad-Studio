@@ -4,7 +4,11 @@ import { Resend } from "resend";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function sendVerificationEmail( email: string, verificationUrl: string) {
-    await resend.emails.send( {
+
+    console.log("📧 Sending verification email to:", email);
+    console.log("🔗 Verification URL:", verificationUrl);
+
+    const result = await resend.emails.send( {
         from: process.env.EMAIL_FROM!, // I guarantee this value is defined
         to: email,
         subject: "Verify your Anahanad Studio account",
@@ -43,4 +47,6 @@ export async function sendVerificationEmail( email: string, verificationUrl: str
             </p>
         </div>`,
     } );
+
+    console.log("📨 Resend response:", result);
 }
