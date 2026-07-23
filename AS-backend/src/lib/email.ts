@@ -1,4 +1,4 @@
-import { HIDE_METADATA } from "better-auth/*";
+// Email Verification Configuration
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
