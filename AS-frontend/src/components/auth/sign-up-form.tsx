@@ -71,7 +71,21 @@ const SignUpForm = () => {
 
   //Submit
   const onSubmit = (values: RegisterValues) => {
-    register(values);
+    register(values, {
+      onSuccess: () => {
+        form.reset();
+
+        alert("Registration successful. \n\n Please verify your email address before signing in.");
+
+        window.location.href = "/login";
+      },
+
+      onError: (error) => {
+        console.log(error);
+
+        alert("Registration failed.");
+      },
+    });
   };
 
   // Display Component JSX
