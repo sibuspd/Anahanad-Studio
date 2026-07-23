@@ -21,6 +21,9 @@ import { Batch, Course, User, ClassSession } from "@/types";
 import { Breadcrumb } from "@/components/refine-ui/layout/breadcrumb";
 import { ShowButton } from "@/components/refine-ui/buttons/show";
 
+import { PERMISSIONS } from "@/lib/permissions";
+import { usePermission } from "@/hooks/usePermission";
+
 //Rendering a list of all class Sessions
 
 const SessionsList = () => {
@@ -32,6 +35,10 @@ const SessionsList = () => {
   const [selectedCourse, setSelectedCourse] = useState("all");
   const [selectedBatch, setSelectedBatch] = useState("all");
   const [selectedTeacher, setSelectedTeacher] = useState("all");
+
+  const canCreateSession = usePermission(PERMISSIONS.CLASS_CREATE);
+  const canEditSession = usePermission(PERMISSIONS.CLASS_EDIT);
+  const canDeleteSession = usePermission(PERMISSIONS.CLASS_DELETE);
 
   /**---------------------------
    * LOADING DROPDOWNS
@@ -218,23 +225,23 @@ const SessionsList = () => {
               View
             </ShowButton>
 
-            <EditButton
+            {canEditSession && (<EditButton
               resource="classes"
               recordItemId={row.original.id}
               variant="secondary"
               size="sm"
             >
               Edit
-            </EditButton>
+            </EditButton>)}
 
-            <DeleteButton
+            {canDeleteSession && (<DeleteButton
               resource="classes"
               recordItemId={row.original.id}
               variant="destructive"
               size="sm"
             >
               Delete
-            </DeleteButton>
+            </DeleteButton>)}
           </div>
         ),
       },
@@ -348,12 +355,14 @@ const SessionsList = () => {
               </SelectContent>
             </Select>
 
-            <CreateButton
-              resource="classes"
-              meta={{
-                to: "/classes/create",
-              }}
-            />
+            {canCreateSession && (
+              <CreateButton
+                resource="classes"
+                meta={{
+                  to: "/classes/create",
+                }}
+              />
+            )}
           </div>
         </div>
       </div>
