@@ -54,7 +54,7 @@ export const authProvider: AuthProvider = {
         };
       }
 
-      localStorage.setItem("user", JSON.stringify(data.user)); // Saves user session in browser
+      // localStorage.setItem("user", JSON.stringify(data.user)); // Saves user session in browser
 
       return {
         success: true,
