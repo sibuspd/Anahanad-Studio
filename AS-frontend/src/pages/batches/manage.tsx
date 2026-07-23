@@ -17,8 +17,15 @@ import { CreateButton } from "@/components/refine-ui/buttons/create";
 import { EditButton } from "@/components/refine-ui/buttons/edit";
 import { DeleteButton } from "@/components/refine-ui/buttons/delete";
 
+import { PERMISSIONS } from "@/lib/permissions";
+import { usePermission } from "@/hooks/usePermission";
+
 const ManageBatches = () => {
   const [searchQuery, setSearchQuery] = useState("");
+
+  const canCreateBatch = usePermission(PERMISSIONS.BATCH_CREATE);
+  const canEditBatch = usePermission(PERMISSIONS.BATCH_EDIT);
+  const canDeleteBatch = usePermission(PERMISSIONS.BATCH_DELETE);
 
   const searchFilters = searchQuery
     ? [
@@ -69,7 +76,8 @@ const ManageBatches = () => {
                 </Badge>
               ))}
               <p className="text-xs text-muted-foreground mt-1">
-                {schedule.length} {schedule.length === 1 ? "class" : "classes"}/week
+                {schedule.length} {schedule.length === 1 ? "class" : "classes"}
+                /week
               </p>
             </div>
           );
@@ -80,14 +88,14 @@ const ManageBatches = () => {
         header: () => <p className="column-title">Actions</p>,
         cell: ({ row }) => (
           <div className="flex gap-2">
-            <EditButton resource="batches" recordItemId={row.original.id} />
+            {canEditBatch && (<EditButton resource="batches" recordItemId={row.original.id} />)}
 
-            <DeleteButton resource="batches" recordItemId={row.original.id} />
+            {canDeleteBatch && (<DeleteButton resource="batches" recordItemId={row.original.id} />)}
           </div>
         ),
       },
     ],
-    [],
+    [canEditBatch, canDeleteBatch],
   );
 
   const table = useTable<Batch>({
@@ -137,7 +145,7 @@ const ManageBatches = () => {
           </div>
 
           <div className="flex gap-2">
-            <CreateButton resource="batches" />
+            {canCreateBatch && (<CreateButton resource="batches" />)}
           </div>
         </div>
       </div>
