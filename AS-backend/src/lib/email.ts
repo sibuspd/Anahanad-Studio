@@ -8,7 +8,7 @@ export async function sendVerificationEmail( email: string, verificationUrl: str
     console.log("📧 Sending verification email to:", email);
     console.log("🔗 Verification URL:", verificationUrl);
 
-    const result = await resend.emails.send( {
+    const { data, error } = await resend.emails.send( {
         from: process.env.EMAIL_FROM!, // I guarantee this value is defined
         to: email,
         subject: "Verify your Anahanad Studio account",
@@ -48,5 +48,11 @@ export async function sendVerificationEmail( email: string, verificationUrl: str
         </div>`,
     } );
 
-    console.log("📨 Resend response:", result);
+    if(error){
+        console.log("Resend Error", error);
+        return;
+    }
+
+    console.log("📨 Email sent successfully");
+    console.log(data);
 }
