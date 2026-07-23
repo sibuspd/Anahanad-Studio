@@ -58,7 +58,7 @@ export const authProvider: AuthProvider = {
 
       return {
         success: true,
-        redirectTo: "/",
+        redirectTo: "/login",
       };
     } catch {
       return {
