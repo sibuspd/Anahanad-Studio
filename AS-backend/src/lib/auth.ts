@@ -6,35 +6,47 @@ import { db } from "../db/index.js"; // your drizzle instance
 import * as schema from "../db/schema/auth.js";
 import { sendVerificationEmail } from "./email.js";
 
-// Configuring Database Adapter for connecting to PostgreSQL 
+// Configuring Database Adapter for connecting to PostgreSQL
 export const auth = betterAuth({
-    secret: process.env.BETTER_AUTH_SECRET!, // Importing secret key from .env
-    trustedOrigins: [process.env.FRONTEND_URL!], // Allowing frontend origin
-    database: drizzleAdapter(db, {
-        provider: "pg", // or "mysql", "sqlite",
-        schema, // Drizzle schema containing authentication tables for recording user information on login
-    }),
+  secret: process.env.BETTER_AUTH_SECRET!, // Importing secret key from .env
+  trustedOrigins: [process.env.FRONTEND_URL!], // Allowing frontend origin
+  database: drizzleAdapter(db, {
+    provider: "pg", // or "mysql", "sqlite",
+    schema, // Drizzle schema containing authentication tables for recording user information on login
+  }),
 
-    // Setting up email and password Authentication methods
-    emailAndPassword: {
-        enabled: true,
-        emailVerification: {
-            requiredEmailVerification: true,
-            sendOnSignUp: true,
-            autoSignInAfterVerification: true,
-            sendVerificationEmail: async (user, url) => {
-                await sendVerificationEmail(user.email, url);
-            },
-        },
+  // Setting up email and password Authentication methods
+  emailAndPassword: {
+    enabled: true,
+    autoSignIn: false,
+    requireEmailVerification: true,
+  },
+  emailVerification: {
+    sendOnSignUp: true,
+    autoSignInAfterVerification: true,
+    sendVerificationEmail: async ({
+      user,
+      url,
+    }: {
+      user: { email: string };
+      url: string;
+    }) => {
+      void sendVerificationEmail(user.email, url);
     },
-    user: {
-        additionalFields: {
-            role: {
-                type: 'string', required: true, defaultValue: 'student', input: true, // To allow registration of new users
-            },
-            imageCldPubId: {
-                type: 'string', required: false, input: true, // To allow uploading of profile picture
-            },
-        }
+  },
+  user: {
+    additionalFields: {
+      role: {
+        type: "string",
+        required: true,
+        defaultValue: "student",
+        input: true, // To allow registration of new users
+      },
+      imageCldPubId: {
+        type: "string",
+        required: false,
+        input: true, // To allow uploading of profile picture
+      },
     },
+  },
 });
