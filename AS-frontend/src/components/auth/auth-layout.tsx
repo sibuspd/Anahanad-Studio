@@ -26,7 +26,8 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
             </div>
 
             {/* Gold Ring */}
-            <div className="relative
+            <div
+              className="relative
     h-[340px]
     w-[340px]
     rounded-full
@@ -52,7 +53,8 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
     after:rounded-full
     after:bg-white/30
     after:blur-xl
-    after:content-['']">
+    after:content-['']"
+            >
               {/* Inner Frame */}
               <div
                 className="
@@ -60,7 +62,10 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
         w-full
         rounded-full
         overflow-hidden
-        bg-black
+        bg-gradient-to-br
+        from-zinc-900
+        via-black
+        to-zinc-950
         ring-2
         ring-white/10
       "
