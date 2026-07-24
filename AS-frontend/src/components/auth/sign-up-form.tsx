@@ -45,7 +45,8 @@ const registerSchema = z.object({
     USER_ROLES.STUDENT,
     USER_ROLES.PARENT,
     USER_ROLES.ADMIN,
-    USER_ROLES.SUPER_ADMIN,]),
+    USER_ROLES.SUPER_ADMIN,
+  ]),
 });
 
 type RegisterValues = z.infer<typeof registerSchema>;
@@ -71,13 +72,18 @@ const SignUpForm = () => {
 
   //Submit
   const onSubmit = (values: RegisterValues) => {
+    
+    console.log("Submitting form...");
+    console.log(values);
     register(values, {
       onSuccess: () => {
         form.reset();
 
-        alert("Registration successful. \n\n Please verify your email address before signing in.");
+        // alert(
+        //   "Registration successful. \n\n Please verify your email address before signing in.",
+        // );
 
-        window.location.href = "/login";
+        // window.location.href = "/login";
       },
 
       onError: (error) => {
@@ -220,7 +226,6 @@ const SignUpForm = () => {
       </Card>
     </div>
   );
-
 };
 
 export default SignUpForm;

@@ -16,6 +16,7 @@ import { auth } from './lib/auth.js';
 import dashboardRouter from "./routes/dashboard.js";
 
 const app = express();
+
 const PORT = 8000;
 
 // Validationg Frontend URL environment variable for security
@@ -27,6 +28,10 @@ app.use(cors( {
     methods: ['GET','POST','PUT','DELETE'], // Allowed methods
     credentials: true // Allow cookies
 } ));
+
+app.use("/api/auth", (req, _, next) => {
+    next();
+});
 
 // Authentication API Routes
 app.all('/api/auth/*splat', toNodeHandler(auth)); // Set up a route handler for authentication
