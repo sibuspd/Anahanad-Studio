@@ -27,8 +27,8 @@ export function UserAvatar() {
   return (
     <Avatar className={cn("h-10", "w-10")}>
       {image && <AvatarImage src={image} alt={name}/>}
-      {/* {avatar && <AvatarImage src={avatar} alt={fullName} />}
-      <AvatarFallback>{getInitials(fullName)}</AvatarFallback> */}
+      <AvatarFallback>{getInitials(name)}</AvatarFallback>
+      {/* {avatar && <AvatarImage src={avatar} alt={fullName} />} */}
     </Avatar>
   );
 }
