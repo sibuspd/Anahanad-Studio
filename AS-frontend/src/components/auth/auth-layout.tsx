@@ -19,7 +19,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
 
       <div className="hidden lg:flex flex-col justify-center bg-gradient-to-br from-zinc-100 via-white to-amber-50 px-16">
         <div className="max-w-xl">
-          <div className="relative mb-12 flex justify-start">
+          <div className="relative mb-12 flex justify-center">
             {/* Outer ambient glow */}
             <div className="absolute inset-0 flex items-center justify-start">
               <div className="h-[360px] w-[360px] rounded-full bg-amber-300/20 blur-3xl" />
@@ -33,11 +33,11 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
       w-[340px]
       rounded-full
       bg-gradient-to-br
-      from-amber-200
-      via-yellow-500
-      to-amber-700
+      from-[#F8E7B0]
+via-[#D4AF37]
+to-[#A67C00]
       p-[5px]
-      shadow-[0_20px_60px_rgba(180,130,20,.35)]
+      shadow-[0_12px_30px_rgba(120,90,20,.18)]
     "
             >
               {/* Inner Frame */}
