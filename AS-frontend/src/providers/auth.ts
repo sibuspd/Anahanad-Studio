@@ -41,8 +41,20 @@ export const authProvider: AuthProvider = {
    * REGISTER USER
    */
   register: async (params) => {
+  
     try {
-      const { data, error } = await authClient.signUp.email(params);
+      const payload = {
+        name: params.name,
+        email: params.email,
+        password: params.password,
+        role: params.role,
+      };
+      
+      console.dir(payload, { depth: null });
+
+      const result = await authClient.signUp.email(payload);
+
+      const { data, error } = result;
 
       if (error) {
         return {
@@ -60,7 +72,9 @@ export const authProvider: AuthProvider = {
         success: true,
         redirectTo: "/login",
       };
-    } catch {
+    } catch (err) {
+      console.error("REGISTER CATCH");
+      console.error(err);
       return {
         success: false,
         error: {
@@ -91,16 +105,16 @@ export const authProvider: AuthProvider = {
   check: async () => {
     const user = localStorage.getItem("user");
 
-    if(user){
-        return {
-            authenticated: true,
-        };
+    if (user) {
+      return {
+        authenticated: true,
+      };
     }
 
     return {
-        authenticated: false,
-        logout: true,
-        redirectTo: "/login",
+      authenticated: false,
+      logout: true,
+      redirectTo: "/login",
     };
   },
 
@@ -110,7 +124,7 @@ export const authProvider: AuthProvider = {
   getIdentity: async () => {
     const user = localStorage.getItem("user");
 
-    if(!user) return null;
+    if (!user) return null;
 
     return JSON.parse(user);
   },
@@ -121,24 +135,23 @@ export const authProvider: AuthProvider = {
   getPermissions: async () => {
     const user = localStorage.getItem("user");
 
-    if(!user) return null;
+    if (!user) return null;
 
     const parsed: User = JSON.parse(user);
 
     return parsed.role;
   },
 
-  /** 
+  /**
    * HANDLE ERRORS WHEN AUTHENTICATION FAILS
    */
   onError: async (error) => {
-    if(error.statusCode == 401){
-        return {
-            logout: true, 
-        };
+    if (error.statusCode == 401) {
+      return {
+        logout: true,
+      };
     }
 
     return {};
   },
-
 };
