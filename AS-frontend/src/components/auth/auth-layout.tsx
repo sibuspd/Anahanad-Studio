@@ -22,24 +22,37 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
           <div className="relative mb-12 flex justify-center">
             {/* Outer ambient glow */}
             <div className="absolute inset-0 flex items-center justify-start">
-              <div className="h-[360px] w-[360px] rounded-full bg-amber-300/20 blur-3xl" />
+              <div className="h-[360px] w-[360px] rounded-full bg-amber-200/12 blur-2xl" />
             </div>
 
             {/* Gold Ring */}
-            <div
-              className="
-      relative
-      h-[340px]
-      w-[340px]
-      rounded-full
-      bg-gradient-to-br
-      from-[#F8E7B0]
-via-[#D4AF37]
-to-[#A67C00]
-      p-[5px]
-      shadow-[0_12px_30px_rgba(120,90,20,.18)]
-    "
-            >
+            <div className="relative
+    h-[340px]
+    w-[340px]
+    rounded-full
+    bg-gradient-to-br
+    from-[#fff6d8]
+    via-[#ddb457]
+    to-[#8d661a]
+    p-[5px]
+
+    shadow-[0_20px_40px_rgba(0,0,0,.18),0_8px_18px_rgba(190,145,35,.22)]
+
+    before:absolute
+    before:inset-[3px]
+    before:rounded-full
+    before:border
+    before:border-white/35
+
+    after:absolute
+    after:top-5
+    after:left-6
+    after:h-24
+    after:w-20
+    after:rounded-full
+    after:bg-white/30
+    after:blur-xl
+    after:content-['']">
               {/* Inner Frame */}
               <div
                 className="
