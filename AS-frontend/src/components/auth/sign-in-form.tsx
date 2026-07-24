@@ -67,7 +67,7 @@ const SignInForm = () => {
    */
   return (
     <div className="w-full">
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-lg">
         <CardHeader>
           <CardTitle>Sign In</CardTitle>
           <CardDescription>Welcome to Anahanad Studio ERP</CardDescription>
