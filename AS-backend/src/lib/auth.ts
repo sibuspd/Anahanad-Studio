@@ -6,7 +6,7 @@ import { db } from "../db/index.js"; // your drizzle instance
 import * as schema from "../db/schema/auth.js";
 // import { sendVerificationEmail } from "./email.js";
 
-// Configuring Database Adapter for connecting to PostgreSQL
+// Configuring Database Adapter for connecting to PostgreSQL Via Better-Auth
 export const auth = betterAuth({
   secret: process.env.BETTER_AUTH_SECRET!, // Importing secret key from .env
   trustedOrigins: [process.env.FRONTEND_URL!], // Allowing frontend origin
