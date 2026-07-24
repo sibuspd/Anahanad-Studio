@@ -66,7 +66,7 @@ const SignInForm = () => {
    * DISPLAY COMPONENT/ JSX
    */
   return (
-    <div className="flex items-center justify-center min-h-screen">
+    <div className="w-full">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>Sign In</CardTitle>

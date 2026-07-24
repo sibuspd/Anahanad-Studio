@@ -96,7 +96,7 @@ const SignUpForm = () => {
 
   // Display Component JSX
   return (
-    <div className="flex items-center justify-center min-h-screen px-4">
+    <div className="w-full">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>Create Account</CardTitle>
