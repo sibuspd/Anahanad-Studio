@@ -113,7 +113,7 @@ router.get("/", async (req, res) => {
         course: {
           id: courses.id,
           name: courses.name,
-          subject: {
+          subject: ({
             id: subjects.id,
             code: subjects.code,
             name: subjects.name,
@@ -121,7 +121,7 @@ router.get("/", async (req, res) => {
               id: departments.id,
               name: departments.name,
             },
-          },
+          }) as any,
         },
 
         //Related Batch
@@ -266,7 +266,7 @@ router.get("/:id", async (req, res) => {
           id: courses.id,
           name: courses.name,
 
-          subject: {
+          subject: ({
             id: subjects.id,
             code: subjects.code,
             name: subjects.name,
@@ -277,7 +277,7 @@ router.get("/:id", async (req, res) => {
               name: departments.name,
               description: departments.description,
             },
-          },
+          }) as any,
         },
 
         batch: {
