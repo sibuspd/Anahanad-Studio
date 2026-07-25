@@ -1,7 +1,7 @@
 import express from "express";
 import { sql, eq, desc, gte, asc } from "drizzle-orm";
 
-import { db } from "../db";
+import { db } from "../db/index.js";
 import {
   departments,
   subjects,
@@ -9,9 +9,9 @@ import {
   batches,
   classSessions,
   enrollments,
-} from "../db/schema/app";
+} from "../db/schema/app.js";
 
-import { user } from "../db/schema/auth";
+import { user } from "../db/schema/auth.js";
 
 const router = express.Router();
 const today: string = new Date().toISOString().split("T")[0]!;
