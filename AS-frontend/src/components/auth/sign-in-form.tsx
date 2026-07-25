@@ -111,6 +111,40 @@ const SignInForm = () => {
                 )}
               />
 
+              {/* Demo Login Credentials */}
+              <div className="rounded-md border bg-muted/40 p-4 text-sm space-y-4">
+                <div>
+                  <p className="font-semibold text-foreground">
+                    Demo Login Credentials
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    Use the following accounts to explore the ERP.
+                  </p>
+                </div>
+
+                <div>
+                  <p className="font-medium">👑 Super Admin</p>
+                  <p className="text-muted-foreground">
+                    Email:{" "}
+                    <span className="font-mono">super_admin@anahanad.com</span>
+                  </p>
+                  <p className="text-muted-foreground">
+                    Password: <span className="font-mono">test@123</span>
+                  </p>
+                </div>
+
+                <div>
+                  <p className="font-medium">🎓 Student</p>
+                  <p className="text-muted-foreground">
+                    Email:{" "}
+                    <span className="font-mono">student@anahanad.com</span>
+                  </p>
+                  <p className="text-muted-foreground">
+                    Password: <span className="font-mono">test@123</span>
+                  </p>
+                </div>
+              </div>
+
               {/* Submit Button */}
               <Button type="submit" disabled={isPending} className="w-full">
                 {isPending ? "Signing In...." : "Sign In"}
