@@ -34,7 +34,7 @@ const Dashboard = () => {
   useEffect(() => {
     const loadDashboard = async () => {
       try {
-        const response = await fetch(`${BACKEND_BASE_URL}dashboard`);
+        const response = await fetch(`${BACKEND_BASE_URL}/dashboard`);
 
         if (!response.ok) {
           throw new Error("Failed to fetch dashboard");
