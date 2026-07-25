@@ -64,41 +64,49 @@ const Dashboard = () => {
       title: "Students",
       value: dashboard.stats.students,
       icon: GraduationCap,
+      resource: null,
     },
     {
       title: "Teachers",
       value: dashboard.stats.teachers,
       icon: Users,
+      resource: null,
     },
     {
       title: "Departments",
       value: dashboard.stats.departments,
       icon: Library,
+      resource: null,
     },
     {
       title: "Subjects",
       value: dashboard.stats.subjects,
       icon: BookOpen,
+      resource: "subjects",
     },
     {
       title: "Courses",
       value: dashboard.stats.courses,
       icon: Music2,
+      resource: "courses",
     },
     {
       title: "Batches",
       value: dashboard.stats.batches,
       icon: Layers,
+      resource: "batches",
     },
     {
       title: "Sessions",
       value: dashboard.stats.sessions,
       icon: CalendarDays,
+      resource: "classes",
     },
     {
       title: "Enrollments",
       value: dashboard.stats.enrollments,
       icon: UserPlus,
+      resource: null,
     },
   ];
 
