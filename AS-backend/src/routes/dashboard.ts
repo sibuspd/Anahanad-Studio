@@ -14,7 +14,7 @@ import {
 import { user } from "../db/schema/auth";
 
 const router = express.Router();
-const today = new Date().toISOString().split("T")[0];
+const today: string = new Date().toISOString().split("T")[0]!;
 
 console.log("Dashboard router loaded");
 
