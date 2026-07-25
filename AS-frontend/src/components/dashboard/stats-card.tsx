@@ -10,8 +10,8 @@ interface Props {
 }
 
 const StatsCard = ({ title, value, icon: Icon, onClick, }: Props) => (
-  <Card onClick={onClick} className={cn("transition-all duration-200",
-    onClick && "cursor-pointer hover:-translate-y-1 hover:shadow-lg hover:border-primary/40"
+  <Card onClick={onClick} className={cn(" group border border-transparenttransition-all duration-200",
+    onClick && "cursor-pointer hover:-translate-y-1 hover:shadow-xl hover:border-amber-400/70 hover:bg-gradient-to-br hover:from-amber-50 hover:to-white active:scale-[0.98]"
   )}>
     <CardContent className="flex items-center justify-between p-6">
       <div>
