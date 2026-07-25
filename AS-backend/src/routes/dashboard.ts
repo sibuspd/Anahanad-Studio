@@ -1,7 +1,7 @@
 import express from "express";
 import { sql, eq, desc, gte, asc } from "drizzle-orm";
 
-import { db } from "../db";
+import { db } from "../db/index.js";
 import {
   departments,
   subjects,
