@@ -20,12 +20,16 @@ import {
 } from "@/components/dashboard";
 import type { DashboardResponse } from "@/components/dashboard/dashboard-types";
 
+import { useGo } from "@refinedev/core";
+
 const Dashboard = () => {
   const [dashboard, setDashboard] = useState<DashboardResponse | null>(null);
 
   const [isLoading, setIsLoading] = useState(true);
 
   const [isError, setIsError] = useState(false);
+
+  const go = useGo();
 
   useEffect(() => {
     const loadDashboard = async () => {
@@ -121,6 +125,9 @@ const Dashboard = () => {
             title={card.title}
             value={card.value}
             icon={card.icon}
+            onClick={card.resource ? ()=> go( {
+              to: { resource: card.resource, action: "list",}
+            } ): undefined }
           />
         ))}
       </div>
