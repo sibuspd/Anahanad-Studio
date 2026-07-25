@@ -1,9 +1,146 @@
-import React from 'react'
+import { useEffect, useState } from "react";
+import { BACKEND_BASE_URL } from "@/constants";
+import {
+  GraduationCap,
+  Users,
+  BookOpen,
+  Layers,
+  CalendarDays,
+  Music2,
+  Library,
+  UserPlus,
+} from "lucide-react";
+
+import {
+  DashboardHeader,
+  StatsCard,
+  TodaysSessions,
+  UpcomingSessions,
+  RecentEnrollments,
+} from "@/components/dashboard";
+import type { DashboardResponse } from "@/components/dashboard/dashboard-types";
+
+import { useGo } from "@refinedev/core";
 
 const Dashboard = () => {
-  return (
-    <div>Dashboard</div>
-  )
-}
+  const [dashboard, setDashboard] = useState<DashboardResponse | null>(null);
 
-export default Dashboard
+  const [isLoading, setIsLoading] = useState(true);
+
+  const [isError, setIsError] = useState(false);
+
+  const go = useGo();
+
+  useEffect(() => {
+    const loadDashboard = async () => {
+      try {
+        const response = await fetch(`${BACKEND_BASE_URL}dashboard`);
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch dashboard");
+        }
+
+        const json = await response.json();
+        console.log("Dashboard API Response:", json);
+
+        setDashboard(json);
+      } catch (error) {
+        console.error(error);
+        setIsError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadDashboard();
+  }, []);
+
+  if (isLoading) {
+    return <div className="p-8 text-center">Loading dashboard...</div>;
+  }
+
+  if (isError || !dashboard) {
+    return <div className="p-8 text-center">Failed to load dashboard.</div>;
+  }
+
+  const stats = [
+    {
+      title: "Students",
+      value: dashboard.stats.students,
+      icon: GraduationCap,
+      resource: null,
+    },
+    {
+      title: "Teachers",
+      value: dashboard.stats.teachers,
+      icon: Users,
+      resource: null,
+    },
+    {
+      title: "Departments",
+      value: dashboard.stats.departments,
+      icon: Library,
+      resource: null,
+    },
+    {
+      title: "Subjects",
+      value: dashboard.stats.subjects,
+      icon: BookOpen,
+      resource: "subjects",
+    },
+    {
+      title: "Courses",
+      value: dashboard.stats.courses,
+      icon: Music2,
+      resource: "courses",
+    },
+    {
+      title: "Batches",
+      value: dashboard.stats.batches,
+      icon: Layers,
+      resource: "batches",
+    },
+    {
+      title: "Sessions",
+      value: dashboard.stats.sessions,
+      icon: CalendarDays,
+      resource: "classes",
+    },
+    {
+      title: "Enrollments",
+      value: dashboard.stats.enrollments,
+      icon: UserPlus,
+      resource: null,
+    },
+  ];
+
+  return (
+    <div className="space-y-8 p-8">
+      <DashboardHeader />
+
+      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+        {stats.map((card) => (
+          <StatsCard
+            key={card.title}
+            title={card.title}
+            value={card.value}
+            icon={card.icon}
+            onClick={card.resource ? ()=> go( {
+              to: { resource: card.resource, action: "list",}
+            } ): undefined }
+          />
+        ))}
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-3">
+        <TodaysSessions sessions={dashboard.today} />
+
+        <UpcomingSessions sessions={dashboard.upcoming} />
+
+        <RecentEnrollments enrollments={dashboard.recent.enrollments} />
+      </div>
+    </div>
+  );
+};
+
+export default Dashboard;

@@ -13,6 +13,7 @@ import { DataTable } from "@/components/refine-ui/data-table/data-table";
 import { useTable } from "@refinedev/react-table";
 import { Subject } from "@/types";
 import { Badge } from "@/components/ui/badge";
+import {ColumnDef} from '@tanstack/react-table'
 
 
 const SubjectsList = () => {

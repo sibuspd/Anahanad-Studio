@@ -3,14 +3,16 @@ import * as z from "zod";
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { useCreate, useGo, useNotification } from "@refinedev/core";
+import { useGo, useNotification, useOne, useUpdate } from "@refinedev/core";
 
 import { batchSchema } from "@/lib/schema";
-
+import { Batch } from "@/types";
+import { useEffect } from "react";
 import {
-  CreateView,
-  CreateViewHeader,
-} from "@/components/refine-ui/views/create-view";
+EditView,
+EditViewHeader,
+}
+from "@/components/refine-ui/views/edit-view";
 
 import {
   Form,
@@ -37,7 +39,7 @@ import {
 
 import { Loader2 } from "lucide-react";
 
-const CreateBatch = () => {
+const EditBatch = () => {
   /**
    * FORM
    */
@@ -71,43 +73,66 @@ const CreateBatch = () => {
   /**
    * REFINE HOOKS
    */
-  const { mutateAsync: createBatch } = useCreate();
+  const { mutateAsync: updateBatch } = useUpdate();
   const go = useGo();
   const { open } = useNotification();
+
+  const { query } = useOne<Batch>({
+    resource: "batches",
+  });
+
+  useEffect(() => {
+    if (query.data?.data) {
+      form.reset(query.data.data);
+    }
+  }, [query.data, form]);
 
   /**
    * SUBMIT
    */
   const onSubmit = form.handleSubmit(async (values) => {
     try {
-      await createBatch({
+      await updateBatch({
         resource: "batches",
+
+        id: query.data?.data.id,
+
         values,
       });
 
       open?.({
         type: "success",
-        message: "Batch created successfully",
+
+        message: "Batch updated successfully",
       });
 
       go({
         to: "/batches/manage",
+
         type: "replace",
       });
-    } catch (e) {
+    } catch {
       open?.({
         type: "error",
-        message: "Failed to create batch",
+
+        message: "Failed to update batch",
       });
     }
   });
 
   /**
+   * LOADING STATE
+   */
+  if (query.isLoading) {
+    return <div className="p-8">Loading...</div>;
+  }
+
+  /**
    * JSX DISPLAY COMPONENT
    */
   return (
-    <CreateView>
-      <CreateViewHeader resource="batches" title="Create Batch" />
+    <EditView>
+      <EditViewHeader resource="batches" title="Edit Batch" />
 
       <Form {...form}>
         <form onSubmit={onSubmit}>
@@ -266,15 +291,15 @@ const CreateBatch = () => {
                   {form.formState.isSubmitting && (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   )}
-                  Create Batch
+                  Update Batch
                 </Button>
               </div>
             </CardContent>
           </Card>
         </form>
       </Form>
-    </CreateView>
+    </EditView>
   );
 };
 
-export default CreateBatch;
+export default EditBatch;

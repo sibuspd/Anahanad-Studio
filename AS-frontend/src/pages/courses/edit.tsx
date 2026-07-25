@@ -1,15 +1,18 @@
 import { useMemo } from "react";
 import * as z from "zod";
+import { useEffect } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import {
   CrudFilter,
-  useCreate,
+  useUpdate,
   useGo,
   useList,
   useNotification,
+  useOne,
+  useParsed,
 } from "@refinedev/core";
 
 import { courseSchema } from "@/lib/schema";
@@ -17,9 +20,9 @@ import { courseSchema } from "@/lib/schema";
 import { Subject } from "@/types";
 
 import {
-  CreateView,
-  CreateViewHeader,
-} from "@/components/refine-ui/views/create-view";
+  EditView,
+  EditViewHeader,
+} from "@/components/refine-ui/views/edit-view";
 
 import {
   Form,
@@ -48,7 +51,7 @@ import { Button } from "@/components/ui/button";
 
 import { Loader2 } from "lucide-react";
 
-const Create = () => {
+const CoursesEdit = () => {
   /**
    * Creating Form
    */
@@ -61,10 +64,28 @@ const Create = () => {
   });
 
   const go = useGo();
-
   const { open } = useNotification();
+  const { mutateAsync: updateCourse } = useUpdate();
+  const { id } = useParsed();
+  const { data } = useOne<Course>({
+    resource: "courses",
+    id,
+  });
 
-  const { mutateAsync: createCourse } = useCreate();
+  useEffect(() => {
+    if (!data?.data) return;
+
+    const course = data.data;
+
+    form.reset({
+      name: course.name,
+      subjectId: course.subject.id,
+      level: course.level,
+      durationMonths: course.durationMonths,
+      feeAmount: Number(course.feeAmount),
+      description: course.description ?? "",
+    });
+  }, [data, form]);
 
   /**
    * Loading Subjects
@@ -89,16 +110,16 @@ const Create = () => {
    */
   const onSubmit = form.handleSubmit(async (values) => {
     try {
-      await createCourse({
+      await updateCourse({
         resource: "courses",
-
+        id,
         values,
       });
 
       open?.({
         type: "success",
 
-        message: "Course created successfully",
+        message: "Course updated successfully",
       });
 
       form.reset();
@@ -109,7 +130,7 @@ const Create = () => {
         type: "replace",
       });
     } catch (e) {
-      let message = "Failed to create course";
+      let message = "Failed to update course";
 
       if (e instanceof Error) {
         message = e.message;
@@ -127,8 +148,8 @@ const Create = () => {
    * JSX Part or Display Component
    */
   return (
-    <CreateView>
-      <CreateViewHeader title="Create Course" />
+    <EditView>
+      <EditViewHeader title="Edit Course" />
 
       <Card>
         <CardHeader>
@@ -273,14 +294,14 @@ const Create = () => {
                 {form.formState.isSubmitting && (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 )}
-                Create Course
+                Edit Course
               </Button>
             </form>
           </Form>
         </CardContent>
       </Card>
-    </CreateView>
+    </EditView>
   );
 };
 
-export default Create;
+export default CoursesEdit;

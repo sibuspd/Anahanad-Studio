@@ -13,8 +13,10 @@ import cors from 'cors';
 import securityMiddleware from './middleware/security.js';
 import {toNodeHandler} from "better-auth/node"
 import { auth } from './lib/auth.js';
+import dashboardRouter from "./routes/dashboard.js";
 
 const app = express();
+
 const PORT = 8000;
 
 // Validationg Frontend URL environment variable for security
@@ -27,6 +29,10 @@ app.use(cors( {
     credentials: true // Allow cookies
 } ));
 
+app.use("/api/auth", (req, _, next) => {
+    next();
+});
+
 // Authentication API Routes
 app.all('/api/auth/*splat', toNodeHandler(auth)); // Set up a route handler for authentication
 
@@ -35,6 +41,7 @@ app.use(express.json()); // Middleware for parsing JSON
 app.use(securityMiddleware); // Implemented Arcjet security middleware for API Requests
 
 // Registering the ERP API Routes
+app.use("/api/dashboard", dashboardRouter);
 app.use('/api/subjects',subjectsRouter );
 app.use('/api/users', usersRouter);
 // app.use('/api/departments', departmentsRouter);

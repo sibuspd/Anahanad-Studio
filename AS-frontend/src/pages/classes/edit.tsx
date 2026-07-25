@@ -1,23 +1,28 @@
 // Route component responsible for creating a new music class session
 
 import {
-  CreateView,
-  CreateViewHeader,
-} from "@/components/refine-ui/views/create-view";
+  EditView,
+  EditViewHeader,
+} from "@/components/refine-ui/views/edit-view";
+
 import {
   useList,
   CrudFilter,
-  useCreate,
+  useUpdate,
   useGo,
   useNotification,
+  useShow,
 } from "@refinedev/core";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-// import { useForm } from "@refinedev/react-hook-form";
+
 import { useWatch, useForm } from "react-hook-form";
-import { sessionSchema } from "@/lib/schema.ts";
-// Below are all imports needed for constructing the form for creating a new class
+
+import { sessionSchema } from "@/lib/schema";
+
 import {
   Form,
   FormControl,
@@ -26,7 +31,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+
 import { Input } from "@/components/ui/input";
+
 import {
   Select,
   SelectContent,
@@ -34,14 +41,58 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
 import { Textarea } from "@/components/ui/textarea";
+
 import { Loader2 } from "lucide-react";
-import { User, Batch, Course, Subject, UploadWidgetValue } from "@/types";
+
+import {
+  User,
+  Batch,
+  Course,
+  Subject,
+  UploadWidgetValue,
+  ClassDetails,
+} from "@/types";
+
 import { useEffect, useMemo, useRef } from "react";
+
 import { Separator } from "@/components/ui/separator";
+
 import UploadWidget from "@/components/upload-widget";
+
 import { Button } from "@/components/ui/button";
-const Create = () => {
+
+const Edit = () => {
+  /**
+   * ---------------------------------------------
+   * ROUTING & NOTIFICATIONS
+   * ---------------------------------------------
+   */
+
+  const go = useGo();
+  const { open } = useNotification();
+
+  /**
+   * ---------------------------------------------
+   * LOAD A SESSION
+   * ---------------------------------------------
+   */
+
+  const { query } = useShow<ClassDetails>({
+    resource: "classes",
+  });
+
+  const classDetails = query.data?.data;
+
+  /**
+   * ---------------------------------------------
+   * UPDATE MUTATION
+   * ---------------------------------------------
+   */
+
+  const { mutateAsync: updateSession } = useUpdate();
+
   /**
    * ---------------------------------------------
    * FORM
@@ -55,20 +106,47 @@ const Create = () => {
     },
   });
 
-  const go = useGo();
-  const { open } = useNotification();
-  const { mutateAsync: createSession } = useCreate();
+  /**
+   * ---------------------------------------------
+   * LOAD EXISTING VALUES
+   * ---------------------------------------------
+   */
+
+  useEffect(() => {
+    if (!classDetails) return;
+
+    form.reset({
+      name: classDetails.name,
+      description: classDetails.description,
+
+      subjectId: classDetails.course.subject.id,
+      courseId: classDetails.course.id,
+      batchId: classDetails.batch.id,
+
+      teacherId: classDetails.teacher.id,
+
+      sessionDate: classDetails.sessionDate,
+      startTime: classDetails.startTime,
+      endTime: classDetails.endTime,
+
+      status: classDetails.status,
+
+      bannerUrl: classDetails.bannerUrl ?? "",
+      bannerCldPubId: classDetails.bannerCldPubId ?? "",
+    });
+  }, [classDetails, form]);
+
+  /**
+   * ---------------------------------------------
+   * WATCHERS
+   * ---------------------------------------------
+   */
 
   const selectedSubjectId = useWatch({
     control: form.control,
     name: "subjectId",
   });
 
-  /**
-   * ---------------------------------------------------------
-   * REGISTER HIDDEN FORM FIELDS
-   * ---------------------------------------------------------
-   */
   const bannerPublicId = useWatch({
     control: form.control,
     name: "bannerCldPubId",
@@ -97,6 +175,7 @@ const Create = () => {
     resource: "subjects",
     pagination: dropdownPagination,
   });
+
   const subjects = subjectsQuery.data?.data ?? [];
 
   /**
@@ -122,6 +201,7 @@ const Create = () => {
     filters: courseFilters,
     pagination: dropdownPagination,
   });
+
   const courses = coursesQuery.data?.data ?? [];
 
   /**
@@ -134,12 +214,13 @@ const Create = () => {
     resource: "batches",
     pagination: dropdownPagination,
   });
+
   const batches = batchesQuery.data?.data ?? [];
 
   /**
-   * ------------------------------------------------------------------
-   * FACULTY
-   * ------------------------------------------------------------------
+   * ---------------------------------------------
+   * TEACHERS
+   * ---------------------------------------------
    */
 
   const teacherFilters = useMemo<CrudFilter[]>(
@@ -161,30 +242,25 @@ const Create = () => {
 
   const teachers = teachersQuery.data?.data ?? [];
 
-  /**
-   * ------------------------------------------------------------------
-   * LOADING STATES
-   * ------------------------------------------------------------------
-   */
-
   const subjectsLoading = subjectsQuery.isLoading;
   const coursesLoading = coursesQuery.isLoading;
   const batchesLoading = batchesQuery.isLoading;
   const teachersLoading = teachersQuery.isLoading;
 
   /**
-   * ------------------------------------------------------------------
-   * DEPENDENT FIELD RESETS
-   * ------------------------------------------------------------------
+   * ---------------------------------------------
+   * DEPENDENT RESET
+   * ---------------------------------------------
    */
 
-  const previousSubjectId = useRef<number | undefined>(undefined);
+  const previousSubjectId = useRef<number>();
 
   useEffect(() => {
-    if (previousSubjectId.current == undefined) {
+    if (previousSubjectId.current === undefined) {
       previousSubjectId.current = selectedSubjectId;
       return;
     }
+
     if (previousSubjectId.current !== selectedSubjectId) {
       form.setValue("courseId", undefined);
 
@@ -193,99 +269,46 @@ const Create = () => {
   }, [selectedSubjectId, form]);
 
   /**
-   * ------------------------------------------------------------------
-   * BANNER UPLOAD
-   * ------------------------------------------------------------------
+   * ---------------------------------------------
+   * BANNER
+   * ---------------------------------------------
    */
 
   const handleBannerUpload = (file: UploadWidgetValue | null) => {
-    if (!file) {
-      form.setValue("bannerUrl", "", {
-        shouldDirty: true,
-        shouldValidate: true,
-        shouldTouch: true,
-      });
-
-      form.setValue("bannerCldPubId", "", {
-        shouldDirty: true,
-        shouldValidate: true,
-        shouldTouch: true,
-      });
-
-      return;
-    }
-
-    form.setValue("bannerUrl", file.url, {
-      shouldDirty: true,
-      shouldValidate: true,
-      shouldTouch: true,
-    });
-
-    form.setValue("bannerCldPubId", file.publicId, {
-      shouldDirty: true,
-      shouldValidate: true,
-      shouldTouch: true,
-    });
+    form.setValue("bannerUrl", file?.url ?? "");
+    form.setValue("bannerCldPubId", file?.publicId ?? "");
   };
 
   /**
-   * ------------------------------------------------------------------
+   * ---------------------------------------------
    * SUBMIT
-   * ------------------------------------------------------------------
+   * ---------------------------------------------
    */
 
   const onSubmit = form.handleSubmit(async (values) => {
-    console.log("onSubmit reached");
-    console.log(values);
     try {
-      /**
-       * --------------------------------------------------------------
-       * Remove UI-only fields
-       * --------------------------------------------------------------
-       */
-      const { subjectId, inviteCode, ...payload } = values;
-      /**
-       * --------------------------------------------------------------
-       * Create Session
-       * --------------------------------------------------------------
-       */
-      console.log(payload);
-      await createSession({
+      const { subjectId, ...payload } = values;
+      if (!classDetails) return;
+
+      await updateSession({
         resource: "class-sessions",
+        id: classDetails.id,
         values: payload,
       });
-      /**
-       * --------------------------------------------------------------
-       * Success Notification
-       * --------------------------------------------------------------
-       */
+
       open?.({
         type: "success",
-        message: "Session created successfully",
+        message: "Session updated successfully",
       });
-      /**
-       * --------------------------------------------------------------
-       * Reset Form
-       * --------------------------------------------------------------
-       */
 
-      form.reset();
-
-      /**
-       * --------------------------------------------------------------
-       * Navigate back to Sessions
-       * --------------------------------------------------------------
-       */
       go({
         to: "/classes",
         type: "replace",
       });
-    } catch (e: unknown) {
-      console.log(e);
-      let message = "Failed to create session";
-      if (e instanceof Error) {
-        message = e.message;
-      }
+    } catch (e) {
+      const message =
+        e instanceof Error ? e.message : "Failed to update session";
+
       open?.({
         type: "error",
         message,
@@ -293,9 +316,31 @@ const Create = () => {
     }
   });
 
+  if (query.isLoading) {
   return (
-    <CreateView>
-      <CreateViewHeader title="Create New Session" />
+    <EditView>
+      <EditViewHeader title="Edit Session" />
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="h-6 w-6 animate-spin" />
+      </div>
+    </EditView>
+  );
+}
+
+if (query.isError || !classDetails) {
+  return (
+    <EditView>
+      <EditViewHeader title="Edit Session" />
+      <div className="py-12 text-center">
+        Failed to load session.
+      </div>
+    </EditView>
+  );
+}
+
+  return (
+    <EditView>
+      <EditViewHeader title="Edit Session" />
       <Form {...form}>
         <form onSubmit={onSubmit} className="space-y-6">
           {/* ------------------------------------------------ */}
@@ -304,7 +349,7 @@ const Create = () => {
 
           <Card>
             <CardHeader>
-              <CardTitle>Upload a subject thumbnail</CardTitle>
+              <CardTitle>Upload Session banner</CardTitle>
             </CardHeader>
 
             <CardContent>
@@ -581,7 +626,6 @@ const Create = () => {
                       <Input
                         type="date"
                         {...field}
-                        min={new Date().toISOString().split("T")[0]}
                       />
                     </FormControl>
 
@@ -666,7 +710,12 @@ const Create = () => {
             <Button
               type="button"
               variant="outline"
-              onClick={() => go({ to: "/classes/create" })}
+              onClick={() =>
+                go({
+                  to: "/classes",
+                  type: "replace",
+                })
+              }
               disabled={form.formState.isSubmitting}
             >
               Cancel
@@ -675,19 +724,19 @@ const Create = () => {
               {form.formState.isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Creating Session...
+                  Updating Session...
                 </>
               ) : (
-                "Create Session"
+                "Update Session"
               )}
             </Button>
           </div>
         </form>
       </Form>
-    </CreateView>
+    </EditView>
   );
 };
-export default Create;
+export default Edit;
 
 //                 <FormField
 //                   control={control}

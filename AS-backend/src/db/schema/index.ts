@@ -14,4 +14,4 @@
 // export type NewUser = typeof demoUsers.$inferInsert;
 
 export * from './app.js'; // Extract business schema from the file where it is defined
-export * from './auth.js'; // Extract authentication schema from the file where it is defined
+export * from './auth.js'; // Extract authentication schema from the file where it is defined (Better Auth)
